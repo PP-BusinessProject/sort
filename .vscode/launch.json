@@ -1,0 +1,48 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "SORT B2C",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "preLaunchTask": "build_runner",
+      "args": ["--flavor", "b2c"]
+    },
+    {
+      "name": "SORT B2B",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "preLaunchTask": "build_runner",
+      "args": ["--flavor", "b2b"]
+    },
+    {
+      "name": "SORT Delivery",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "preLaunchTask": "build_runner",
+      "args": ["--flavor", "delivery"]
+    },
+    {
+      "name": "SORT Service",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "preLaunchTask": "build_runner",
+      "args": ["--flavor", "service"]
+    },
+    {
+      "name": "SORT Support",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "preLaunchTask": "build_runner",
+      "args": ["--flavor", "support"]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+misc:
+  prev_page: Back
+
+alert:
+  exit:
+    title: Are you sure you want to exit?
+    approve: Yes, have a good day
+    deny: No, I want to stay
+  exit_register:
+    title: Are you sure you want to log out?
+    approve: 'Yes'
+    deny: 'No'
+  error:
+    title: Exception occured
+    body: Please, try again later.
+    approve: I understood
+
+pull_to_refresh:
+  idle: Тяни вниз чтобы обновить
+  release: Отпусти чтобы обновить
+  refreshing: Получаем свежие данные...
+  complete: Данные обновлены
+  complete_internet_error: Проверьте интернет соединение!
+  error: Произошла ошибка
+
+auth:
+  support: Contact support
+  phone_number:
+    enter: Enter your phone number
+    get_code: Get Code
+    code_sent(final String phoneNumber): Please enter the code which was send
+      to the number $phoneNumber.
+    resend_code_prompt: Didn't get the code?
+    resend_code: Resend Code
+    paste_alert:
+      title: Insert Code
+      body(final int code): Are you sure you want to paste this code $code?
+      approve: 'Yes'
+      deny: 'No'
+    error:
+      unknown: Exception occured.
+      invalid: Phone number is invalid.
+
+profile:
+  phone_number: Phone Number
+  first_name: First Name (required)
+  first_name_error: First Name is invalid.
+  last_name: Last Name
+  last_name_error: Last Name is invalid.
+  email: Email
+  email_error: Email is invalid.
+  birthday: Birthday (required)
+  birthday_confirm: Confirm
+  gender: Gender (required)
+  male: Male
+  female: Female
+  number_of_family_members: Number of family members
+  privacy_policy_agreement: I agree with
+  privacy_policy: Privacy Policy
+  register: Register
+  update: Update

@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main_support.dart
+ASSET_PREFIX=support
+BUNDLE_NAME=SORT Support
+geo_key=AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA

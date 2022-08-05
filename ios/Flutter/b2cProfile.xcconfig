@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+FLUTTER_TARGET=lib/main_b2c.dart
+ASSET_PREFIX=b2c
+BUNDLE_NAME=SORT
+geo_key=AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA

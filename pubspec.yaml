@@ -1,0 +1,175 @@
+publish_to: none
+
+name: sort
+version: 1.0.0+1
+environment:
+  sdk: '>=2.17.0 <3.0.0'
+  flutter: '>=3.0.0 <4.0.0'
+
+dependencies:
+  catcher: ^0.6.9
+  collection: ^1.16.0
+  control_style: ^0.0.2
+  dio: ^4.0.6
+  email_validator: ^2.1.17
+  firebase_auth: ^3.6.1
+  firebase_core: ^1.20.0
+  firebase_crashlytics: ^2.8.6
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.18.5+1
+  flutter_localizations:
+    sdk: flutter
+  flutter_riverpod: ^2.0.0-dev.9
+  geolocator: ^9.0.0
+  google_maps_flutter: ^2.1.8
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  hooks_riverpod: ^2.0.0-dev.9
+  intl: ^0.17.0
+  json_converters_lite: ^1.0.2+1
+  logger: ^1.1.0
+  logging: ^1.0.2
+  meta: ^1.8.0
+  ndialog: ^4.1.1+1
+  package_info_plus: ^1.4.2
+  page_transition: ^2.0.9
+  path_provider: ^2.0.11
+  phone_form_field: ^7.0.1
+  pin_code_fields: ^7.4.0
+  pull_to_refresh: ^2.0.0
+  riverpod: ^2.0.0-dev.9
+  splash: ^1.1.0
+  syncfusion_flutter_barcodes: ^20.2.40
+  syncfusion_flutter_charts: ^20.2.40
+  syncfusion_flutter_datepicker: ^20.2.40
+  syncfusion_flutter_sliders: ^20.2.40
+  tuple: ^2.0.0
+  url_launcher: ^6.1.4
+  vector_math: ^2.1.2
+  webview_flutter: ^3.0.4
+
+dev_dependencies:
+  build_runner: ^2.1.11
+  flutter_flavorizr: ^2.1.3
+  flutter_test:
+    sdk: flutter
+  generators:
+    path: ../generators
+
+dependency_overrides:
+  meta: ^1.8.0
+
+flutter:
+  assets:
+    - source/assets/
+  fonts:
+    - family: Icons
+      fonts:
+        - asset: source/icons.ttf
+
+    - family: SF Pro Text
+      fonts:
+        - asset: source/fonts/SF-Pro-Text-Regular.otf
+          weight: 400
+        - asset: source/fonts/SF-Pro-Text-Medium.otf
+          weight: 500
+        - asset: source/fonts/SF-Pro-Text-Bold.otf
+          weight: 700
+
+flavorizr:
+  ide: vscode
+  app:
+    android:
+      flavorDimensions: app
+    ios:
+      buildSettings: {}
+
+  flavors:
+    b2c:
+      app:
+        name: SORT
+        icon: source/launcher_icons/b2c.png
+      android:
+        applicationId: com.business_project.sort.b2c
+        firebase:
+          config: android/app/src/b2c/google-services.json
+        generateDummyAssets: false
+        resValues:
+          geo_key:
+            type: string
+            value: AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA
+      ios:
+        bundleId: com.business-project.sort.b2c
+        firebase:
+          config: ios/Runner/b2c/GoogleService-Info.plist
+        generateDummyAssets: false
+        variables:
+          geo_key:
+            value: AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA
+
+    b2b:
+      app:
+        name: SORT Business
+        icon: source/launcher_icons/b2b.png
+      android:
+        applicationId: com.business_project.sort.b2b
+        firebase:
+          config: android/app/src/b2b/google-services.json
+        generateDummyAssets: false
+        resValues:
+          geo_key:
+            type: string
+            value: AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA
+      ios:
+        bundleId: com.business-project.sort.b2b
+        firebase:
+          config: ios/Runner/b2b/GoogleService-Info.plist
+        generateDummyAssets: false
+        variables:
+          geo_key:
+            value: AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA
+
+    delivery:
+      app:
+        name: SORT Delivery
+        icon: source/launcher_icons/delivery.png
+      android:
+        applicationId: com.business_project.sort.delivery
+        firebase:
+          config: android/app/src/delivery/google-services.json
+        generateDummyAssets: false
+        resValues:
+          geo_key:
+            type: string
+            value: AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA
+      ios:
+        bundleId: com.business-project.sort.b2b
+        firebase:
+          config: ios/Runner/delivery/GoogleService-Info.plist
+        generateDummyAssets: false
+        variables:
+          geo_key:
+            value: AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA
+
+    support:
+      app:
+        name: SORT Support
+        icon: source/launcher_icons/support.png
+      android:
+        applicationId: com.business_project.sort
+        firebase:
+          config: android/app/src/support/google-services.json
+        generateDummyAssets: false
+        resValues:
+          geo_key:
+            type: string
+            value: AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA
+      ios:
+        bundleId: com.business-project.sort
+        firebase:
+          config: ios/Runner/support/GoogleService-Info.plist
+        generateDummyAssets: false
+        variables:
+          geo_key:
+            value: AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA

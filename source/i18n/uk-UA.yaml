@@ -1,0 +1,61 @@
+misc:
+  prev_page: Назад
+
+alert:
+  exit:
+    title: Ви впевнені що хочете вийти?
+    approve: Так, гарного дня
+    deny: Ні, я хочу залишитися
+  exit_register:
+    title: Ви впевнені що хочете вийти з аккаунту?
+    approve: Так
+    deny: Ні
+  error:
+    title: Сталася помилка
+    body: Будь ласка, спробуйте ще раз пізніше.
+    approve: Я зрозумів
+
+pull_to_refresh:
+  idle: Тяни вниз чтобы обновить
+  release: Отпусти чтобы обновить
+  refreshing: Получаем свежие данные...
+  complete: Данные обновлены
+  complete_internet_error: Проверьте интернет соединение!
+  error: Произошла ошибка
+
+auth:
+  support: Зв'язатися з підтримкою
+  phone_number:
+    enter: Введіть ваш номер телефону
+    get_code: Отримати код
+    code_sent(final String phoneNumber): Введіть код, який був відправлений
+      на номер $phoneNumber.
+    resend_code_prompt: Код не прийшов?
+    resend_code: Спробуйте ще
+    paste_alert:
+      title: Вставити код
+      body(final int code): Ви впевнені що хочете вставити цей код $code?
+      approve: Так
+      deny: Ні
+    error:
+      unknown: Сталася помилка.
+      invalid: Номер телефону не дійсний.
+
+profile:
+  phone_number: Номер телефону
+  first_name: Ім'я (обов'язково)
+  first_name_error: Ім'я некорректне.
+  last_name: Прізвище
+  last_name_error: Прізвище некорректне.
+  email: Email
+  email_error: Це некорректний email.
+  birthday: День народження (обов'язково)
+  birthday_confirm: Підтвердити
+  gender: Стать (обов'язково)
+  male: Чоловіча
+  female: Жіноча
+  number_of_family_members: Кількість членів родини
+  privacy_policy_agreement: Я згоден (на) з Умовами надання послуг
+  privacy_policy: Типової оферти
+  register: Зареєструватися
+  update: Поновити дані

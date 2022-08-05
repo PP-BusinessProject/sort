@@ -1,0 +1,109 @@
+def properties = new Properties()
+def loadProperties = { reader -> properties.load(reader) }
+rootProject.file('local.properties').withReader('UTF-8'), loadProperties
+file('key.properties').withReader('UTF-8'), loadProperties
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+apply from: "${properties['flutter.sdk']}/packages/flutter_tools/gradle/flutter.gradle"
+
+
+android {
+    flavorDimensions 'app'
+    productFlavors {
+        b2c {
+            dimension 'app'
+            applicationId 'com.business_project.sort.b2c'
+            resValue 'string', 'app_name', 'SORT'
+            resValue 'string', 'geo_key', 'AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA'
+        }
+        b2b {
+            dimension 'app'
+            applicationId 'com.business_project.sort.b2b'
+            resValue 'string', 'app_name', 'SORT Business'
+            resValue 'string', 'geo_key', 'AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA'
+        }
+        delivery {
+            dimension 'app'
+            applicationId 'com.business_project.sort.delivery'
+            resValue 'string', 'app_name', 'SORT Delivery'
+            resValue 'string', 'geo_key', 'AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA'
+        }
+        support {
+            dimension 'app'
+            applicationId 'com.business_project.sort'
+            resValue 'string', 'app_name', 'SORT Support'
+            resValue 'string', 'geo_key', 'AIzaSyA79I49uHsh9f7OEOLC1_Dx-VgQ4Kc1NnA'
+        }
+    }
+
+    compileSdkVersion 33
+    defaultConfig {
+        multiDexEnabled true
+        resConfigs 'en', 'ua'
+        applicationId 'com.business_project.sort'
+        minSdkVersion 20
+        targetSdkVersion 33
+        versionCode properties['flutter.versionCode']?.toInteger() ?: 1
+        versionName properties['flutter.versionName'] ?: '1.0'
+    }
+
+    signingConfigs {
+        release {
+            keyAlias properties['key.alias']
+            keyPassword properties['key.password']
+            storePassword properties['store.password']
+            storeFile file(properties['store.file'])
+
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        debug {
+            proguardFiles {
+                'proguard-rules.pro'
+                getDefaultProguardFile('proguard-android-optimize.txt')
+            }
+        }
+
+        release {
+            signingConfig signingConfigs.release
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles {
+                'proguard-rules.pro'
+                getDefaultProguardFile('proguard-android-optimize.txt')
+            }
+        }
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'arm64-v8a'
+            universalApk true
+        }
+    }
+
+    kotlinOptions { jvmTarget = '1.8' }
+    sourceSets { main.java.srcDirs += 'src/main/kotlin' }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+flutter { source '../..' }
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation platform('com.google.firebase:firebase-bom:30.3.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-crashlytics'
+}
