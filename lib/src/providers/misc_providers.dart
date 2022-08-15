@@ -1,39 +1,14 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
-import 'package:json_converters_lite/json_converters_lite.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:riverpod/riverpod.dart';
 
-import '../api.dart';
 import '../flavors.dart';
-
-/// The [Provider] on the application initialisation.
-final FutureProvider<Iterable<Object?>> initialisationProvider =
-    FutureProvider<Iterable<Object?>>(
-  (final FutureProviderRef<Iterable<Object?>> ref) async =>
-      Future.wait<Object?>(<Future<Object?>>[
-    PackageInfo.fromPlatform(),
-    Future<Box<String>>(() async {
-      Hive.init((await getApplicationDocumentsDirectory()).path);
-      return Hive.openBox<String>('storage');
-    }),
-    (ref.watch(sortApiProvider))
-        .get('/settings/time', converter: dateTimeConverter),
-    Firebase.initializeApp(),
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.manual,
-      overlays: SystemUiOverlay.values,
-    ),
-  ]),
-  dependencies: <ProviderOrFamily>[widgetsBindingProvider, sortApiProvider],
-);
 
 /// The [Provider] of the initialised Flutter [WidgetsBinding] instance.
 final Provider<WidgetsBinding> widgetsBindingProvider =
@@ -64,9 +39,9 @@ final Provider<Box<String>> hiveProvider =
 final StateProvider<bool> connectionErrorProvider =
     StateProvider<bool>((final StateProviderRef<bool> ref) => false);
 
-/// The [Provider] of the application [PackageInfo].
-final StreamProvider<Position> positionProvider = StreamProvider<Position>(
-  (final StreamProviderRef<Position> ref) => GeolocatorPlatform.instance
+/// The [Provider] of the current user's [LatLng].
+final StreamProvider<LatLng> latLngProvider = StreamProvider<LatLng>(
+  (final StreamProviderRef<LatLng> ref) => GeolocatorPlatform.instance
       .getPositionStream(locationSettings: const LocationSettings())
       .handleError(
         (final Object error) {},
@@ -74,6 +49,10 @@ final StreamProvider<Position> positionProvider = StreamProvider<Position>(
             error is PermissionDeniedException ||
             error is LocationServiceDisabledException ||
             error is TimeoutException,
+      )
+      .map(
+        (final Position position) =>
+            LatLng(position.latitude, position.longitude),
       ),
 );
 

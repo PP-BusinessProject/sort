@@ -13,11 +13,11 @@ import '../utils/l10n.dart';
 
 /// The generated [I18N] enumeration.
 enum I18NLocale {
-  /// The implementation of the [enUS] locale.
-  enUS,
-
   /// The implementation of the [ukUA] locale.
-  ukUA;
+  ukUA,
+
+  /// The implementation of the [enUS] locale.
+  enUS;
 
   /// Return the current active locale.
   static I18NLocale get current {
@@ -31,20 +31,20 @@ enum I18NLocale {
   /// Return the localization for this locale.
   I18N call() {
     switch (this) {
-      case I18NLocale.enUS:
-        return enUSI18N;
       case I18NLocale.ukUA:
         return ukUAI18N;
+      case I18NLocale.enUS:
+        return enUSI18N;
     }
   }
 
   /// Return the name of this locale.
   String get name {
     switch (this) {
-      case I18NLocale.enUS:
-        return 'en_US';
       case I18NLocale.ukUA:
         return 'uk_UA';
+      case I18NLocale.enUS:
+        return 'en_US';
     }
   }
 }
@@ -69,6 +69,21 @@ abstract class I18N extends L10N<I18NLocale> {
   /// The `profile` group in the root group.
   I18NProfile<I18N> get profile;
 
+  /// The `menu` group in the root group.
+  I18NMenu<I18N> get menu;
+
+  /// The `settings` group in the root group.
+  I18NSettings<I18N> get settings;
+
+  /// The `bonus` group in the root group.
+  I18NBonus<I18N> get bonus;
+
+  /// The `container` group in the root group.
+  I18NContainer<I18N> get container;
+
+  /// The `delivery` group in the root group.
+  I18NDelivery<I18N> get delivery;
+
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
@@ -77,7 +92,12 @@ abstract class I18N extends L10N<I18NLocale> {
           other.alert == alert &&
           other.pullToRefresh == pullToRefresh &&
           other.auth == auth &&
-          other.profile == profile;
+          other.profile == profile &&
+          other.menu == menu &&
+          other.settings == settings &&
+          other.bonus == bonus &&
+          other.container == container &&
+          other.delivery == delivery;
 
   @override
   int get hashCode =>
@@ -86,7 +106,12 @@ abstract class I18N extends L10N<I18NLocale> {
       alert.hashCode ^
       pullToRefresh.hashCode ^
       auth.hashCode ^
-      profile.hashCode;
+      profile.hashCode ^
+      menu.hashCode ^
+      settings.hashCode ^
+      bonus.hashCode ^
+      container.hashCode ^
+      delivery.hashCode;
 }
 
 /// The architecture of the `misc` group.
@@ -125,20 +150,25 @@ abstract class I18NAlert<T extends I18N> extends L10N<I18NLocale> {
   /// The `error` group in the `alert` group.
   I18NAlertError<I18NAlert<I18N>> get error;
 
+  /// The `success` group in the `alert` group.
+  I18NAlertSuccess<I18NAlert<I18N>> get success;
+
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
       other is I18NAlert<T> &&
           other.exit == exit &&
           other.exitRegister == exitRegister &&
-          other.error == error;
+          other.error == error &&
+          other.success == success;
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       exit.hashCode ^
       exitRegister.hashCode ^
-      error.hashCode;
+      error.hashCode ^
+      success.hashCode;
 }
 
 /// The architecture of the `alert`/`exit` group.
@@ -214,6 +244,32 @@ abstract class I18NAlertError<T extends I18NAlert<I18N>>
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) || other is I18NAlertError<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The architecture of the `alert`/`success` group.
+@immutable
+abstract class I18NAlertSuccess<T extends I18NAlert<I18N>>
+    extends L10N<I18NLocale> {
+  const I18NAlertSuccess._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `title` key in the `alert`/`success` group.
+  String get title;
+
+  /// The `body` key in the `alert`/`success` group.
+  String get body;
+
+  /// The `approve` key in the `alert`/`success` group.
+  String get approve;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NAlertSuccess<T>;
 
   @override
   int get hashCode => runtimeType.hashCode;
@@ -438,6 +494,254 @@ abstract class I18NProfile<T extends I18N> extends L10N<I18NLocale> {
   int get hashCode => runtimeType.hashCode;
 }
 
+/// The architecture of the `menu` group.
+@immutable
+abstract class I18NMenu<T extends I18N> extends L10N<I18NLocale> {
+  const I18NMenu._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `avatar_hint` key in the `menu` group.
+  String get avatarHint;
+
+  /// The `close_hint` key in the `menu` group.
+  String get closeHint;
+
+  /// The `edit_hint` key in the `menu` group.
+  String get editHint;
+
+  /// The `menu` key in the `menu` group.
+  String get menu;
+
+  /// The `abonement` key in the `menu` group.
+  String get abonement;
+
+  /// The `individual` key in the `menu` group.
+  String get individual;
+
+  /// The `history` key in the `menu` group.
+  String get history;
+
+  /// The `statistics` key in the `menu` group.
+  String get statistics;
+
+  /// The `support` key in the `menu` group.
+  String get support;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NMenu<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The architecture of the `settings` group.
+@immutable
+abstract class I18NSettings<T extends I18N> extends L10N<I18NLocale> {
+  const I18NSettings._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `settings` key in the `settings` group.
+  String get settings;
+
+  /// The `language` group in the `settings` group.
+  I18NSettingsLanguage<I18NSettings<I18N>> get language;
+
+  /// The `theme` group in the `settings` group.
+  I18NSettingsTheme<I18NSettings<I18N>> get theme;
+
+  /// The `notification` group in the `settings` group.
+  I18NSettingsNotification<I18NSettings<I18N>> get notification;
+
+  /// The `about` group in the `settings` group.
+  I18NSettingsAbout<I18NSettings<I18N>> get about;
+
+  /// The `logout` key in the `settings` group.
+  String get logout;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) ||
+      other is I18NSettings<T> &&
+          other.language == language &&
+          other.theme == theme &&
+          other.notification == notification &&
+          other.about == about;
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      language.hashCode ^
+      theme.hashCode ^
+      notification.hashCode ^
+      about.hashCode;
+}
+
+/// The architecture of the `settings`/`language` group.
+@immutable
+abstract class I18NSettingsLanguage<T extends I18NSettings<I18N>>
+    extends L10N<I18NLocale> {
+  const I18NSettingsLanguage._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `language` key in the `settings`/`language` group.
+  String get language;
+
+  /// The `en_US` key in the `settings`/`language` group.
+  String get enUs;
+
+  /// The `uk_UA` key in the `settings`/`language` group.
+  String get ukUa;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NSettingsLanguage<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The architecture of the `settings`/`theme` group.
+@immutable
+abstract class I18NSettingsTheme<T extends I18NSettings<I18N>>
+    extends L10N<I18NLocale> {
+  const I18NSettingsTheme._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `theme` key in the `settings`/`theme` group.
+  String get theme;
+
+  /// The `system` key in the `settings`/`theme` group.
+  String get system;
+
+  /// The `light` key in the `settings`/`theme` group.
+  String get light;
+
+  /// The `dark` key in the `settings`/`theme` group.
+  String get dark;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NSettingsTheme<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The architecture of the `settings`/`notification` group.
+@immutable
+abstract class I18NSettingsNotification<T extends I18NSettings<I18N>>
+    extends L10N<I18NLocale> {
+  const I18NSettingsNotification._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `notification` key in the `settings`/`notification` group.
+  String get notification;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NSettingsNotification<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The architecture of the `settings`/`about` group.
+@immutable
+abstract class I18NSettingsAbout<T extends I18NSettings<I18N>>
+    extends L10N<I18NLocale> {
+  const I18NSettingsAbout._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `about` key in the `settings`/`about` group.
+  String get about;
+
+  /// The `version` key in the `settings`/`about` group.
+  String get version;
+
+  /// The `privacy_policy` key in the `settings`/`about` group.
+  String get privacyPolicy;
+
+  /// The `terms_of_use` key in the `settings`/`about` group.
+  String get termsOfUse;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NSettingsAbout<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The architecture of the `bonus` group.
+@immutable
+abstract class I18NBonus<T extends I18N> extends L10N<I18NLocale> {
+  const I18NBonus._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `purchase` key in the `bonus` group.
+  String get purchase;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NBonus<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The architecture of the `container` group.
+@immutable
+abstract class I18NContainer<T extends I18N> extends L10N<I18NLocale> {
+  const I18NContainer._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `containers` key in the `container` group.
+  String get containers;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NContainer<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The architecture of the `delivery` group.
+@immutable
+abstract class I18NDelivery<T extends I18N> extends L10N<I18NLocale> {
+  const I18NDelivery._(super._, this.$);
+
+  /// The parent of this group.
+  final T $;
+
+  /// The `delivery` key in the `delivery` group.
+  String get delivery;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is I18NDelivery<T>;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
 /// The instance of [EnUSI18N] locale.
 const EnUSI18N enUSI18N = EnUSI18N._();
 
@@ -463,6 +767,21 @@ class EnUSI18N extends I18N {
   EnUSI18NProfile get profile => EnUSI18NProfile._(this);
 
   @override
+  EnUSI18NMenu get menu => EnUSI18NMenu._(this);
+
+  @override
+  EnUSI18NSettings get settings => EnUSI18NSettings._(this);
+
+  @override
+  EnUSI18NBonus get bonus => EnUSI18NBonus._(this);
+
+  @override
+  EnUSI18NContainer get container => EnUSI18NContainer._(this);
+
+  @override
+  EnUSI18NDelivery get delivery => EnUSI18NDelivery._(this);
+
+  @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
       other is EnUSI18N &&
@@ -470,7 +789,12 @@ class EnUSI18N extends I18N {
           other.alert == alert &&
           other.pullToRefresh == pullToRefresh &&
           other.auth == auth &&
-          other.profile == profile;
+          other.profile == profile &&
+          other.menu == menu &&
+          other.settings == settings &&
+          other.bonus == bonus &&
+          other.container == container &&
+          other.delivery == delivery;
 
   @override
   int get hashCode =>
@@ -479,7 +803,12 @@ class EnUSI18N extends I18N {
       alert.hashCode ^
       pullToRefresh.hashCode ^
       auth.hashCode ^
-      profile.hashCode;
+      profile.hashCode ^
+      menu.hashCode ^
+      settings.hashCode ^
+      bonus.hashCode ^
+      container.hashCode ^
+      delivery.hashCode;
 }
 
 /// The [I18NLocale.enUS] `misc` group.
@@ -516,19 +845,24 @@ class EnUSI18NAlert extends I18NAlert<EnUSI18N> {
   EnUSI18NAlertError get error => EnUSI18NAlertError._(this);
 
   @override
+  EnUSI18NAlertSuccess get success => EnUSI18NAlertSuccess._(this);
+
+  @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
       other is EnUSI18NAlert &&
           other.exit == exit &&
           other.exitRegister == exitRegister &&
-          other.error == error;
+          other.error == error &&
+          other.success == success;
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       exit.hashCode ^
       exitRegister.hashCode ^
-      error.hashCode;
+      error.hashCode ^
+      success.hashCode;
 }
 
 /// The [I18NLocale.enUS] `alert`/`exit` group.
@@ -598,6 +932,30 @@ class EnUSI18NAlertError extends I18NAlertError<EnUSI18NAlert> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) || other is EnUSI18NAlertError;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.enUS] `alert`/`success` group.
+@sealed
+@immutable
+class EnUSI18NAlertSuccess extends I18NAlertSuccess<EnUSI18NAlert> {
+  const EnUSI18NAlertSuccess._(final EnUSI18NAlert _)
+      : super._(I18NLocale.enUS, _);
+
+  @override
+  String get title => 'Success';
+
+  @override
+  String get body => 'Operation successfull.';
+
+  @override
+  String get approve => 'Okay, thanks';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NAlertSuccess;
 
   @override
   int get hashCode => runtimeType.hashCode;
@@ -784,7 +1142,7 @@ class EnUSI18NProfile extends I18NProfile<EnUSI18N> {
   String get birthdayConfirm => 'Confirm';
 
   @override
-  String get gender => 'Gender (required)';
+  String get gender => 'Gender';
 
   @override
   String get male => 'Male';
@@ -815,6 +1173,238 @@ class EnUSI18NProfile extends I18NProfile<EnUSI18N> {
   int get hashCode => runtimeType.hashCode;
 }
 
+/// The [I18NLocale.enUS] `menu` group.
+@sealed
+@immutable
+class EnUSI18NMenu extends I18NMenu<EnUSI18N> {
+  const EnUSI18NMenu._(final EnUSI18N _) : super._(I18NLocale.enUS, _);
+
+  @override
+  String get avatarHint => 'Add avatar';
+
+  @override
+  String get closeHint => 'Close';
+
+  @override
+  String get editHint => 'Edit';
+
+  @override
+  String get menu => 'Menu';
+
+  @override
+  String get abonement => 'Abonement';
+
+  @override
+  String get individual => 'Individual';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get support => 'Support';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NMenu;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.enUS] `settings` group.
+@sealed
+@immutable
+class EnUSI18NSettings extends I18NSettings<EnUSI18N> {
+  const EnUSI18NSettings._(final EnUSI18N _) : super._(I18NLocale.enUS, _);
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  EnUSI18NSettingsLanguage get language => EnUSI18NSettingsLanguage._(this);
+
+  @override
+  EnUSI18NSettingsTheme get theme => EnUSI18NSettingsTheme._(this);
+
+  @override
+  EnUSI18NSettingsNotification get notification =>
+      EnUSI18NSettingsNotification._(this);
+
+  @override
+  EnUSI18NSettingsAbout get about => EnUSI18NSettingsAbout._(this);
+
+  @override
+  String get logout => 'Log Out';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) ||
+      other is EnUSI18NSettings &&
+          other.language == language &&
+          other.theme == theme &&
+          other.notification == notification &&
+          other.about == about;
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      language.hashCode ^
+      theme.hashCode ^
+      notification.hashCode ^
+      about.hashCode;
+}
+
+/// The [I18NLocale.enUS] `settings`/`language` group.
+@sealed
+@immutable
+class EnUSI18NSettingsLanguage extends I18NSettingsLanguage<EnUSI18NSettings> {
+  const EnUSI18NSettingsLanguage._(final EnUSI18NSettings _)
+      : super._(I18NLocale.enUS, _);
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get enUs => 'English';
+
+  @override
+  String get ukUa => 'Ukrainian';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NSettingsLanguage;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.enUS] `settings`/`theme` group.
+@sealed
+@immutable
+class EnUSI18NSettingsTheme extends I18NSettingsTheme<EnUSI18NSettings> {
+  const EnUSI18NSettingsTheme._(final EnUSI18NSettings _)
+      : super._(I18NLocale.enUS, _);
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get system => 'System';
+
+  @override
+  String get light => 'Light';
+
+  @override
+  String get dark => 'Dark';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NSettingsTheme;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.enUS] `settings`/`notification` group.
+@sealed
+@immutable
+class EnUSI18NSettingsNotification
+    extends I18NSettingsNotification<EnUSI18NSettings> {
+  const EnUSI18NSettingsNotification._(final EnUSI18NSettings _)
+      : super._(I18NLocale.enUS, _);
+
+  @override
+  String get notification => 'Notifications';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NSettingsNotification;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.enUS] `settings`/`about` group.
+@sealed
+@immutable
+class EnUSI18NSettingsAbout extends I18NSettingsAbout<EnUSI18NSettings> {
+  const EnUSI18NSettingsAbout._(final EnUSI18NSettings _)
+      : super._(I18NLocale.enUS, _);
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get termsOfUse => 'Terms of Use';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NSettingsAbout;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.enUS] `bonus` group.
+@sealed
+@immutable
+class EnUSI18NBonus extends I18NBonus<EnUSI18N> {
+  const EnUSI18NBonus._(final EnUSI18N _) : super._(I18NLocale.enUS, _);
+
+  @override
+  String get purchase => 'Swap';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NBonus;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.enUS] `container` group.
+@sealed
+@immutable
+class EnUSI18NContainer extends I18NContainer<EnUSI18N> {
+  const EnUSI18NContainer._(final EnUSI18N _) : super._(I18NLocale.enUS, _);
+
+  @override
+  String get containers => 'Containers';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NContainer;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.enUS] `delivery` group.
+@sealed
+@immutable
+class EnUSI18NDelivery extends I18NDelivery<EnUSI18N> {
+  const EnUSI18NDelivery._(final EnUSI18N _) : super._(I18NLocale.enUS, _);
+
+  @override
+  String get delivery => 'Delivery';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is EnUSI18NDelivery;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
 /// The instance of [UkUAI18N] locale.
 const UkUAI18N ukUAI18N = UkUAI18N._();
 
@@ -840,6 +1430,21 @@ class UkUAI18N extends I18N {
   UkUAI18NProfile get profile => UkUAI18NProfile._(this);
 
   @override
+  UkUAI18NMenu get menu => UkUAI18NMenu._(this);
+
+  @override
+  UkUAI18NSettings get settings => UkUAI18NSettings._(this);
+
+  @override
+  UkUAI18NBonus get bonus => UkUAI18NBonus._(this);
+
+  @override
+  UkUAI18NContainer get container => UkUAI18NContainer._(this);
+
+  @override
+  UkUAI18NDelivery get delivery => UkUAI18NDelivery._(this);
+
+  @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
       other is UkUAI18N &&
@@ -847,7 +1452,12 @@ class UkUAI18N extends I18N {
           other.alert == alert &&
           other.pullToRefresh == pullToRefresh &&
           other.auth == auth &&
-          other.profile == profile;
+          other.profile == profile &&
+          other.menu == menu &&
+          other.settings == settings &&
+          other.bonus == bonus &&
+          other.container == container &&
+          other.delivery == delivery;
 
   @override
   int get hashCode =>
@@ -856,7 +1466,12 @@ class UkUAI18N extends I18N {
       alert.hashCode ^
       pullToRefresh.hashCode ^
       auth.hashCode ^
-      profile.hashCode;
+      profile.hashCode ^
+      menu.hashCode ^
+      settings.hashCode ^
+      bonus.hashCode ^
+      container.hashCode ^
+      delivery.hashCode;
 }
 
 /// The [I18NLocale.ukUA] `misc` group.
@@ -893,19 +1508,24 @@ class UkUAI18NAlert extends I18NAlert<UkUAI18N> {
   UkUAI18NAlertError get error => UkUAI18NAlertError._(this);
 
   @override
+  UkUAI18NAlertSuccess get success => UkUAI18NAlertSuccess._(this);
+
+  @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
       other is UkUAI18NAlert &&
           other.exit == exit &&
           other.exitRegister == exitRegister &&
-          other.error == error;
+          other.error == error &&
+          other.success == success;
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       exit.hashCode ^
       exitRegister.hashCode ^
-      error.hashCode;
+      error.hashCode ^
+      success.hashCode;
 }
 
 /// The [I18NLocale.ukUA] `alert`/`exit` group.
@@ -975,6 +1595,30 @@ class UkUAI18NAlertError extends I18NAlertError<UkUAI18NAlert> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) || other is UkUAI18NAlertError;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `alert`/`success` group.
+@sealed
+@immutable
+class UkUAI18NAlertSuccess extends I18NAlertSuccess<UkUAI18NAlert> {
+  const UkUAI18NAlertSuccess._(final UkUAI18NAlert _)
+      : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get title => 'Успіх';
+
+  @override
+  String get body => 'Операція пройшла успішно.';
+
+  @override
+  String get approve => 'Дякую';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NAlertSuccess;
 
   @override
   int get hashCode => runtimeType.hashCode;
@@ -1161,7 +1805,7 @@ class UkUAI18NProfile extends I18NProfile<UkUAI18N> {
   String get birthdayConfirm => 'Підтвердити';
 
   @override
-  String get gender => "Стать (обов'язково)";
+  String get gender => 'Стать';
 
   @override
   String get male => 'Чоловіча';
@@ -1187,6 +1831,238 @@ class UkUAI18NProfile extends I18NProfile<UkUAI18N> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) || other is UkUAI18NProfile;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `menu` group.
+@sealed
+@immutable
+class UkUAI18NMenu extends I18NMenu<UkUAI18N> {
+  const UkUAI18NMenu._(final UkUAI18N _) : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get avatarHint => 'Додати аватар';
+
+  @override
+  String get closeHint => 'Закрити';
+
+  @override
+  String get editHint => 'Відредагувати';
+
+  @override
+  String get menu => 'Меню';
+
+  @override
+  String get abonement => 'Абонемент';
+
+  @override
+  String get individual => 'Індивідуальні';
+
+  @override
+  String get history => 'Історія';
+
+  @override
+  String get statistics => 'Статистика';
+
+  @override
+  String get support => 'Підтримка';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NMenu;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `settings` group.
+@sealed
+@immutable
+class UkUAI18NSettings extends I18NSettings<UkUAI18N> {
+  const UkUAI18NSettings._(final UkUAI18N _) : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get settings => 'Налаштування';
+
+  @override
+  UkUAI18NSettingsLanguage get language => UkUAI18NSettingsLanguage._(this);
+
+  @override
+  UkUAI18NSettingsTheme get theme => UkUAI18NSettingsTheme._(this);
+
+  @override
+  UkUAI18NSettingsNotification get notification =>
+      UkUAI18NSettingsNotification._(this);
+
+  @override
+  UkUAI18NSettingsAbout get about => UkUAI18NSettingsAbout._(this);
+
+  @override
+  String get logout => 'Вийти';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) ||
+      other is UkUAI18NSettings &&
+          other.language == language &&
+          other.theme == theme &&
+          other.notification == notification &&
+          other.about == about;
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      language.hashCode ^
+      theme.hashCode ^
+      notification.hashCode ^
+      about.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `settings`/`language` group.
+@sealed
+@immutable
+class UkUAI18NSettingsLanguage extends I18NSettingsLanguage<UkUAI18NSettings> {
+  const UkUAI18NSettingsLanguage._(final UkUAI18NSettings _)
+      : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get language => 'Мова';
+
+  @override
+  String get enUs => 'Англійська';
+
+  @override
+  String get ukUa => 'Українська';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NSettingsLanguage;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `settings`/`theme` group.
+@sealed
+@immutable
+class UkUAI18NSettingsTheme extends I18NSettingsTheme<UkUAI18NSettings> {
+  const UkUAI18NSettingsTheme._(final UkUAI18NSettings _)
+      : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get theme => 'Тема';
+
+  @override
+  String get system => 'Системна';
+
+  @override
+  String get light => 'Світла';
+
+  @override
+  String get dark => 'Темна';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NSettingsTheme;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `settings`/`notification` group.
+@sealed
+@immutable
+class UkUAI18NSettingsNotification
+    extends I18NSettingsNotification<UkUAI18NSettings> {
+  const UkUAI18NSettingsNotification._(final UkUAI18NSettings _)
+      : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get notification => 'Повідомлення';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NSettingsNotification;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `settings`/`about` group.
+@sealed
+@immutable
+class UkUAI18NSettingsAbout extends I18NSettingsAbout<UkUAI18NSettings> {
+  const UkUAI18NSettingsAbout._(final UkUAI18NSettings _)
+      : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get about => 'Про додаток';
+
+  @override
+  String get version => 'Версія';
+
+  @override
+  String get privacyPolicy => 'Політика конфіденційності';
+
+  @override
+  String get termsOfUse => 'Правила користування';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NSettingsAbout;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `bonus` group.
+@sealed
+@immutable
+class UkUAI18NBonus extends I18NBonus<UkUAI18N> {
+  const UkUAI18NBonus._(final UkUAI18N _) : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get purchase => 'Купити';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NBonus;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `container` group.
+@sealed
+@immutable
+class UkUAI18NContainer extends I18NContainer<UkUAI18N> {
+  const UkUAI18NContainer._(final UkUAI18N _) : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get containers => 'Сортомати';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NContainer;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+/// The [I18NLocale.ukUA] `delivery` group.
+@sealed
+@immutable
+class UkUAI18NDelivery extends I18NDelivery<UkUAI18N> {
+  const UkUAI18NDelivery._(final UkUAI18N _) : super._(I18NLocale.ukUA, _);
+
+  @override
+  String get delivery => 'Курʼєр';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is UkUAI18NDelivery;
 
   @override
   int get hashCode => runtimeType.hashCode;

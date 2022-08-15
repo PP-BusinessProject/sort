@@ -11,11 +11,11 @@ import '../utils/logger.dart';
 import 'misc_providers.dart';
 
 /// An alias to the [StateNotifierProvider] for a [HiveNotifier].
-typedef HiveProvider<T extends Object?>
+typedef HiveProvider<T extends Object>
     = StateNotifierProvider<HiveNotifier<T, String>, T>;
 
 /// An alias to the [StateNotifierProviderRef] for a [HiveNotifier].
-typedef HiveProviderRef<T extends Object?>
+typedef HiveProviderRef<T extends Object>
     = StateNotifierProviderRef<HiveNotifier<T, String>, T>;
 
 /// An alias to the [StateNotifierProvider] for a [HiveOptionalNotifier].
@@ -46,7 +46,8 @@ final HiveProvider<ThemeMode> themeModeProvider = HiveProvider<ThemeMode>(
   (final HiveProviderRef<ThemeMode> ref) => HiveNotifier<ThemeMode, String>(
     ref.watch(hiveProvider),
     key: 'theme',
-    converter: const EnumConverter<ThemeMode>(ThemeMode.values),
+    toJson: const EnumConverter<ThemeMode>(ThemeMode.values).toJson,
+    fromJson: const EnumConverter<ThemeMode>(ThemeMode.values).fromJson,
     initialValue: ThemeMode.system,
   ),
   dependencies: <ProviderOrFamily>[hiveProvider],
@@ -57,7 +58,8 @@ final HiveProvider<bool> i18nChangedProvider = HiveProvider<bool>(
   (final HiveProviderRef<bool> ref) => HiveNotifier<bool, String>(
     ref.watch(hiveProvider),
     key: 'was_locale_changed',
-    converter: const StringConverter(boolConverter),
+    toJson: const StringConverter(boolConverter).toJson,
+    fromJson: const StringConverter(boolConverter).fromJson,
     initialValue: false,
   ),
   dependencies: <ProviderOrFamily>[hiveProvider],
@@ -68,7 +70,8 @@ final HiveProvider<I18NLocale> i18nProvider = HiveProvider<I18NLocale>(
   (final HiveProviderRef<I18NLocale> ref) => HiveNotifier<I18NLocale, String>(
     ref.watch(hiveProvider),
     key: 'locale',
-    converter: const EnumConverter<I18NLocale>(I18NLocale.values),
+    toJson: const EnumConverter<I18NLocale>(I18NLocale.values).toJson,
+    fromJson: const EnumConverter<I18NLocale>(I18NLocale.values).fromJson,
     initialValue: I18NLocale.current,
   ),
   dependencies: <ProviderOrFamily>[hiveProvider],

@@ -1,7 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import 'screens/b2c_screen.dart';
+import 'providers/flutter_providers.dart';
+import 'providers/model_providers.dart';
+import 'screens/authorization_screen.dart';
+import 'screens/b2c/b2c_screen.dart';
+import 'screens/profile_screen.dart';
+import 'utils/logger.dart';
 
 /// The flavors of the `SORT` application.
 enum SortFlavor {
@@ -53,17 +61,35 @@ enum SortFlavor {
   bool Function(Route<Object?>) get withName => ModalRoute.withName(path);
 
   /// The builder of this route.
-  Widget Function(BuildContext context)? get builder {
-    switch (this) {
-      case SortFlavor.b2c:
-        return (final BuildContext context) => const SortB2C();
-      case SortFlavor.b2b:
-      // return (final BuildContext context) => const SortB2B();
-      case SortFlavor.delivery:
-      // return (final BuildContext context) => const SortDelivery();
-      case SortFlavor.support:
-        // return (final BuildContext context) => const SortSupport();
-        return (final BuildContext context) => const Placeholder();
-    }
-  }
+  Widget builder([final BuildContext? context]) => Consumer(
+        builder: (final _, final WidgetRef ref, final Widget? child) {
+          AsyncValue<Object?>? value;
+          if ((value = ref.watch(signedInProvider)) is AsyncData<User?> &&
+              value!.valueOrNull == null) {
+            return const AuthorizationScreen();
+          } else if (ref.watch(userProvider.select((final _) => _ == null))) {
+            return const ProfileScreen();
+          } else if (value is! AsyncData<Object?> ||
+              ref.watch(userLoadingProvider)) {
+            if (value is AsyncError<Object?>) {
+              logger.e('Exception occured.', value.error, value.stackTrace);
+            }
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator.adaptive()),
+            );
+          } else {
+            switch (this) {
+              case SortFlavor.b2c:
+                return const B2CScreen();
+              case SortFlavor.b2b:
+              // return (final BuildContext context) => const SortB2B();
+              case SortFlavor.delivery:
+              // return (final BuildContext context) => const SortDelivery();
+              case SortFlavor.support:
+                // return (final BuildContext context) => const SortSupport();
+                return const Placeholder();
+            }
+          }
+        },
+      );
 }

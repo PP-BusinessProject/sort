@@ -2,23 +2,24 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:json_converters_lite/json_converters_lite.dart';
 
 /// The interface to [save] the data.
-abstract class HiveNotifierInterface<T extends Object?, S extends Object?>
-    extends StateNotifier<T> {
+abstract class HiveNotifierInterface<T extends Object?, S extends Object?> {
   /// The interface to [save] the data.
-  HiveNotifierInterface(
-    super._, {
+  HiveNotifierInterface({
     required final this.key,
-    required final this.converter,
+    required final this.toJson,
+    required final this.fromJson,
   });
 
   /// The key of this iterable to save in the database.
   final String key;
 
-  /// The converter to serialize the item.
-  final JsonConverter<T?, S?> converter;
+  /// The function to serialize this state to [S].
+  final S Function(T value) toJson;
+
+  /// The function to deserialize [S] to this state.
+  final T Function(S value) fromJson;
 
   /// Save the data to the database.
   FutureOr<void> save();
@@ -31,13 +32,14 @@ abstract class HiveNotifierInterface<T extends Object?, S extends Object?>
 }
 
 /// The notifier that automatically saves its [state] to the [_hive] database.
-class HiveNotifier<T extends Object?, S extends Object?>
-    extends StateNotifier<T> implements HiveNotifierInterface<T, S> {
+class HiveNotifier<T extends Object, S extends Object> extends StateNotifier<T>
+    implements HiveNotifierInterface<T, S> {
   /// The notifier that returns a default value from the [_hive] database.
   HiveNotifier(
     this._hive, {
     required final this.key,
-    required final this.converter,
+    required final this.toJson,
+    required final this.fromJson,
     required final this.initialValue,
     final T? Function(T)? onValue,
   }) : super(
@@ -46,7 +48,7 @@ class HiveNotifier<T extends Object?, S extends Object?>
             if (_hive.containsKey(key)) {
               final S? $value = _hive.get(key);
               if ($value != null) {
-                value = converter.fromJson($value);
+                value = fromJson($value);
               }
             }
             return onValue?.call(value) ?? value;
@@ -60,13 +62,16 @@ class HiveNotifier<T extends Object?, S extends Object?>
   final String key;
 
   @override
-  final JsonConverter<T, S> converter;
+  final S Function(T value) toJson;
+
+  @override
+  final T Function(S value) fromJson;
 
   /// The default value of this notifier.
   final T initialValue;
 
   @override
-  Future<void> save() => _hive.put(key, converter.toJson(state));
+  Future<void> save() => _hive.put(key, toJson(state));
 
   @override
   Future<void> delete() async {
@@ -103,21 +108,82 @@ class HiveNotifier<T extends Object?, S extends Object?>
 ///
 /// Can also have a nullable [state].
 class HiveOptionalNotifier<T extends Object?, S extends Object?>
-    extends HiveNotifier<T?, S> {
-  /// The notifier that automatically saves its [state] to the [_hive] database.
-  ///
-  /// Can also have a nullable [state].
+    extends StateNotifier<T?> implements HiveNotifierInterface<T?, S?> {
+  /// The notifier that returns a default value from the [_hive] database.
   HiveOptionalNotifier(
-    super._, {
-    required final super.key,
-    required final super.converter,
-    final super.initialValue,
-    final super.onValue,
-  });
+    this._hive, {
+    required final this.key,
+    required final this.toJson,
+    required final this.fromJson,
+    required final this.initialValue,
+    final T? Function(T?)? onValue,
+  }) : super(
+          () {
+            T? value = initialValue;
+            if (_hive.containsKey(key)) {
+              final S? $value = _hive.get(key);
+              if ($value != null) {
+                value = fromJson($value);
+              }
+            }
+            return onValue != null ? onValue(value) : value;
+          }(),
+        );
+
+  /// The reference to the [Hive] database.
+  final Box<S> _hive;
+
+  @override
+  final String key;
+
+  @override
+  final S? Function(T? value) toJson;
+
+  @override
+  final T? Function(S? value) fromJson;
+
+  /// The default value of this notifier.
+  final T initialValue;
+
+  @override
+  Future<void> save() {
+    final S? $state = toJson(state);
+    return $state == null ? _hive.delete(key) : _hive.put(key, $state);
+  }
+
+  @override
+  Future<void> delete() async {
+    try {
+      super.state = initialValue;
+    } finally {
+      await _hive.delete(key);
+    }
+  }
+
+  @override
+  set state(final T? state) {
+    try {
+      super.state = state;
+    } finally {
+      save();
+    }
+  }
+
+  @override
+  T? get state => super.state;
+
+  @override
+  Future<void> setStateAsync(final T? state) async {
+    try {
+      super.state = state;
+    } finally {
+      await save();
+    }
+  }
 }
 
 /// The notifier that automatically saves its [state] to the [_hive] database.
-class HiveIterableNotifier<T extends Object?, S extends Object?>
+class HiveIterableNotifier<T extends Object, S extends Object>
     extends HiveNotifier<Iterable<T>, S> {
   /// The notifier that automatically saves its [state] to the [_hive] database.
   ///
@@ -125,10 +191,11 @@ class HiveIterableNotifier<T extends Object?, S extends Object?>
   HiveIterableNotifier(
     super._, {
     required final super.key,
-    required final super.converter,
-    required final super.initialValue,
+    required final super.toJson,
+    required final super.fromJson,
+    final Iterable<T>? initialValue,
     final super.onValue,
-  });
+  }) : super(initialValue: initialValue ?? <T>[]);
 
   /// Add an [item] to this notifier.
   Future<void> add(final T item) => setStateAsync(<T>[...state, item]);
@@ -141,6 +208,12 @@ class HiveIterableNotifier<T extends Object?, S extends Object?>
   Future<void> remove(final T item) => setStateAsync(<T>[
         for (final T $item in state)
           if ($item != item) $item
+      ]);
+
+  /// Remove all [items] from this notifier.
+  Future<void> removeAll(final Iterable<T> items) => setStateAsync(<T>[
+        for (final T item in state)
+          if (!items.contains(item)) item
       ]);
 
   /// Remove everything from this notifier.

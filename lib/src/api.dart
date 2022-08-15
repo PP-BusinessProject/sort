@@ -6,22 +6,19 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:json_converters_lite/json_converters_lite.dart';
 import 'package:meta/meta.dart';
-import 'package:riverpod/riverpod.dart';
 
 import 'utils/logger.dart';
 
-final Provider<SortAPI> sortApiProvider = Provider<SortAPI>(
-  (final _) => SortAPI._(
-    BaseOptions(
-      baseUrl: 'https://sort-api.herokuapp.com',
-      validateStatus: (final int? statusCode) => statusCode != null,
-      contentType: 'application/json',
-      connectTimeout: const Duration(seconds: 30).inMilliseconds,
-      sendTimeout: const Duration(seconds: 30).inMilliseconds,
-      receiveTimeout: const Duration(seconds: 30).inMilliseconds,
-      maxRedirects: 0,
-      receiveDataWhenStatusError: true,
-    ),
+final SortAPI sortApi = SortAPI._(
+  BaseOptions(
+    baseUrl: 'https://sort-api.herokuapp.com',
+    validateStatus: (final int? statusCode) => statusCode != null,
+    contentType: 'application/json',
+    connectTimeout: const Duration(seconds: 30).inMilliseconds,
+    sendTimeout: const Duration(seconds: 30).inMilliseconds,
+    receiveTimeout: const Duration(seconds: 30).inMilliseconds,
+    maxRedirects: 0,
+    receiveDataWhenStatusError: true,
   ),
 );
 
@@ -45,9 +42,9 @@ class SortAPI {
     return int.parse(response.data!);
   }
 
-  Stream<StreamEvent<T, V>> getStream<T extends Object, V extends Object>(
+  Stream<StreamEvent<T>> getStream<T extends Object?>(
     final String path, {
-    final JsonConverter<T, V>? converter,
+    final T Function(Object? value)? fromJson,
     final Map<String, Object?>? parameters,
     final bool suppress = false,
   }) async* {
@@ -65,9 +62,9 @@ class SortAPI {
         );
         if (response.data != null) {
           await for (final Uint8List data in response.data!.stream) {
-            yield StreamEvent<T, V>.fromJson(
+            yield StreamEvent<T>.fromJson(
               String.fromCharCodes(data),
-              converter: converter,
+              fromJson: fromJson,
             );
           }
         }
@@ -83,76 +80,58 @@ class SortAPI {
     }
   }
 
-  Future<T> get<T extends Object, V extends Object>(
+  Future<T> get<T extends Object?>(
     final String path, {
-    final JsonConverter<T, V>? converter,
-    final V Function(Object? value)? cast,
+    final T Function(Object? value)? fromJson,
     final Map<String, Object?>? parameters,
   }) async {
     final Response<Object?> response =
         await _dio.get<Object?>(path, queryParameters: parameters);
-    return converter != null
-        ? converter
-            .fromJson(cast != null ? cast(response.data) : response.data! as V)
-        : response.data! as T;
+    return fromJson != null ? fromJson(response.data) : response.data as T;
   }
 
-  Future<Iterable<T>> post<T extends Object>(
+  Future<T?> post<T extends Object?>(
     final String path,
-    final Iterable<T> value,
-    final JsonConverter<T, Map<String, Object?>> converter, {
+    final T value, {
+    required final Object? Function(T value) toJson,
+    final T Function(Object? value)? fromJson,
     final bool returning = true,
   }) async {
-    final Response<Iterable<Object?>?> response =
-        await _dio.post<Iterable<Object?>?>(
+    final Response<Object?> response = await _dio.post<Object?>(
       returning ? (path.endsWith('/return') ? path : '$path/return') : path,
-      data: IterableConverter<T, Map<String, Object?>>(converter)
-          .toJson(value)
-          .toList(growable: false),
+      data: toJson(value),
     );
-    final Iterable<Object?>? data = response.data;
-    return data != null
-        ? IterableConverter<T, Map<String, Object?>>(converter)
-            .fromJson(data.cast<Map<String, Object?>>())
-        : <T>[];
+    final Object? data = response.data;
+    return data != null && fromJson != null ? fromJson(data) : null;
   }
 
-  Future<Iterable<T>> put<T extends Object>(
+  Future<T?> put<T extends Object?>(
     final String path,
-    final Iterable<T> value,
-    final JsonConverter<T, Map<String, Object?>> converter, {
+    final T value, {
+    required final Object? Function(T value) toJson,
+    final T Function(Object? value)? fromJson,
     final bool returning = true,
   }) async {
-    final Response<Iterable<Object?>?> response =
-        await _dio.put<Iterable<Object?>?>(
+    final Response<Object?> response = await _dio.put<Object?>(
       returning ? (path.endsWith('/return') ? path : '$path/return') : path,
-      data: IterableConverter<T, Map<String, Object?>>(converter)
-          .toJson(value)
-          .toList(growable: false),
+      data: toJson(value),
     );
-    final Iterable<Object?>? data = response.data;
-    return data != null
-        ? IterableConverter<T, Map<String, Object?>>(converter)
-            .fromJson(data.cast<Map<String, Object?>>())
-        : <T>[];
+    final Object? data = response.data;
+    return data != null && fromJson != null ? fromJson(data) : null;
   }
 
-  Future<Iterable<T>> delete<T extends Object>(
+  Future<T?> delete<T extends Object>(
     final String path, {
-    final JsonConverter<T, Map<String, Object?>>? converter,
+    final T Function(Object? value)? fromJson,
     final Map<String, Object?>? parameters,
     final bool returning = true,
   }) async {
-    final Response<Iterable<Object?>?> response =
-        await _dio.delete<Iterable<Object?>?>(
+    final Response<Object?> response = await _dio.delete<Object?>(
       returning ? (path.endsWith('/return') ? path : '$path/return') : path,
       queryParameters: parameters,
     );
-    final Iterable<Object?>? data = response.data;
-    return data != null && converter != null
-        ? IterableConverter<T, Map<String, Object?>>(converter)
-            .fromJson(data.cast<Map<String, Object?>>())
-        : <T>[];
+    final Object? data = response.data;
+    return data != null && fromJson != null ? fromJson(data) : null;
   }
 }
 
@@ -174,79 +153,49 @@ enum StreamEventType {
 /// The event on [SortAPI.getStream].
 @sealed
 @immutable
-class StreamEvent<T extends Object, V extends Object> {
+class StreamEvent<T extends Object?> {
   /// The event on [SortAPI.getStream].
-  const StreamEvent({
-    required final this.type,
+  const StreamEvent._({
+    required final this.prevValue,
     required final this.value,
     required final this.timestamp,
-    final this.converter,
   });
 
-  /// The type of this event.
-  final StreamEventType type;
+  /// The previous value of this event.
+  final T prevValue;
 
   /// The value of this event.
-  final Iterable<T> value;
-
-  /// The converter of the [value] of this event.
-  final JsonConverter<T, V>? converter;
+  final T value;
 
   /// The timestamp of this event.
   final DateTime timestamp;
 
-  /// Convert this model to map with string keys.
-  Map<String, Object?> toMap() => <String, Object?>{
-        'type': const EnumConverter(StreamEventType.values).toJson(type),
-        'value': converter != null
-            ? IterableConverter<T, V>(converter!).toJson(value)
-            : value,
-        'timestamp': dateTimeConverter.toJson(timestamp),
-      };
-
   /// Convert the map with string keys to this model.
   factory StreamEvent.fromMap(
     final Map<String, Object?> map, {
-    final JsonConverter<T, V>? converter,
+    final T Function(Object? value)? fromJson,
   }) =>
-      StreamEvent<T, V>(
-        type: const EnumConverter(StreamEventType.values)
-            .fromJson(map['type']! as String),
-        value: converter != null
-            ? IterableConverter<T, V>(converter)
-                .fromJson((map['value']! as Iterable<Object?>).cast<V>())
-            : (map['value']! as Iterable<Object?>).cast<T>(),
-        converter: converter,
+      StreamEvent<T>._(
+        prevValue: fromJson != null
+            ? fromJson(map['prev_value'])
+            : map['prev_value'] as T,
+        value: fromJson != null ? fromJson(map['value']) : map['value'] as T,
         timestamp: dateTimeConverter.fromJson(map['timestamp']! as String),
       );
-
-  /// Convert this model to a json string.
-  String toJson() => json.encode(toMap());
 
   /// Convert the json string to this model.
   factory StreamEvent.fromJson(
     final String source, {
-    final JsonConverter<T, V>? converter,
+    final T Function(Object? value)? fromJson,
   }) =>
-      StreamEvent<T, V>.fromMap(
+      StreamEvent<T>.fromMap(
         json.decode(source)! as Map<String, Object?>,
-        converter: converter,
+        fromJson: fromJson,
       );
 
   @override
-  bool operator ==(final Object other) =>
-      identical(this, other) ||
-      other is StreamEvent &&
-          other.type == type &&
-          other.value == value &&
-          other.timestamp == timestamp;
-
-  @override
-  int get hashCode => type.hashCode ^ value.hashCode ^ timestamp.hashCode;
-
-  @override
-  String toString() =>
-      'StreamEvent(type: $type, value: $value, timestamp: $timestamp)';
+  String toString() => 'StreamEvent(prevValue: $prevValue, value: $value, '
+      'timestamp: $timestamp)';
 }
 
 class SortAPIException extends DioError {

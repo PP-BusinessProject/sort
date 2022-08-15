@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:json_converters_lite/json_converters_lite.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -24,15 +24,12 @@ import '../providers/model_providers.dart';
 import '../styles.dart';
 
 /// The screen for a user to fill in his personal data.
-class RegistrationScreen extends HookConsumerWidget {
+class ProfileScreen extends HookConsumerWidget {
   /// The screen for a user to fill in his personal data.
-  const RegistrationScreen({final super.key});
+  const ProfileScreen({final super.key});
 
   /// The padding of the main content on this screen.
-  static const EdgeInsets contentPadding = EdgeInsets.symmetric(
-    horizontal: 24,
-    vertical: 48,
-  );
+  static const EdgeInsets contentPadding = EdgeInsets.symmetric(horizontal: 24);
 
   /// The validator for the first name and last name fields.
   static final RegExp nameRegExp = RegExp(
@@ -49,10 +46,7 @@ class RegistrationScreen extends HookConsumerWidget {
   static final StateProvider<String?> _firstNameProvider =
       StateProvider<String?>(
     (final StateProviderRef<String?> ref) => ref.watch(
-      userProvider.select(
-        (final AsyncValue<UserModel?> user) =>
-            user.valueOrNull?.firstName ?? '',
-      ),
+      userProvider.select((final UserModel? user) => user?.firstName ?? ''),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
@@ -60,18 +54,14 @@ class RegistrationScreen extends HookConsumerWidget {
   static final StateProvider<String?> _lastNameProvider =
       StateProvider<String?>(
     (final StateProviderRef<String?> ref) => ref.watch(
-      userProvider.select(
-        (final AsyncValue<UserModel?> user) => user.valueOrNull?.lastName ?? '',
-      ),
+      userProvider.select((final UserModel? user) => user?.lastName ?? ''),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
 
   static final StateProvider<String?> _emailProvider = StateProvider<String?>(
     (final StateProviderRef<String?> ref) => ref.watch(
-      userProvider.select(
-        (final AsyncValue<UserModel?> user) => user.valueOrNull?.email ?? '',
-      ),
+      userProvider.select((final UserModel? user) => user?.email ?? ''),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
@@ -79,18 +69,15 @@ class RegistrationScreen extends HookConsumerWidget {
   static final StateProvider<DateTime?> _birthdayProvider =
       StateProvider<DateTime?>(
     (final StateProviderRef<DateTime?> ref) => ref.watch(
-      userProvider.select(
-        (final AsyncValue<UserModel?> user) => user.valueOrNull?.birthday,
-      ),
+      userProvider.select((final UserModel? user) => user?.birthday),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
 
-  static final StateProvider<bool?> _genderProvider = StateProvider<bool?>(
-    (final StateProviderRef<bool?> ref) => ref.watch(
-      userProvider.select(
-        (final AsyncValue<UserModel?> user) => user.valueOrNull?.person?.gender,
-      ),
+  static final StateProvider<bool> _genderProvider = StateProvider<bool>(
+    (final StateProviderRef<bool> ref) => ref.watch(
+      userProvider
+          .select((final UserModel? user) => user?.person?.gender ?? false),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
@@ -99,8 +86,7 @@ class RegistrationScreen extends HookConsumerWidget {
       StateProvider<int>(
     (final StateProviderRef<int> ref) => ref.watch(
       userProvider.select(
-        (final AsyncValue<UserModel?> user) =>
-            user.valueOrNull?.person?.familyCount ?? 1,
+        (final UserModel? user) => user?.person?.familyCount ?? 1,
       ),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
@@ -111,31 +97,31 @@ class RegistrationScreen extends HookConsumerWidget {
 
   static final Provider<bool> _registrationValid = Provider<bool>(
     (final ProviderRef<bool> ref) {
-      final UserModel? user =
-          ref.watch(userProvider.select((final _) => _.valueOrNull));
-      final UserModel newUser = ref.watch(_newUser);
+      final UserModel? user = ref.watch(userProvider);
       return ref.watch($phoneNumberProvider.select((final _) => _ != null)) &&
           ref.watch(
             _firstNameProvider.select((final _) => _?.isNotEmpty ?? false),
           ) &&
           ref.watch(_birthdayProvider.select((final _) => _ != null)) &&
-          ref.watch(_genderProvider.select((final _) => _ != null)) &&
-          (user != null && user != newUser || ref.watch(_privacyPolicy));
+          ((user != null && user != ref.watch(_newUser)) ||
+              ref.watch(_privacyPolicy));
     },
     dependencies: <ProviderOrFamily>[
-      userProvider,
       $phoneNumberProvider,
+      userProvider,
       _firstNameProvider,
       _birthdayProvider,
-      _genderProvider,
       _privacyPolicy,
-      _newUser
+      _newUser,
     ],
   );
 
-  static final Provider<UserModel> _newUser = Provider<UserModel>(
-    (final ProviderRef<UserModel> ref) {
-      final int phoneNumber = ref.watch($phoneNumberProvider)!;
+  static final Provider<UserModel?> _newUser = Provider<UserModel?>(
+    (final ProviderRef<UserModel?> ref) {
+      final int? phoneNumber = ref.watch($phoneNumberProvider);
+      if (phoneNumber == null) {
+        return null;
+      }
       final String firstName = ref.watch(_firstNameProvider)!;
       final String? lastName = ref.watch(
         _lastNameProvider.select(
@@ -157,34 +143,29 @@ class RegistrationScreen extends HookConsumerWidget {
         ),
       );
 
-      final UserModel? user =
-          ref.watch(userProvider.select((final _) => _.valueOrNull));
-      return user != null
-          ? user.copyWith(
-              phoneNumber: phoneNumber,
-              firstName: firstName,
-              lastName: lastName,
-              email: email,
-              birthday: birthday,
-              person: user.person
-                      ?.copyWith(gender: gender, familyCount: familyCount) ??
-                  PersonModel(
-                    gender: gender,
-                    familyCount: familyCount,
-                  ),
-            )
-          : UserModel(
-              phoneNumber: phoneNumber,
-              firstName: firstName,
-              lastName: lastName,
-              email: email,
-              birthday: birthday,
-              person: PersonModel(gender: gender, familyCount: familyCount),
-            );
+      final UserModel? user = ref.watch(userProvider);
+      return user?.copyWith(
+            phoneNumber: phoneNumber,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            birthday: birthday,
+            person: user.person
+                    ?.copyWith(gender: gender, familyCount: familyCount) ??
+                PersonModel(gender: gender, familyCount: familyCount),
+          ) ??
+          UserModel(
+            phoneNumber: phoneNumber,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            birthday: birthday,
+            person: PersonModel(gender: gender, familyCount: familyCount),
+          );
     },
     dependencies: <ProviderOrFamily>[
-      userProvider,
       $phoneNumberProvider,
+      userProvider,
       _firstNameProvider,
       _lastNameProvider,
       _emailProvider,
@@ -211,77 +192,111 @@ class RegistrationScreen extends HookConsumerWidget {
       text: ref.read(_emailProvider),
     );
     final TextEditingController birthdayController = useTextEditingController(
-      text: ref.read(_birthdayProvider)?.toIso8601String(),
+      text: ref.read(_birthdayProvider)?.toIso8601String().split('T').first,
+    );
+    useMemoized(
+      () => ref
+        ..refresh(_firstNameProvider)
+        ..refresh(_lastNameProvider)
+        ..refresh(_emailProvider)
+        ..refresh(_birthdayProvider)
+        ..refresh(_genderProvider)
+        ..refresh(_numberOfFamilyMembersProvider),
     );
     ref
       ..listen<DateTime?>(
         _birthdayProvider,
-        (final _, final DateTime? birthday) =>
-            birthdayController.text = birthday?.toIso8601String() ?? '',
+        (final _, final DateTime? birthday) => birthdayController.text =
+            birthday?.toIso8601String().split('T').first ?? '',
       )
-      ..listen<UserModel?>(userProvider.select((final _) => _.valueOrNull),
+      ..listen<UserModel?>(userProvider,
           (final UserModel? prevUser, final UserModel? user) {
-        if (prevUser == null || user == null) {
-          return;
+        if (prevUser?.firstName != user?.firstName) {
+          ref.read(_firstNameProvider.notifier).state = user?.firstName;
+          firstNameController.text = user?.firstName ?? '';
         }
-        if (prevUser.firstName != user.firstName) {
-          ref.read(_firstNameProvider.notifier).state = user.firstName;
-          firstNameController.text = user.firstName;
+        if (prevUser?.lastName != user?.lastName) {
+          ref.read(_lastNameProvider.notifier).state = user?.lastName;
+          lastNameController.text = user?.lastName ?? '';
         }
-        if (prevUser.lastName != user.lastName) {
-          ref.read(_lastNameProvider.notifier).state = user.lastName;
-          lastNameController.text = user.lastName ?? '';
+        if (prevUser?.email != user?.email) {
+          ref.read(_emailProvider.notifier).state = user?.email;
+          emailController.text = user?.email ?? '';
         }
-        if (prevUser.email != user.email) {
-          ref.read(_emailProvider.notifier).state = user.email;
-          emailController.text = user.email ?? '';
+        if (prevUser?.birthday != user?.birthday) {
+          ref.read(_birthdayProvider.notifier).state = user?.birthday;
+          birthdayController.text =
+              user?.birthday?.toIso8601String().split('T').first ?? '';
         }
-        if (prevUser.birthday != user.birthday) {
-          ref.read(_birthdayProvider.notifier).state = user.birthday;
+        if (prevUser?.person?.gender != user?.person?.gender) {
+          ref.read(_genderProvider.notifier).state =
+              user?.person?.gender ?? false;
         }
-        if (prevUser.person?.gender != user.person?.gender) {
-          ref.read(_genderProvider.notifier).state = user.person?.gender;
-        }
-        if (prevUser.person?.familyCount != user.person?.familyCount) {
+        if (prevUser?.person?.familyCount != user?.person?.familyCount) {
           ref.read(_numberOfFamilyMembersProvider.notifier).state =
-              user.person?.familyCount ?? 1;
+              user?.person?.familyCount ?? 1;
         }
       });
 
     FutureOr<void> process() async {
       final StateController<bool> isLoading =
           ref.read(_isRegistrationLoading.notifier)..state = true;
-      final UserModel? user = ref.read(userProvider).valueOrNull;
+      final UserModel? user = ref.read(userProvider);
       try {
-        final UserModel newUser = ref.read(_newUser);
-        final SortAPI sortApi = ref.read(sortApiProvider);
-        if (user != null) {
-          await sortApi.put('/users', <UserModel>[newUser], userConverter);
-          // await NDialog(
-          //   title: Text($.alert.error.title),
-          //   content: Text($.alert.error.body),
-          //   actions: <Widget>[
-          //     TextButton(
-          //       onPressed: navigator.maybePop,
-          //       child: Text($.alert.error.approve),
-          //     )
-          //   ],
-          // ).show<void>(context);
-        } else {
-          await sortApi.post('/users', <UserModel>[newUser], userConverter);
+        final UserModel newUser = ref.read(_newUser)!;
+        final Iterable<UserModel>? response = await (user != null
+            ? sortApi.put
+            : sortApi.post)<Iterable<UserModel>>(
+          '/users',
+          <UserModel>[newUser],
+          toJson: (final Iterable<UserModel> users) =>
+              const IterableConverter(userConverter)
+                  .toJson(users)
+                  .toList(growable: false),
+          fromJson: (final Object? value) =>
+              const IterableConverter(userConverter).fromJson(
+            (value! as Iterable<Object?>).cast<Map<String, Object?>>(),
+          ),
+        );
+        if (!isMounted() || response == null || response.isEmpty) {
+          throw Exception('User response is empty.');
         }
-      } on SortAPIException catch (_) {
+        ref.read(userProvider.notifier).state = response.first;
+        // ignore: use_build_context_synchronously
+        await NDialog(
+          title: Text($.alert.success.title),
+          content: Text($.alert.success.body),
+          actions: <Widget>[
+            TextButton(
+              style: theme.textButtonTheme.style?.copyWith(
+                shape: MaterialStateProperty.all<OutlinedBorder?>(
+                  const RoundedRectangleBorder(),
+                ),
+              ),
+              onPressed: navigator.maybePop,
+              child: Text($.alert.success.approve),
+            )
+          ],
+        ).show<void>(context);
+      } on Exception catch (_) {
         try {
-          await NDialog(
-            title: Text($.alert.error.title),
-            content: Text($.alert.error.body),
-            actions: <Widget>[
-              TextButton(
-                onPressed: navigator.maybePop,
-                child: Text($.alert.error.approve),
-              )
-            ],
-          ).show<void>(context);
+          if (isMounted()) {
+            await NDialog(
+              title: Text($.alert.error.title),
+              content: Text($.alert.error.body),
+              actions: <Widget>[
+                TextButton(
+                  style: theme.textButtonTheme.style?.copyWith(
+                    shape: MaterialStateProperty.all<OutlinedBorder?>(
+                      const RoundedRectangleBorder(),
+                    ),
+                  ),
+                  onPressed: navigator.maybePop,
+                  child: Text($.alert.error.approve),
+                )
+              ],
+            ).show<void>(context);
+          }
         } finally {
           rethrow;
         }
@@ -290,8 +305,15 @@ class RegistrationScreen extends HookConsumerWidget {
       }
     }
 
-    return Scaffold(
-      appBar: AppBar(
+    return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
+      navigationBar: CupertinoNavigationBar(
+        heroTag: 'profile_screen',
+        transitionBetweenRoutes: false,
+        border: const Border(
+          bottom: BorderSide(width: 0, color: Color(0x33000000)),
+        ),
+        padding: const EdgeInsetsDirectional.only(start: 4),
         leading: CupertinoNavigationBarBackButton(
           previousPageTitle: $.misc.prevPage,
           color: theme.colorScheme.onPrimary,
@@ -300,6 +322,11 @@ class RegistrationScreen extends HookConsumerWidget {
             title: Text($.alert.exitRegister.title),
             actions: <Widget>[
               TextButton(
+                style: theme.textButtonTheme.style?.copyWith(
+                  shape: MaterialStateProperty.all<OutlinedBorder?>(
+                    const RoundedRectangleBorder(),
+                  ),
+                ),
                 onPressed: () async {
                   try {
                     await FirebaseAuth.instance.signOut();
@@ -307,23 +334,42 @@ class RegistrationScreen extends HookConsumerWidget {
                     await navigator.maybePop();
                   }
                 },
-                child: Text($.alert.exitRegister.approve),
+                child: Text(
+                  $.alert.exitRegister.approve,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                ),
               ),
               TextButton(
+                style: theme.textButtonTheme.style?.copyWith(
+                  shape: MaterialStateProperty.all<OutlinedBorder?>(
+                    const RoundedRectangleBorder(),
+                  ),
+                ),
                 onPressed: navigator.maybePop,
-                child: Text($.alert.exitRegister.deny),
+                child: Text(
+                  $.alert.exitRegister.deny,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.error,
+                  ),
+                ),
               ),
             ],
-          ).show<void>(context, transitionType: DialogTransitionType.Bubble),
+          ).show<void>(
+            context,
+            transitionType: DialogTransitionType.Bubble,
+          ),
         ),
       ),
-      body: Center(
+      child: Center(
         child: ListView(
           shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(),
           padding: contentPadding,
           cacheExtent: double.infinity,
           children: <Widget>[
+            const CupertinoNavigationBar(border: Border()),
             Consumer(
               builder: (final _, final WidgetRef ref, final Widget? child) =>
                   CupertinoTextFormFieldRow(
@@ -337,7 +383,7 @@ class RegistrationScreen extends HookConsumerWidget {
                 ),
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: theme.colorScheme.shadow),
+                    bottom: BorderSide(color: theme.colorScheme.surfaceTint),
                   ),
                 ),
               ),
@@ -349,7 +395,7 @@ class RegistrationScreen extends HookConsumerWidget {
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: theme.colorScheme.shadow),
+                  bottom: BorderSide(color: theme.colorScheme.surfaceTint),
                 ),
               ),
               inputFormatters: <TextInputFormatter>[
@@ -382,7 +428,7 @@ class RegistrationScreen extends HookConsumerWidget {
               padding: EdgeInsets.zero,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: theme.colorScheme.shadow),
+                  bottom: BorderSide(color: theme.colorScheme.surfaceTint),
                 ),
               ),
               inputFormatters: <TextInputFormatter>[
@@ -413,7 +459,7 @@ class RegistrationScreen extends HookConsumerWidget {
               ],
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: theme.colorScheme.shadow),
+                  bottom: BorderSide(color: theme.colorScheme.surfaceTint),
                 ),
               ),
               autovalidateMode: AutovalidateMode.always,
@@ -437,7 +483,7 @@ class RegistrationScreen extends HookConsumerWidget {
               placeholder: $.profile.birthday,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(color: theme.colorScheme.shadow),
+                  bottom: BorderSide(color: theme.colorScheme.surfaceTint),
                 ),
               ),
               onTap: () => const DialogBackground(
@@ -451,9 +497,8 @@ class RegistrationScreen extends HookConsumerWidget {
             const SizedBox(height: 48),
             Consumer(
               builder: (final _, final WidgetRef ref, final Widget? child) {
-                final bool userExists = ref.watch(
-                  userProvider.select((final _) => _.valueOrNull != null),
-                );
+                final bool userExists =
+                    ref.watch(userProvider.select((final _) => _ != null));
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -461,7 +506,7 @@ class RegistrationScreen extends HookConsumerWidget {
                       const _RegistrationPrivacyPolicy(),
                       const SizedBox(height: 48),
                     ],
-                    ElevatedButton(
+                    ElevatedButton.icon(
                       onPressed: ref.watch(_isRegistrationLoading) ||
                               !ref.watch(_registrationValid)
                           ? null
@@ -469,9 +514,12 @@ class RegistrationScreen extends HookConsumerWidget {
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 0),
                       ),
-                      child: Text(
+                      icon: ref.watch(_isRegistrationLoading)
+                          ? const CircularProgressIndicator.adaptive()
+                          : const SizedBox.shrink(),
+                      label: Text(
                         userExists ? $.profile.update : $.profile.register,
-                        style: theme.textTheme.headlineMedium,
+                        style: theme.textTheme.headlineSmall,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -479,7 +527,8 @@ class RegistrationScreen extends HookConsumerWidget {
                   ],
                 );
               },
-            )
+            ),
+            const SizedBox(height: 48),
           ],
         ),
       ),
@@ -500,9 +549,9 @@ class _RegistrationBirthdayDialog extends HookConsumerWidget {
     final I18N $ = ref.watch(i18nProvider)();
     final bool Function() isMounted = useIsMounted();
     final ObjectRef<DateTime?> selection =
-        useRef<DateTime?>(ref.read(RegistrationScreen._birthdayProvider));
+        useRef<DateTime?>(ref.read(ProfileScreen._birthdayProvider));
     ref.listen<DateTime?>(
-      RegistrationScreen._birthdayProvider,
+      ProfileScreen._birthdayProvider,
       (final _, final DateTime? birthday) => selection.value = birthday,
     );
     final DateTime serverTime = useMemoized(() => ref.read(serverTimeProvider));
@@ -540,7 +589,7 @@ class _RegistrationBirthdayDialog extends HookConsumerWidget {
             onPressed: ref.watch(_isSelected)
                 ? () async {
                     if (isMounted()) {
-                      (ref.read(RegistrationScreen._birthdayProvider.notifier))
+                      (ref.read(ProfileScreen._birthdayProvider.notifier))
                           .state = selection.value;
                     }
                     await navigator.maybePop();
@@ -564,64 +613,68 @@ class _RegistrationGender extends HookConsumerWidget {
     final I18N $ = ref.watch(i18nProvider)();
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<bool?> gender =
-        useState<bool?>(ref.read(RegistrationScreen._genderProvider));
+        useState<bool?>(ref.read(ProfileScreen._genderProvider));
     ref.listen<bool?>(
-      RegistrationScreen._genderProvider,
+      ProfileScreen._genderProvider,
       (final _, final bool? $gender) => gender.value = $gender,
     );
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          $.profile.gender,
-          style: theme.textTheme.titleLarge,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: 12),
-        Flexible(
-          child: Row(
-            children: <Widget>[
-              Flexible(
-                child: Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: Checkbox(
-                        value: !(gender.value ?? true),
-                        onChanged: (final _) => isMounted()
-                            ? (ref.read(
-                                RegistrationScreen._genderProvider.notifier,
-                              )).state = gender.value = false
-                            : null,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    ),
-                    Text($.profile.female),
-                    const SizedBox(width: 32),
-                    Flexible(
-                      child: Checkbox(
-                        value: gender.value ?? false,
-                        onChanged: (final _) => isMounted()
-                            ? (ref.read(
-                                RegistrationScreen._genderProvider.notifier,
-                              )).state = gender.value = true
-                            : null,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    ),
-                    Text($.profile.male),
-                  ],
-                ),
-              ),
-            ],
+    return Material(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            $.profile.gender,
+            style: theme.textTheme.titleLarge,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-        ),
-      ],
+          const SizedBox(height: 12),
+          Flexible(
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        child: Checkbox(
+                          activeColor: theme.colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          value: !(gender.value ?? true),
+                          onChanged: (final _) => isMounted()
+                              ? (ref.read(
+                                  ProfileScreen._genderProvider.notifier,
+                                )).state = gender.value = false
+                              : null,
+                        ),
+                      ),
+                      Text($.profile.female),
+                      const SizedBox(width: 32),
+                      Flexible(
+                        child: Checkbox(
+                          activeColor: theme.colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          value: gender.value ?? false,
+                          onChanged: (final _) => isMounted()
+                              ? (ref.read(
+                                  ProfileScreen._genderProvider.notifier,
+                                )).state = gender.value = true
+                              : null,
+                        ),
+                      ),
+                      Text($.profile.male),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -635,10 +688,10 @@ class _RegistrationNumberOfFamilyMembers extends HookConsumerWidget {
     final I18N $ = ref.watch(i18nProvider)();
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<int> $numberOfFamilyMembers = useState<int>(
-      ref.read(RegistrationScreen._numberOfFamilyMembersProvider),
+      ref.read(ProfileScreen._numberOfFamilyMembersProvider),
     );
     ref.listen(
-      RegistrationScreen._numberOfFamilyMembersProvider,
+      ProfileScreen._numberOfFamilyMembersProvider,
       (final _, final int numberOfFamilyMembers) =>
           $numberOfFamilyMembers.value = numberOfFamilyMembers,
     );
@@ -665,7 +718,7 @@ class _RegistrationNumberOfFamilyMembers extends HookConsumerWidget {
                 $numberOfFamilyMembers.value = (value! as double).toInt(),
             onChangeEnd: (final Object? value) => isMounted()
                 ? (ref.read(
-                    RegistrationScreen._numberOfFamilyMembersProvider.notifier,
+                    ProfileScreen._numberOfFamilyMembersProvider.notifier,
                   )).state = (value! as double).toInt()
                 : null,
           ),
@@ -684,47 +737,49 @@ class _RegistrationPrivacyPolicy extends HookConsumerWidget {
     final I18N $ = ref.watch(i18nProvider)();
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<bool> privacyPolicy =
-        useState<bool>(ref.read(RegistrationScreen._privacyPolicy));
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Flexible(
-          child: Row(
-            children: <Widget>[
-              Checkbox(
-                value: privacyPolicy.value,
-                onChanged: (final _) => isMounted()
-                    ? (ref.read(
-                        RegistrationScreen._privacyPolicy.notifier,
-                      )).state = privacyPolicy.value = !privacyPolicy.value
-                    : null,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              Flexible(
-                child: Text.rich(
-                  TextSpan(
-                    text: '${$.profile.privacyPolicyAgreement} ',
-                    children: <InlineSpan>[
-                      TextSpan(
-                        text: $.profile.privacyPolicy,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.colorScheme.primary,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()..onTap = () {},
-                      ),
-                    ],
+        useState<bool>(ref.read(ProfileScreen._privacyPolicy));
+    return Material(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Flexible(
+            child: Row(
+              children: <Widget>[
+                Checkbox(
+                  value: privacyPolicy.value,
+                  onChanged: (final _) => isMounted()
+                      ? (ref.read(
+                          ProfileScreen._privacyPolicy.notifier,
+                        )).state = privacyPolicy.value = !privacyPolicy.value
+                      : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  maxLines: 3,
                 ),
-              ),
-            ],
+                Flexible(
+                  child: Text.rich(
+                    TextSpan(
+                      text: '${$.profile.privacyPolicyAgreement} ',
+                      children: <InlineSpan>[
+                        TextSpan(
+                          text: $.profile.privacyPolicy,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                            decoration: TextDecoration.underline,
+                          ),
+                          recognizer: TapGestureRecognizer()..onTap = () {},
+                        ),
+                      ],
+                    ),
+                    maxLines: 3,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

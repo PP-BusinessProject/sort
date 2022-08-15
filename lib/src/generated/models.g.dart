@@ -138,6 +138,43 @@ class BankConverter implements JsonConverter<BankModel, Map<String, Object?>> {
   Map<String, Object?> toJson(final BankModel value) => value.toMap();
 }
 
+/// The optional converter of the [ImageModel].
+const OptionalImageConverter optionalImageConverter =
+    OptionalImageConverter._();
+
+/// The optional converter of the [ImageModel].
+@sealed
+@immutable
+class OptionalImageConverter
+    implements JsonConverter<ImageModel?, Map<String, Object?>?> {
+  const OptionalImageConverter._();
+
+  @override
+  ImageModel? fromJson(final Map<String, Object?>? value) =>
+      value == null ? null : ImageModel.fromMap(value);
+
+  @override
+  Map<String, Object?>? toJson(final ImageModel? value) => value?.toMap();
+}
+
+/// The converter of the [ImageModel].
+const ImageConverter imageConverter = ImageConverter._();
+
+/// The converter of the [ImageModel].
+@sealed
+@immutable
+class ImageConverter
+    implements JsonConverter<ImageModel, Map<String, Object?>> {
+  const ImageConverter._();
+
+  @override
+  ImageModel fromJson(final Map<String, Object?> value) =>
+      ImageModel.fromMap(value);
+
+  @override
+  Map<String, Object?> toJson(final ImageModel value) => value.toMap();
+}
+
 /// The optional converter of the [MeasurementModel].
 const OptionalMeasurementConverter optionalMeasurementConverter =
     OptionalMeasurementConverter._();
@@ -801,6 +838,43 @@ class BonusCouponConverter
   Map<String, Object?> toJson(final BonusCouponModel value) => value.toMap();
 }
 
+/// The optional converter of the [BonusImageModel].
+const OptionalBonusImageConverter optionalBonusImageConverter =
+    OptionalBonusImageConverter._();
+
+/// The optional converter of the [BonusImageModel].
+@sealed
+@immutable
+class OptionalBonusImageConverter
+    implements JsonConverter<BonusImageModel?, Map<String, Object?>?> {
+  const OptionalBonusImageConverter._();
+
+  @override
+  BonusImageModel? fromJson(final Map<String, Object?>? value) =>
+      value == null ? null : BonusImageModel.fromMap(value);
+
+  @override
+  Map<String, Object?>? toJson(final BonusImageModel? value) => value?.toMap();
+}
+
+/// The converter of the [BonusImageModel].
+const BonusImageConverter bonusImageConverter = BonusImageConverter._();
+
+/// The converter of the [BonusImageModel].
+@sealed
+@immutable
+class BonusImageConverter
+    implements JsonConverter<BonusImageModel, Map<String, Object?>> {
+  const BonusImageConverter._();
+
+  @override
+  BonusImageModel fromJson(final Map<String, Object?> value) =>
+      BonusImageModel.fromMap(value);
+
+  @override
+  Map<String, Object?> toJson(final BonusImageModel value) => value.toMap();
+}
+
 /// The optional converter of the [BonusPriceModel].
 const OptionalBonusPriceConverter optionalBonusPriceConverter =
     OptionalBonusPriceConverter._();
@@ -1436,15 +1510,7 @@ class AddressModel implements Comparable<AddressModel> {
           other.street == street &&
           other.building == building &&
           other.appartment == appartment &&
-          other.postalCode == postalCode &&
-          const UnorderedIterableEquality<BankModel>()
-              .equals(other.banks, banks) &&
-          const UnorderedIterableEquality<CompanyModel>()
-              .equals(other.companies, companies) &&
-          const UnorderedIterableEquality<ContainerModel>()
-              .equals(other.containers, containers) &&
-          const UnorderedIterableEquality<DeliveryModel>()
-              .equals(other.deliveries, deliveries);
+          other.postalCode == postalCode;
 
   @override
   int get hashCode =>
@@ -1455,18 +1521,14 @@ class AddressModel implements Comparable<AddressModel> {
       street.hashCode ^
       building.hashCode ^
       appartment.hashCode ^
-      postalCode.hashCode ^
-      banks.hashCode ^
-      companies.hashCode ^
-      containers.hashCode ^
-      deliveries.hashCode;
+      postalCode.hashCode;
 
   @override
   String toString() =>
-      'AddressModelid: $id, country: $country, state: $state, city: $city, '
+      'AddressModel(id: $id, country: $country, state: $state, city: $city, '
       'street: $street, building: $building, appartment: $appartment, '
       'postalCode: $postalCode, banks: $banks, companies: $companies, '
-      'containers: $containers, deliveries: $deliveries';
+      'containers: $containers, deliveries: $deliveries)';
 }
 
 /// The model of a BankModel.
@@ -1571,23 +1633,128 @@ class BankModel implements Comparable<BankModel> {
       other is BankModel &&
           other.code == code &&
           other.name == name &&
-          other.addressId == addressId &&
-          other.address == address &&
-          const UnorderedIterableEquality<CompanyModel>()
-              .equals(other.companies, companies);
+          other.addressId == addressId;
 
   @override
-  int get hashCode =>
-      code.hashCode ^
-      name.hashCode ^
-      addressId.hashCode ^
-      address.hashCode ^
-      companies.hashCode;
+  int get hashCode => code.hashCode ^ name.hashCode ^ addressId.hashCode;
 
   @override
   String toString() =>
-      'BankModelcode: $code, name: $name, addressId: $addressId, '
-      'address: $address, companies: $companies';
+      'BankModel(code: $code, name: $name, addressId: $addressId, '
+      'address: $address, companies: $companies)';
+}
+
+/// The model of a ImageModel.
+@sealed
+@immutable
+class ImageModel implements Comparable<ImageModel> {
+  /// The model of a ImageModel.
+  const ImageModel({
+    required this.url,
+    this.id,
+    this.createdAt,
+    this.updatedAt,
+    this.bonuses = const Iterable<BonusImageModel>.empty(),
+  });
+
+  /// The `id` property of this [ImageModel].
+  final int? id;
+
+  /// The `url` property of this [ImageModel].
+  final String url;
+
+  /// Set the date and time when the instance was created.
+  final DateTime? createdAt;
+
+  /// Set the date and time of the last time the instance was updated.
+  final DateTime? updatedAt;
+
+  /// The `bonuses` property of this [ImageModel].
+  final Iterable<BonusImageModel> bonuses;
+
+  /// Return the copy of this model.
+  ImageModel copyWith({
+    final int? id,
+    final String? url,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
+    final Iterable<BonusImageModel>? bonuses,
+  }) =>
+      ImageModel(
+        id: id ?? this.id,
+        url: url ?? this.url,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        bonuses: bonuses ?? this.bonuses,
+      );
+
+  /// Return the copy of this model with nullable fields.
+  ImageModel copyWithNull({
+    final bool id = false,
+    final bool createdAt = false,
+    final bool updatedAt = false,
+  }) =>
+      ImageModel(
+        id: id ? null : this.id,
+        url: url,
+        createdAt: createdAt ? null : this.createdAt,
+        updatedAt: updatedAt ? null : this.updatedAt,
+        bonuses: bonuses,
+      );
+
+  /// Convert this model to map with string keys.
+  Map<String, Object?> toMap() => <String, Object?>{
+        if (id != null) 'id': id,
+        'url': url,
+        if (createdAt != null)
+          'created_at': optionalDateTimeConverter.toJson(createdAt),
+        if (updatedAt != null)
+          'updated_at': optionalDateTimeConverter.toJson(updatedAt),
+        'bonuses':
+            const IterableConverter<BonusImageModel, Map<String, Object?>>(
+          bonusImageConverter,
+        ).toJson(bonuses).toList(growable: false),
+      };
+
+  /// Convert the map with string keys to this model.
+  factory ImageModel.fromMap(final Map<String, Object?> map) => ImageModel(
+        id: map['id'] as int?,
+        url: map['url']! as String,
+        createdAt:
+            optionalDateTimeConverter.fromJson(map['created_at'] as String?),
+        updatedAt:
+            optionalDateTimeConverter.fromJson(map['updated_at'] as String?),
+        bonuses: const IterableConverter<BonusImageModel, Map<String, Object?>>(
+          bonusImageConverter,
+        ).fromJson(
+          (map['bonuses'] as Iterable<Object?>? ??
+                  const Iterable<Object?>.empty())
+              .cast<Map<String, Object?>>(),
+        ),
+      );
+
+  /// Convert this model to a json string.
+  String toJson() => json.encode(toMap());
+
+  /// Convert the json string to this model.
+  factory ImageModel.fromJson(final String source) =>
+      ImageModel.fromMap(json.decode(source)! as Map<String, Object?>);
+
+  @override
+  int compareTo(final ImageModel other) =>
+      id != null && other.id != null ? id!.compareTo(other.id!) : 0;
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) ||
+      other is ImageModel && other.id == id && other.url == url;
+
+  @override
+  int get hashCode => id.hashCode ^ url.hashCode;
+
+  @override
+  String toString() => 'ImageModel(id: $id, url: $url, createdAt: $createdAt, '
+      'updatedAt: $updatedAt, bonuses: $bonuses)';
 }
 
 /// The model of a MeasurementModel.
@@ -1712,30 +1879,16 @@ class MeasurementModel implements Comparable<MeasurementModel> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
-      other is MeasurementModel &&
-          other.id == id &&
-          other.name == name &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          const UnorderedIterableEquality<ContainerTankTypeModel>()
-              .equals(other.containerTankTypes, containerTankTypes) &&
-          const UnorderedIterableEquality<ServiceModel>()
-              .equals(other.services, services);
+      other is MeasurementModel && other.id == id && other.name == name;
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      containerTankTypes.hashCode ^
-      services.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode;
 
   @override
   String toString() =>
-      'MeasurementModelid: $id, name: $name, createdAt: $createdAt, '
+      'MeasurementModel(id: $id, name: $name, createdAt: $createdAt, '
       'updatedAt: $updatedAt, containerTankTypes: $containerTankTypes, '
-      'services: $services';
+      'services: $services)';
 }
 
 /// The model of a PriceModel.
@@ -1877,32 +2030,16 @@ class PriceModel implements Comparable<PriceModel> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
-      other is PriceModel &&
-          other.id == id &&
-          other.name == name &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          const UnorderedIterableEquality<DealModel>()
-              .equals(other.deals, deals) &&
-          const UnorderedIterableEquality<BonusPriceModel>()
-              .equals(other.bonuses, bonuses) &&
-          const UnorderedIterableEquality<ServicePriceModel>()
-              .equals(other.services, services);
+      other is PriceModel && other.id == id && other.name == name;
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      deals.hashCode ^
-      bonuses.hashCode ^
-      services.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode;
 
   @override
-  String toString() => 'PriceModelid: $id, name: $name, createdAt: $createdAt, '
+  String toString() =>
+      'PriceModel(id: $id, name: $name, createdAt: $createdAt, '
       'updatedAt: $updatedAt, deals: $deals, bonuses: $bonuses, '
-      'services: $services';
+      'services: $services)';
 }
 
 /// The model of a LocaleModel.
@@ -1997,24 +2134,15 @@ class LocaleModel implements Comparable<LocaleModel> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
-      other is LocaleModel &&
-          other.localeAlpha2 == localeAlpha2 &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          const UnorderedIterableEquality<LocaleTextModel>()
-              .equals(other.texts, texts);
+      other is LocaleModel && other.localeAlpha2 == localeAlpha2;
 
   @override
-  int get hashCode =>
-      localeAlpha2.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      texts.hashCode;
+  int get hashCode => localeAlpha2.hashCode;
 
   @override
   String toString() =>
-      'LocaleModellocaleAlpha2: $localeAlpha2, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, texts: $texts';
+      'LocaleModel(localeAlpha2: $localeAlpha2, createdAt: $createdAt, '
+      'updatedAt: $updatedAt, texts: $texts)';
 }
 
 /// The model of a TextModel.
@@ -2118,26 +2246,15 @@ class TextModel implements Comparable<TextModel> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
-      other is TextModel &&
-          other.key == key &&
-          other.text == text &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          const UnorderedIterableEquality<LocaleTextModel>()
-              .equals(other.locales, locales);
+      other is TextModel && other.key == key && other.text == text;
 
   @override
-  int get hashCode =>
-      key.hashCode ^
-      text.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      locales.hashCode;
+  int get hashCode => key.hashCode ^ text.hashCode;
 
   @override
   String toString() =>
-      'TextModelkey: $key, text: $text, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, locales: $locales';
+      'TextModel(key: $key, text: $text, createdAt: $createdAt, '
+      'updatedAt: $updatedAt, locales: $locales)';
 }
 
 /// The model of a LocaleTextModel.
@@ -2271,26 +2388,17 @@ class LocaleTextModel implements Comparable<LocaleTextModel> {
       other is LocaleTextModel &&
           other.key == key &&
           other.localeAlpha2 == localeAlpha2 &&
-          other.fallbackText == fallbackText &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.locale == locale &&
-          other.text == text;
+          other.fallbackText == fallbackText;
 
   @override
   int get hashCode =>
-      key.hashCode ^
-      localeAlpha2.hashCode ^
-      fallbackText.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      locale.hashCode ^
-      text.hashCode;
+      key.hashCode ^ localeAlpha2.hashCode ^ fallbackText.hashCode;
 
   @override
-  String toString() => 'LocaleTextModelkey: $key, localeAlpha2: $localeAlpha2, '
+  String toString() =>
+      'LocaleTextModel(key: $key, localeAlpha2: $localeAlpha2, '
       'fallbackText: $fallbackText, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, locale: $locale, text: $text';
+      'updatedAt: $updatedAt, locale: $locale, text: $text)';
 }
 
 /// The model of a SettingsModel.
@@ -2379,21 +2487,15 @@ class SettingsModel {
       identical(this, other) ||
       other is SettingsModel &&
           other.id == id &&
-          other.fallbackLocaleAlpha2 == fallbackLocaleAlpha2 &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt;
+          other.fallbackLocaleAlpha2 == fallbackLocaleAlpha2;
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      fallbackLocaleAlpha2.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode;
+  int get hashCode => id.hashCode ^ fallbackLocaleAlpha2.hashCode;
 
   @override
   String toString() =>
-      'SettingsModelid: $id, fallbackLocaleAlpha2: $fallbackLocaleAlpha2, '
-      'createdAt: $createdAt, updatedAt: $updatedAt';
+      'SettingsModel(id: $id, fallbackLocaleAlpha2: $fallbackLocaleAlpha2, '
+      'createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 /// The model of a UserModel.
@@ -2415,6 +2517,7 @@ class UserModel implements Comparable<UserModel> {
     this.company,
     this.person,
     this.group,
+    this.bonuses = const Iterable<BonusModel>.empty(),
     this.containers = const Iterable<ContainerModel>.empty(),
     this.openings = const Iterable<ContainerTankOpeningModel>.empty(),
     this.clearings = const Iterable<ContainerTankClearingModel>.empty(),
@@ -2459,6 +2562,9 @@ class UserModel implements Comparable<UserModel> {
   /// The `group` property of this [UserModel].
   final GroupModel? group;
 
+  /// The `bonuses` property of this [UserModel].
+  final Iterable<BonusModel> bonuses;
+
   /// The `containers` property of this [UserModel].
   final Iterable<ContainerModel> containers;
 
@@ -2483,6 +2589,7 @@ class UserModel implements Comparable<UserModel> {
     final CompanyModel? company,
     final PersonModel? person,
     final GroupModel? group,
+    final Iterable<BonusModel>? bonuses,
     final Iterable<ContainerModel>? containers,
     final Iterable<ContainerTankOpeningModel>? openings,
     final Iterable<ContainerTankClearingModel>? clearings,
@@ -2501,6 +2608,7 @@ class UserModel implements Comparable<UserModel> {
         company: company ?? this.company,
         person: person ?? this.person,
         group: group ?? this.group,
+        bonuses: bonuses ?? this.bonuses,
         containers: containers ?? this.containers,
         openings: openings ?? this.openings,
         clearings: clearings ?? this.clearings,
@@ -2533,6 +2641,7 @@ class UserModel implements Comparable<UserModel> {
         company: company ? null : this.company,
         person: person ? null : this.person,
         group: group ? null : this.group,
+        bonuses: bonuses,
         containers: containers,
         openings: openings,
         clearings: clearings,
@@ -2560,6 +2669,9 @@ class UserModel implements Comparable<UserModel> {
           'company': optionalCompanyConverter.toJson(company),
         if (person != null) 'person': optionalPersonConverter.toJson(person),
         if (group != null) 'group': optionalGroupConverter.toJson(group),
+        'bonuses': const IterableConverter<BonusModel, Map<String, Object?>>(
+          bonusConverter,
+        ).toJson(bonuses).toList(growable: false),
         'containers':
             const IterableConverter<ContainerModel, Map<String, Object?>>(
           containerConverter,
@@ -2602,6 +2714,13 @@ class UserModel implements Comparable<UserModel> {
             .fromJson(map['person'] as Map<String, Object?>?),
         group: optionalGroupConverter
             .fromJson(map['group'] as Map<String, Object?>?),
+        bonuses: const IterableConverter<BonusModel, Map<String, Object?>>(
+          bonusConverter,
+        ).fromJson(
+          (map['bonuses'] as Iterable<Object?>? ??
+                  const Iterable<Object?>.empty())
+              .cast<Map<String, Object?>>(),
+        ),
         containers:
             const IterableConverter<ContainerModel, Map<String, Object?>>(
           containerConverter,
@@ -2648,21 +2767,7 @@ class UserModel implements Comparable<UserModel> {
           other.lastName == lastName &&
           other.phoneNumber == phoneNumber &&
           other.email == email &&
-          other.birthday == birthday &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          const UnorderedIterableEquality<DealModel>()
-              .equals(other.deals, deals) &&
-          other.activeDeal == activeDeal &&
-          other.company == company &&
-          other.person == person &&
-          other.group == group &&
-          const UnorderedIterableEquality<ContainerModel>()
-              .equals(other.containers, containers) &&
-          const UnorderedIterableEquality<ContainerTankOpeningModel>()
-              .equals(other.openings, openings) &&
-          const UnorderedIterableEquality<ContainerTankClearingModel>()
-              .equals(other.clearings, clearings);
+          other.birthday == birthday;
 
   @override
   int get hashCode =>
@@ -2671,26 +2776,16 @@ class UserModel implements Comparable<UserModel> {
       lastName.hashCode ^
       phoneNumber.hashCode ^
       email.hashCode ^
-      birthday.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      deals.hashCode ^
-      activeDeal.hashCode ^
-      company.hashCode ^
-      person.hashCode ^
-      group.hashCode ^
-      containers.hashCode ^
-      openings.hashCode ^
-      clearings.hashCode;
+      birthday.hashCode;
 
   @override
   String toString() =>
-      'UserModelid: $id, firstName: $firstName, lastName: $lastName, '
+      'UserModel(id: $id, firstName: $firstName, lastName: $lastName, '
       'phoneNumber: $phoneNumber, email: $email, birthday: $birthday, '
       'createdAt: $createdAt, updatedAt: $updatedAt, deals: $deals, '
       'activeDeal: $activeDeal, company: $company, person: $person, '
-      'group: $group, containers: $containers, openings: $openings, '
-      'clearings: $clearings';
+      'group: $group, bonuses: $bonuses, containers: $containers, '
+      'openings: $openings, clearings: $clearings)';
 }
 
 /// The model of a CompanyModel.
@@ -2867,13 +2962,7 @@ class CompanyModel implements Comparable<CompanyModel> {
           other.addressId == addressId &&
           other.realAddressId == realAddressId &&
           other.bankCode == bankCode &&
-          other.bankAccountNumber == bankAccountNumber &&
-          other.bank == bank &&
-          other.address == address &&
-          other.realAddress == realAddress &&
-          const UnorderedIterableEquality<CompanyContactModel>()
-              .equals(other.contacts, contacts) &&
-          other.user == user;
+          other.bankAccountNumber == bankAccountNumber;
 
   @override
   int get hashCode =>
@@ -2882,20 +2971,15 @@ class CompanyModel implements Comparable<CompanyModel> {
       addressId.hashCode ^
       realAddressId.hashCode ^
       bankCode.hashCode ^
-      bankAccountNumber.hashCode ^
-      bank.hashCode ^
-      address.hashCode ^
-      realAddress.hashCode ^
-      contacts.hashCode ^
-      user.hashCode;
+      bankAccountNumber.hashCode;
 
   @override
   String toString() =>
-      'CompanyModelregistryNumber: $registryNumber, taxNumber: $taxNumber, '
+      'CompanyModel(registryNumber: $registryNumber, taxNumber: $taxNumber, '
       'addressId: $addressId, realAddressId: $realAddressId, '
       'bankCode: $bankCode, bankAccountNumber: $bankAccountNumber, '
       'bank: $bank, address: $address, realAddress: $realAddress, '
-      'contacts: $contacts, user: $user';
+      'contacts: $contacts, user: $user)';
 }
 
 /// The model of a CompanyContactModel.
@@ -3047,8 +3131,7 @@ class CompanyContactModel implements Comparable<CompanyContactModel> {
           other.lastName == lastName &&
           other.phoneNumber == phoneNumber &&
           other.email == email &&
-          other.birthday == birthday &&
-          other.company == company;
+          other.birthday == birthday;
 
   @override
   int get hashCode =>
@@ -3059,15 +3142,14 @@ class CompanyContactModel implements Comparable<CompanyContactModel> {
       lastName.hashCode ^
       phoneNumber.hashCode ^
       email.hashCode ^
-      birthday.hashCode ^
-      company.hashCode;
+      birthday.hashCode;
 
   @override
   String toString() =>
-      'CompanyContactModelcompanyRegistryNumber: $companyRegistryNumber, '
+      'CompanyContactModel(companyRegistryNumber: $companyRegistryNumber, '
       'id: $id, type: $type, firstName: $firstName, lastName: $lastName, '
       'phoneNumber: $phoneNumber, email: $email, birthday: $birthday, '
-      'company: $company';
+      'company: $company)';
 }
 
 /// The model of a DealModel.
@@ -3240,13 +3322,7 @@ class DealModel implements Comparable<DealModel> {
           other.priceId == priceId &&
           other.paymentType == paymentType &&
           other.refferalDiscount == refferalDiscount &&
-          other.activeTill == activeTill &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.owner == owner &&
-          other.price == price &&
-          const UnorderedIterableEquality<DealServiceModel>()
-              .equals(other.services, services);
+          other.activeTill == activeTill;
 
   @override
   int get hashCode =>
@@ -3255,19 +3331,14 @@ class DealModel implements Comparable<DealModel> {
       priceId.hashCode ^
       paymentType.hashCode ^
       refferalDiscount.hashCode ^
-      activeTill.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      owner.hashCode ^
-      price.hashCode ^
-      services.hashCode;
+      activeTill.hashCode;
 
   @override
   String toString() =>
-      'DealModelownerId: $ownerId, id: $id, priceId: $priceId, '
+      'DealModel(ownerId: $ownerId, id: $id, priceId: $priceId, '
       'paymentType: $paymentType, refferalDiscount: $refferalDiscount, '
       'activeTill: $activeTill, createdAt: $createdAt, updatedAt: $updatedAt, '
-      'owner: $owner, price: $price, services: $services';
+      'owner: $owner, price: $price, services: $services)';
 }
 
 /// The model of a ServiceModel.
@@ -3403,28 +3474,20 @@ class ServiceModel implements Comparable<ServiceModel> {
           other.id == id &&
           other.name == name &&
           other.description == description &&
-          other.measurementId == measurementId &&
-          other.measurement == measurement &&
-          const UnorderedIterableEquality<ServicePriceModel>()
-              .equals(other.prices, prices) &&
-          const UnorderedIterableEquality<DealServiceModel>()
-              .equals(other.deals, deals);
+          other.measurementId == measurementId;
 
   @override
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
       description.hashCode ^
-      measurementId.hashCode ^
-      measurement.hashCode ^
-      prices.hashCode ^
-      deals.hashCode;
+      measurementId.hashCode;
 
   @override
   String toString() =>
-      'ServiceModelid: $id, name: $name, description: $description, '
+      'ServiceModel(id: $id, name: $name, description: $description, '
       'measurementId: $measurementId, measurement: $measurement, '
-      'prices: $prices, deals: $deals';
+      'prices: $prices, deals: $deals)';
 }
 
 /// The model of a DealServiceModel.
@@ -3578,30 +3641,16 @@ class DealServiceModel implements Comparable<DealServiceModel> {
       other is DealServiceModel &&
           other.dealId == dealId &&
           other.serviceId == serviceId &&
-          other.amount == amount &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.deal == deal &&
-          other.service == service &&
-          const UnorderedIterableEquality<ContainerTankOpeningModel>()
-              .equals(other.openings, openings);
+          other.amount == amount;
 
   @override
-  int get hashCode =>
-      dealId.hashCode ^
-      serviceId.hashCode ^
-      amount.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      deal.hashCode ^
-      service.hashCode ^
-      openings.hashCode;
+  int get hashCode => dealId.hashCode ^ serviceId.hashCode ^ amount.hashCode;
 
   @override
   String toString() =>
-      'DealServiceModeldealId: $dealId, serviceId: $serviceId, '
+      'DealServiceModel(dealId: $dealId, serviceId: $serviceId, '
       'amount: $amount, createdAt: $createdAt, updatedAt: $updatedAt, '
-      'deal: $deal, service: $service, openings: $openings';
+      'deal: $deal, service: $service, openings: $openings)';
 }
 
 /// The model of a GroupModel.
@@ -3721,28 +3770,15 @@ class GroupModel implements Comparable<GroupModel> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
-      other is GroupModel &&
-          other.ownerId == ownerId &&
-          other.name == name &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.owner == owner &&
-          const UnorderedIterableEquality<GroupMemberModel>()
-              .equals(other.members, members);
+      other is GroupModel && other.ownerId == ownerId && other.name == name;
 
   @override
-  int get hashCode =>
-      ownerId.hashCode ^
-      name.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      owner.hashCode ^
-      members.hashCode;
+  int get hashCode => ownerId.hashCode ^ name.hashCode;
 
   @override
   String toString() =>
-      'GroupModelownerId: $ownerId, name: $name, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, owner: $owner, members: $members';
+      'GroupModel(ownerId: $ownerId, name: $name, createdAt: $createdAt, '
+      'updatedAt: $updatedAt, owner: $owner, members: $members)';
 }
 
 /// The model of a GroupMemberModel.
@@ -3888,27 +3924,21 @@ class GroupMemberModel implements Comparable<GroupMemberModel> {
           other.groupOwnerId == groupOwnerId &&
           other.userId == userId &&
           other.accepted == accepted &&
-          const UnorderedIterableEquality<GroupMemberRights>()
-              .equals(other.rights, rights) &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.group == group;
+          const IterableEquality<GroupMemberRights>()
+              .equals(other.rights, rights);
 
   @override
   int get hashCode =>
       groupOwnerId.hashCode ^
       userId.hashCode ^
       accepted.hashCode ^
-      rights.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      group.hashCode;
+      rights.hashCode;
 
   @override
   String toString() =>
-      'GroupMemberModelgroupOwnerId: $groupOwnerId, userId: $userId, '
+      'GroupMemberModel(groupOwnerId: $groupOwnerId, userId: $userId, '
       'accepted: $accepted, rights: $rights, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, group: $group';
+      'updatedAt: $updatedAt, group: $group)';
 }
 
 /// The model of a PersonModel.
@@ -4021,24 +4051,15 @@ class PersonModel implements Comparable<PersonModel> {
       other is PersonModel &&
           other.userId == userId &&
           other.gender == gender &&
-          other.familyCount == familyCount &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.user == user;
+          other.familyCount == familyCount;
 
   @override
-  int get hashCode =>
-      userId.hashCode ^
-      gender.hashCode ^
-      familyCount.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      user.hashCode;
+  int get hashCode => userId.hashCode ^ gender.hashCode ^ familyCount.hashCode;
 
   @override
-  String toString() =>
-      'PersonModeluserId: $userId, gender: $gender, familyCount: $familyCount, '
-      'createdAt: $createdAt, updatedAt: $updatedAt, user: $user';
+  String toString() => 'PersonModel(userId: $userId, gender: $gender, '
+      'familyCount: $familyCount, createdAt: $createdAt, '
+      'updatedAt: $updatedAt, user: $user)';
 }
 
 /// The model of a ServicePriceModel.
@@ -4173,27 +4194,16 @@ class ServicePriceModel implements Comparable<ServicePriceModel> {
       other is ServicePriceModel &&
           other.serviceId == serviceId &&
           other.priceId == priceId &&
-          other.value == value &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.service == service &&
-          other.price == price;
+          other.value == value;
 
   @override
-  int get hashCode =>
-      serviceId.hashCode ^
-      priceId.hashCode ^
-      value.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      service.hashCode ^
-      price.hashCode;
+  int get hashCode => serviceId.hashCode ^ priceId.hashCode ^ value.hashCode;
 
   @override
   String toString() =>
-      'ServicePriceModelserviceId: $serviceId, priceId: $priceId, '
+      'ServicePriceModel(serviceId: $serviceId, priceId: $priceId, '
       'value: $value, createdAt: $createdAt, updatedAt: $updatedAt, '
-      'service: $service, price: $price';
+      'service: $service, price: $price)';
 }
 
 /// The model of a BonusModel.
@@ -4203,18 +4213,17 @@ class BonusModel implements Comparable<BonusModel> {
   /// The model of a BonusModel.
   const BonusModel({
     required this.name,
-    this.totalCount = 0,
     this.ownerId,
     this.id,
     this.description = '',
+    this.userLimit = 0,
     this.createdAt,
     this.updatedAt,
+    this.owner,
+    this.images = const Iterable<BonusImageModel>.empty(),
     this.coupons = const Iterable<BonusCouponModel>.empty(),
     this.prices = const Iterable<BonusPriceModel>.empty(),
   });
-
-  /// The `total_count` property of this [BonusModel].
-  final int totalCount;
 
   /// The `owner_id` property of this [BonusModel].
   final int? ownerId;
@@ -4228,11 +4237,20 @@ class BonusModel implements Comparable<BonusModel> {
   /// The `description` property of this [BonusModel].
   final String description;
 
+  /// The `user_limit` property of this [BonusModel].
+  final int userLimit;
+
   /// Set the date and time when the instance was created.
   final DateTime? createdAt;
 
   /// Set the date and time of the last time the instance was updated.
   final DateTime? updatedAt;
+
+  /// The `owner` property of this [BonusModel].
+  final UserModel? owner;
+
+  /// The `images` property of this [BonusModel].
+  final Iterable<BonusImageModel> images;
 
   /// The `coupons` property of this [BonusModel].
   final Iterable<BonusCouponModel> coupons;
@@ -4242,24 +4260,28 @@ class BonusModel implements Comparable<BonusModel> {
 
   /// Return the copy of this model.
   BonusModel copyWith({
-    final int? totalCount,
     final int? ownerId,
     final int? id,
     final String? name,
     final String? description,
+    final int? userLimit,
     final DateTime? createdAt,
     final DateTime? updatedAt,
+    final UserModel? owner,
+    final Iterable<BonusImageModel>? images,
     final Iterable<BonusCouponModel>? coupons,
     final Iterable<BonusPriceModel>? prices,
   }) =>
       BonusModel(
-        totalCount: totalCount ?? this.totalCount,
         ownerId: ownerId ?? this.ownerId,
         id: id ?? this.id,
         name: name ?? this.name,
         description: description ?? this.description,
+        userLimit: userLimit ?? this.userLimit,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        owner: owner ?? this.owner,
+        images: images ?? this.images,
         coupons: coupons ?? this.coupons,
         prices: prices ?? this.prices,
       );
@@ -4270,30 +4292,38 @@ class BonusModel implements Comparable<BonusModel> {
     final bool id = false,
     final bool createdAt = false,
     final bool updatedAt = false,
+    final bool owner = false,
   }) =>
       BonusModel(
-        totalCount: totalCount,
         ownerId: ownerId ? null : this.ownerId,
         id: id ? null : this.id,
         name: name,
         description: description,
+        userLimit: userLimit,
         createdAt: createdAt ? null : this.createdAt,
         updatedAt: updatedAt ? null : this.updatedAt,
+        owner: owner ? null : this.owner,
+        images: images,
         coupons: coupons,
         prices: prices,
       );
 
   /// Convert this model to map with string keys.
   Map<String, Object?> toMap() => <String, Object?>{
-        'total_count': totalCount,
         if (ownerId != null) 'owner_id': ownerId,
         if (id != null) 'id': id,
         'name': name,
         'description': description,
+        'user_limit': userLimit,
         if (createdAt != null)
           'created_at': optionalDateTimeConverter.toJson(createdAt),
         if (updatedAt != null)
           'updated_at': optionalDateTimeConverter.toJson(updatedAt),
+        if (owner != null) 'owner': optionalUserConverter.toJson(owner),
+        'images':
+            const IterableConverter<BonusImageModel, Map<String, Object?>>(
+          bonusImageConverter,
+        ).toJson(images).toList(growable: false),
         'coupons':
             const IterableConverter<BonusCouponModel, Map<String, Object?>>(
           bonusCouponConverter,
@@ -4306,15 +4336,24 @@ class BonusModel implements Comparable<BonusModel> {
 
   /// Convert the map with string keys to this model.
   factory BonusModel.fromMap(final Map<String, Object?> map) => BonusModel(
-        totalCount: map['total_count']! as int,
         ownerId: map['owner_id'] as int?,
         id: map['id'] as int?,
         name: map['name']! as String,
         description: map['description']! as String,
+        userLimit: map['user_limit']! as int,
         createdAt:
             optionalDateTimeConverter.fromJson(map['created_at'] as String?),
         updatedAt:
             optionalDateTimeConverter.fromJson(map['updated_at'] as String?),
+        owner: optionalUserConverter
+            .fromJson(map['owner'] as Map<String, Object?>?),
+        images: const IterableConverter<BonusImageModel, Map<String, Object?>>(
+          bonusImageConverter,
+        ).fromJson(
+          (map['images'] as Iterable<Object?>? ??
+                  const Iterable<Object?>.empty())
+              .cast<Map<String, Object?>>(),
+        ),
         coupons:
             const IterableConverter<BonusCouponModel, Map<String, Object?>>(
           bonusCouponConverter,
@@ -4347,35 +4386,25 @@ class BonusModel implements Comparable<BonusModel> {
   bool operator ==(final Object? other) =>
       identical(this, other) ||
       other is BonusModel &&
-          other.totalCount == totalCount &&
           other.ownerId == ownerId &&
           other.id == id &&
           other.name == name &&
           other.description == description &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          const UnorderedIterableEquality<BonusCouponModel>()
-              .equals(other.coupons, coupons) &&
-          const UnorderedIterableEquality<BonusPriceModel>()
-              .equals(other.prices, prices);
+          other.userLimit == userLimit;
 
   @override
   int get hashCode =>
-      totalCount.hashCode ^
       ownerId.hashCode ^
       id.hashCode ^
       name.hashCode ^
       description.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      coupons.hashCode ^
-      prices.hashCode;
+      userLimit.hashCode;
 
   @override
-  String toString() =>
-      'BonusModeltotalCount: $totalCount, ownerId: $ownerId, id: $id, '
-      'name: $name, description: $description, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, coupons: $coupons, prices: $prices';
+  String toString() => 'BonusModel(ownerId: $ownerId, id: $id, name: $name, '
+      'description: $description, userLimit: $userLimit, '
+      'createdAt: $createdAt, updatedAt: $updatedAt, owner: $owner, '
+      'images: $images, coupons: $coupons, prices: $prices)';
 }
 
 /// The model of a BonusCouponModel.
@@ -4500,26 +4529,149 @@ class BonusCouponModel implements Comparable<BonusCouponModel> {
           other.bonusId == bonusId &&
           other.hash == hash &&
           other.active == active &&
-          other.ownerId == ownerId &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.bonus == bonus;
+          other.ownerId == ownerId;
 
   @override
   int get hashCode =>
-      bonusId.hashCode ^
-      hash.hashCode ^
-      active.hashCode ^
-      ownerId.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      bonus.hashCode;
+      bonusId.hashCode ^ hash.hashCode ^ active.hashCode ^ ownerId.hashCode;
 
   @override
   String toString() =>
-      'BonusCouponModelbonusId: $bonusId, hash: $hash, active: $active, '
+      'BonusCouponModel(bonusId: $bonusId, hash: $hash, active: $active, '
       'ownerId: $ownerId, createdAt: $createdAt, updatedAt: $updatedAt, '
-      'bonus: $bonus';
+      'bonus: $bonus)';
+}
+
+/// The model of a BonusImageModel.
+@sealed
+@immutable
+class BonusImageModel implements Comparable<BonusImageModel> {
+  /// The model of a BonusImageModel.
+  const BonusImageModel({
+    this.bonusId,
+    this.imageId,
+    this.createdAt,
+    this.updatedAt,
+    this.bonus,
+    this.image,
+  });
+
+  /// The `bonus_id` property of this [BonusImageModel].
+  final int? bonusId;
+
+  /// The `image_id` property of this [BonusImageModel].
+  final int? imageId;
+
+  /// Set the date and time when the instance was created.
+  final DateTime? createdAt;
+
+  /// Set the date and time of the last time the instance was updated.
+  final DateTime? updatedAt;
+
+  /// The `bonus` property of this [BonusImageModel].
+  final BonusModel? bonus;
+
+  /// The `image` property of this [BonusImageModel].
+  final ImageModel? image;
+
+  /// Return the copy of this model.
+  BonusImageModel copyWith({
+    final int? bonusId,
+    final int? imageId,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
+    final BonusModel? bonus,
+    final ImageModel? image,
+  }) =>
+      BonusImageModel(
+        bonusId: bonusId ?? this.bonusId,
+        imageId: imageId ?? this.imageId,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        bonus: bonus ?? this.bonus,
+        image: image ?? this.image,
+      );
+
+  /// Return the copy of this model with nullable fields.
+  BonusImageModel copyWithNull({
+    final bool bonusId = false,
+    final bool imageId = false,
+    final bool createdAt = false,
+    final bool updatedAt = false,
+    final bool bonus = false,
+    final bool image = false,
+  }) =>
+      BonusImageModel(
+        bonusId: bonusId ? null : this.bonusId,
+        imageId: imageId ? null : this.imageId,
+        createdAt: createdAt ? null : this.createdAt,
+        updatedAt: updatedAt ? null : this.updatedAt,
+        bonus: bonus ? null : this.bonus,
+        image: image ? null : this.image,
+      );
+
+  /// Convert this model to map with string keys.
+  Map<String, Object?> toMap() => <String, Object?>{
+        if (bonusId != null) 'bonus_id': bonusId,
+        if (imageId != null) 'image_id': imageId,
+        if (createdAt != null)
+          'created_at': optionalDateTimeConverter.toJson(createdAt),
+        if (updatedAt != null)
+          'updated_at': optionalDateTimeConverter.toJson(updatedAt),
+        if (bonus != null) 'bonus': optionalBonusConverter.toJson(bonus),
+        if (image != null) 'image': optionalImageConverter.toJson(image),
+      };
+
+  /// Convert the map with string keys to this model.
+  factory BonusImageModel.fromMap(final Map<String, Object?> map) =>
+      BonusImageModel(
+        bonusId: map['bonus_id'] as int?,
+        imageId: map['image_id'] as int?,
+        createdAt:
+            optionalDateTimeConverter.fromJson(map['created_at'] as String?),
+        updatedAt:
+            optionalDateTimeConverter.fromJson(map['updated_at'] as String?),
+        bonus: optionalBonusConverter
+            .fromJson(map['bonus'] as Map<String, Object?>?),
+        image: optionalImageConverter
+            .fromJson(map['image'] as Map<String, Object?>?),
+      );
+
+  /// Convert this model to a json string.
+  String toJson() => json.encode(toMap());
+
+  /// Convert the json string to this model.
+  factory BonusImageModel.fromJson(final String source) =>
+      BonusImageModel.fromMap(json.decode(source)! as Map<String, Object?>);
+
+  @override
+  int compareTo(final BonusImageModel other) {
+    int value;
+    if ((value = bonusId != null && other.bonusId != null
+            ? bonusId!.compareTo(other.bonusId!)
+            : 0) !=
+        0) {
+    } else if ((value = imageId != null && other.imageId != null
+            ? imageId!.compareTo(other.imageId!)
+            : 0) !=
+        0) {}
+    return value;
+  }
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) ||
+      other is BonusImageModel &&
+          other.bonusId == bonusId &&
+          other.imageId == imageId;
+
+  @override
+  int get hashCode => bonusId.hashCode ^ imageId.hashCode;
+
+  @override
+  String toString() => 'BonusImageModel(bonusId: $bonusId, imageId: $imageId, '
+      'createdAt: $createdAt, updatedAt: $updatedAt, bonus: $bonus, '
+      'image: $image)';
 }
 
 /// The model of a BonusPriceModel.
@@ -4653,27 +4805,16 @@ class BonusPriceModel implements Comparable<BonusPriceModel> {
       other is BonusPriceModel &&
           other.bonusId == bonusId &&
           other.priceId == priceId &&
-          other.value == value &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.bonus == bonus &&
-          other.price == price;
+          other.value == value;
 
   @override
-  int get hashCode =>
-      bonusId.hashCode ^
-      priceId.hashCode ^
-      value.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      bonus.hashCode ^
-      price.hashCode;
+  int get hashCode => bonusId.hashCode ^ priceId.hashCode ^ value.hashCode;
 
   @override
   String toString() =>
-      'BonusPriceModelbonusId: $bonusId, priceId: $priceId, value: $value, '
+      'BonusPriceModel(bonusId: $bonusId, priceId: $priceId, value: $value, '
       'createdAt: $createdAt, updatedAt: $updatedAt, bonus: $bonus, '
-      'price: $price';
+      'price: $price)';
 }
 
 /// The model of a ContainerModel.
@@ -4857,15 +4998,7 @@ class ContainerModel implements Comparable<ContainerModel> {
           other.id == id &&
           other.latitude == latitude &&
           other.longtitude == longtitude &&
-          other.addressId == addressId &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.address == address &&
-          other.owner == owner &&
-          const UnorderedIterableEquality<ContainerTankModel>()
-              .equals(other.tanks, tanks) &&
-          const UnorderedIterableEquality<ContainerReportModel>()
-              .equals(other.reports, reports);
+          other.addressId == addressId;
 
   @override
   int get hashCode =>
@@ -4873,20 +5006,14 @@ class ContainerModel implements Comparable<ContainerModel> {
       id.hashCode ^
       latitude.hashCode ^
       longtitude.hashCode ^
-      addressId.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      address.hashCode ^
-      owner.hashCode ^
-      tanks.hashCode ^
-      reports.hashCode;
+      addressId.hashCode;
 
   @override
   String toString() =>
-      'ContainerModelownerId: $ownerId, id: $id, latitude: $latitude, '
+      'ContainerModel(ownerId: $ownerId, id: $id, latitude: $latitude, '
       'longtitude: $longtitude, addressId: $addressId, createdAt: $createdAt, '
       'updatedAt: $updatedAt, address: $address, owner: $owner, tanks: $tanks, '
-      'reports: $reports';
+      'reports: $reports)';
 }
 
 /// The model of a ContainerReportTypeModel.
@@ -4987,21 +5114,15 @@ class ContainerReportTypeModel implements Comparable<ContainerReportTypeModel> {
   @override
   bool operator ==(final Object? other) =>
       identical(this, other) ||
-      other is ContainerReportTypeModel &&
-          other.id == id &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          const UnorderedIterableEquality<ContainerReportModel>()
-              .equals(other.reports, reports);
+      other is ContainerReportTypeModel && other.id == id;
 
   @override
-  int get hashCode =>
-      id.hashCode ^ createdAt.hashCode ^ updatedAt.hashCode ^ reports.hashCode;
+  int get hashCode => id.hashCode;
 
   @override
   String toString() =>
-      'ContainerReportTypeModelid: $id, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, reports: $reports';
+      'ContainerReportTypeModel(id: $id, createdAt: $createdAt, '
+      'updatedAt: $updatedAt, reports: $reports)';
 }
 
 /// The model of a ContainerTankTypeModel.
@@ -5157,12 +5278,7 @@ class ContainerTankTypeModel implements Comparable<ContainerTankTypeModel> {
           other.name == name &&
           other.measurementId == measurementId &&
           other.volume == volume &&
-          other.clearingPeriod == clearingPeriod &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.measurement == measurement &&
-          const UnorderedIterableEquality<ContainerTankModel>()
-              .equals(other.tanks, tanks);
+          other.clearingPeriod == clearingPeriod;
 
   @override
   int get hashCode =>
@@ -5170,17 +5286,13 @@ class ContainerTankTypeModel implements Comparable<ContainerTankTypeModel> {
       name.hashCode ^
       measurementId.hashCode ^
       volume.hashCode ^
-      clearingPeriod.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      measurement.hashCode ^
-      tanks.hashCode;
+      clearingPeriod.hashCode;
 
   @override
-  String toString() => 'ContainerTankTypeModelid: $id, name: $name, '
+  String toString() => 'ContainerTankTypeModel(id: $id, name: $name, '
       'measurementId: $measurementId, volume: $volume, '
       'clearingPeriod: $clearingPeriod, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, measurement: $measurement, tanks: $tanks';
+      'updatedAt: $updatedAt, measurement: $measurement, tanks: $tanks)';
 }
 
 /// The model of a ContainerTankModel.
@@ -5354,34 +5466,18 @@ class ContainerTankModel implements Comparable<ContainerTankModel> {
       other is ContainerTankModel &&
           other.containerId == containerId &&
           other.typeId == typeId &&
-          other.currentVolume == currentVolume &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.container == container &&
-          other.type == type &&
-          const UnorderedIterableEquality<ContainerTankOpeningModel>()
-              .equals(other.openings, openings) &&
-          const UnorderedIterableEquality<ContainerTankClearingModel>()
-              .equals(other.clearings, clearings);
+          other.currentVolume == currentVolume;
 
   @override
   int get hashCode =>
-      containerId.hashCode ^
-      typeId.hashCode ^
-      currentVolume.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      container.hashCode ^
-      type.hashCode ^
-      openings.hashCode ^
-      clearings.hashCode;
+      containerId.hashCode ^ typeId.hashCode ^ currentVolume.hashCode;
 
   @override
   String toString() =>
-      'ContainerTankModelcontainerId: $containerId, typeId: $typeId, '
+      'ContainerTankModel(containerId: $containerId, typeId: $typeId, '
       'currentVolume: $currentVolume, createdAt: $createdAt, '
       'updatedAt: $updatedAt, container: $container, type: $type, '
-      'openings: $openings, clearings: $clearings';
+      'openings: $openings, clearings: $clearings)';
 }
 
 /// The model of a ContainerReportModel.
@@ -5531,11 +5627,7 @@ class ContainerReportModel implements Comparable<ContainerReportModel> {
           other.containerId == containerId &&
           other.id == id &&
           other.type == type &&
-          other.information == information &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.type_ == type_ &&
-          other.container == container;
+          other.information == information;
 
   @override
   int get hashCode =>
@@ -5543,17 +5635,13 @@ class ContainerReportModel implements Comparable<ContainerReportModel> {
       containerId.hashCode ^
       id.hashCode ^
       type.hashCode ^
-      information.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      type_.hashCode ^
-      container.hashCode;
+      information.hashCode;
 
   @override
   String toString() =>
-      'ContainerReportModeluserId: $userId, containerId: $containerId, '
+      'ContainerReportModel(userId: $userId, containerId: $containerId, '
       'id: $id, type: $type, information: $information, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, type_: $type_, container: $container';
+      'updatedAt: $updatedAt, type_: $type_, container: $container)';
 }
 
 /// The model of a ContainerTankClearingModel.
@@ -5702,11 +5790,7 @@ class ContainerTankClearingModel
           other.containerId == containerId &&
           other.tankTypeId == tankTypeId &&
           other.id == id &&
-          other.volume == volume &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.user == user &&
-          other.tank == tank;
+          other.volume == volume;
 
   @override
   int get hashCode =>
@@ -5714,17 +5798,13 @@ class ContainerTankClearingModel
       containerId.hashCode ^
       tankTypeId.hashCode ^
       id.hashCode ^
-      volume.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      user.hashCode ^
-      tank.hashCode;
+      volume.hashCode;
 
   @override
   String toString() =>
-      'ContainerTankClearingModeluserId: $userId, containerId: $containerId, '
+      'ContainerTankClearingModel(userId: $userId, containerId: $containerId, '
       'tankTypeId: $tankTypeId, id: $id, volume: $volume, '
-      'createdAt: $createdAt, updatedAt: $updatedAt, user: $user, tank: $tank';
+      'createdAt: $createdAt, updatedAt: $updatedAt, user: $user, tank: $tank)';
 }
 
 /// The model of a ContainerTankOpeningModel.
@@ -5916,14 +5996,7 @@ class ContainerTankOpeningModel
           other.tankTypeId == tankTypeId &&
           other.dealId == dealId &&
           other.serviceId == serviceId &&
-          other.id == id &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.user == user &&
-          other.tank == tank &&
-          other.dealService == dealService &&
-          const UnorderedIterableEquality<ContainerTankOpeningDropModel>()
-              .equals(other.drops, drops);
+          other.id == id;
 
   @override
   int get hashCode =>
@@ -5932,20 +6005,14 @@ class ContainerTankOpeningModel
       tankTypeId.hashCode ^
       dealId.hashCode ^
       serviceId.hashCode ^
-      id.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      user.hashCode ^
-      tank.hashCode ^
-      dealService.hashCode ^
-      drops.hashCode;
+      id.hashCode;
 
   @override
   String toString() =>
-      'ContainerTankOpeningModeluserId: $userId, containerId: $containerId, '
+      'ContainerTankOpeningModel(userId: $userId, containerId: $containerId, '
       'tankTypeId: $tankTypeId, dealId: $dealId, serviceId: $serviceId, '
       'id: $id, createdAt: $createdAt, updatedAt: $updatedAt, user: $user, '
-      'tank: $tank, dealService: $dealService, drops: $drops';
+      'tank: $tank, dealService: $dealService, drops: $drops)';
 }
 
 /// The model of a ContainerTankOpeningDropModel.
@@ -6055,23 +6122,15 @@ class ContainerTankOpeningDropModel
       identical(this, other) ||
       other is ContainerTankOpeningDropModel &&
           other.openingId == openingId &&
-          other.volume == volume &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.opening == opening;
+          other.volume == volume;
 
   @override
-  int get hashCode =>
-      openingId.hashCode ^
-      volume.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      opening.hashCode;
+  int get hashCode => openingId.hashCode ^ volume.hashCode;
 
   @override
   String toString() =>
-      'ContainerTankOpeningDropModelopeningId: $openingId, volume: $volume, '
-      'createdAt: $createdAt, updatedAt: $updatedAt, opening: $opening';
+      'ContainerTankOpeningDropModel(openingId: $openingId, volume: $volume, '
+      'createdAt: $createdAt, updatedAt: $updatedAt, opening: $opening)';
 }
 
 /// The model of a DeliveryModel.
@@ -6260,12 +6319,7 @@ class DeliveryModel implements Comparable<DeliveryModel> {
           other.longtitude == longtitude &&
           other.addressId == addressId &&
           other.timestamp == timestamp &&
-          other.success == success &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.address == address &&
-          const UnorderedIterableEquality<DeliveryServiceModel>()
-              .equals(other.services, services);
+          other.success == success;
 
   @override
   int get hashCode =>
@@ -6276,18 +6330,14 @@ class DeliveryModel implements Comparable<DeliveryModel> {
       longtitude.hashCode ^
       addressId.hashCode ^
       timestamp.hashCode ^
-      success.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      address.hashCode ^
-      services.hashCode;
+      success.hashCode;
 
   @override
   String toString() =>
-      'DeliveryModelownerId: $ownerId, id: $id, userId: $userId, '
+      'DeliveryModel(ownerId: $ownerId, id: $id, userId: $userId, '
       'latitude: $latitude, longtitude: $longtitude, addressId: $addressId, '
       'timestamp: $timestamp, success: $success, createdAt: $createdAt, '
-      'updatedAt: $updatedAt, address: $address, services: $services';
+      'updatedAt: $updatedAt, address: $address, services: $services)';
 }
 
 /// The model of a DeliveryServiceModel.
@@ -6425,25 +6475,14 @@ class DeliveryServiceModel implements Comparable<DeliveryServiceModel> {
       other is DeliveryServiceModel &&
           other.userId == userId &&
           other.serviceId == serviceId &&
-          other.amount == amount &&
-          other.createdAt == createdAt &&
-          other.updatedAt == updatedAt &&
-          other.delivery == delivery &&
-          other.service == service;
+          other.amount == amount;
 
   @override
-  int get hashCode =>
-      userId.hashCode ^
-      serviceId.hashCode ^
-      amount.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode ^
-      delivery.hashCode ^
-      service.hashCode;
+  int get hashCode => userId.hashCode ^ serviceId.hashCode ^ amount.hashCode;
 
   @override
   String toString() =>
-      'DeliveryServiceModeluserId: $userId, serviceId: $serviceId, '
+      'DeliveryServiceModel(userId: $userId, serviceId: $serviceId, '
       'amount: $amount, createdAt: $createdAt, updatedAt: $updatedAt, '
-      'delivery: $delivery, service: $service';
+      'delivery: $delivery, service: $service)';
 }

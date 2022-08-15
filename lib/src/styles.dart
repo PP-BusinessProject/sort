@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:control_style/control_style.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// The [BoxShadow] that depends on [theme].
 BoxShadow boxShadow(final ThemeData theme) => BoxShadow(
@@ -53,6 +54,7 @@ const ColorScheme lightScheme = ColorScheme.light(
   error: Color(0xffEC554C),
   tertiary: Color(0xff5FB464),
   shadow: Color(0x40000000),
+  surfaceTint: Color(0xff8F8F8F),
 );
 
 /// The [Brightness.dark] [ColorScheme] used as a default.
@@ -65,7 +67,8 @@ const ColorScheme darkScheme = ColorScheme.dark(
   primaryContainer: Color(0xffD7E7D9),
   error: Color(0xffA1403A),
   tertiary: Color(0xff73B676),
-  shadow: Color(0x1AFFFFFF),
+  shadow: Color(0x40000000),
+  surfaceTint: Color(0xff6D6C6C),
 );
 
 /// The `Material3` [TextTheme] used as a default.
@@ -145,7 +148,7 @@ final TextTheme textTheme = const TextTheme(
     height: 14 / 10,
     fontWeight: FontWeight.normal,
   ),
-).apply(fontFamily: 'SF Pro Text');
+).apply(fontFamily: '.SF Pro Text');
 
 /// Apply additional properties on a [ThemeData].
 extension ApplyThemeData on ThemeData {
@@ -155,18 +158,29 @@ extension ApplyThemeData on ThemeData {
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         dividerColor: Colors.transparent,
         disabledColor: colorScheme.primaryContainer,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
+        splashColor: colorScheme.shadow.withOpacity(1 / 10),
+        appBarTheme: AppBarTheme(
+          systemOverlayStyle: brightness == Brightness.light
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
           toolbarHeight: 70,
         ),
-        dialogTheme: DialogTheme(
-          elevation: 16,
-          shape: inputBorder(this),
-        ),
+        dialogTheme: DialogTheme(elevation: 16, shape: inputBorder(this)),
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: colorScheme.onPrimary,
           selectionColor: colorScheme.onPrimary,
           selectionHandleColor: colorScheme.onPrimary,
+        ),
+        iconTheme: const IconThemeData(size: 24),
+        tooltipTheme: TooltipThemeData(
+          textStyle: textTheme.bodyMedium,
+          waitDuration: const Duration(seconds: 1),
+          showDuration: const Duration(seconds: 5),
+          decoration: BoxDecoration(
+            color: colorScheme.primary,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: <BoxShadow>[boxShadow(this)],
+          ),
         ),
         buttonTheme: ButtonThemeData(
           alignedDropdown: true,
@@ -182,7 +196,8 @@ extension ApplyThemeData on ThemeData {
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            minimumSize: const Size.fromHeight(0),
+            visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             shape: outlinedBorder(this, radius: 10),
             primary: colorScheme.primary,
@@ -192,18 +207,20 @@ extension ApplyThemeData on ThemeData {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            minimumSize: const Size.fromHeight(0),
+            visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             shape: outlinedBorder(this, radius: 10),
             primary: colorScheme.primary,
             onPrimary: colorScheme.onSurface,
-            textStyle: textTheme.headlineMedium,
+            textStyle: textTheme.headlineSmall,
             splashFactory: NoSplash.splashFactory,
           ).apply(this, foregroundColor: colorScheme.onBackground),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            minimumSize: const Size.fromHeight(0),
+            visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             shape: outlinedBorder(this, radius: 10),
             onSurface: colorScheme.onPrimary,
@@ -216,7 +233,9 @@ extension ApplyThemeData on ThemeData {
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           contentPadding: EdgeInsets.zero,
-          fillColor: colorScheme.primary,
+          fillColor: brightness == Brightness.light
+              ? colorScheme.primary
+              : colorScheme.surfaceTint,
           border: inputBorder(this),
           enabledBorder: inputBorder(this),
           disabledBorder: inputBorder(this),
@@ -232,6 +251,22 @@ extension ApplyThemeData on ThemeData {
           counterStyle: textTheme.headlineSmall,
           floatingLabelStyle: textTheme.headlineSmall,
         ),
+        cupertinoOverrideTheme: CupertinoThemeData(
+          brightness: brightness,
+          primaryColor: colorScheme.primary,
+          primaryContrastingColor: colorScheme.onPrimary,
+          scaffoldBackgroundColor: colorScheme.background,
+          barBackgroundColor: Colors.transparent,
+          textTheme: CupertinoTextThemeData(
+            primaryColor: colorScheme.onPrimary,
+            actionTextStyle:
+                textTheme.bodyLarge?.copyWith(color: colorScheme.onPrimary),
+            navTitleTextStyle:
+                textTheme.titleLarge?.copyWith(color: colorScheme.onPrimary),
+            navActionTextStyle:
+                textTheme.bodyLarge?.copyWith(color: colorScheme.onPrimary),
+          ),
+        ),
       );
 }
 
@@ -241,14 +276,12 @@ extension on ButtonStyle {
         foregroundColor: MaterialStateProperty.resolveWith(
           (final Set<MaterialState> states) =>
               states.contains(MaterialState.disabled)
-                  ? theme.colorScheme.shadow
+                  ? theme.colorScheme.surfaceTint
                   : foregroundColor,
         ),
         overlayColor: MaterialStateProperty.resolveWith(
           (final Set<MaterialState> states) =>
-              states.contains(MaterialState.pressed)
-                  ? Colors.black.withOpacity(1 / 8)
-                  : null,
+              states.contains(MaterialState.pressed) ? theme.splashColor : null,
         ),
       );
 }

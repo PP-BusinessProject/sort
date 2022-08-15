@@ -14,6 +14,10 @@ alert:
     title: Сталася помилка
     body: Будь ласка, спробуйте ще раз пізніше.
     approve: Я зрозумів
+  success:
+    title: Успіх
+    body: Операція пройшла успішно.
+    approve: Дякую
 
 pull_to_refresh:
   idle: Тяни вниз чтобы обновить
@@ -51,7 +55,7 @@ profile:
   email_error: Це некорректний email.
   birthday: День народження (обов'язково)
   birthday_confirm: Підтвердити
-  gender: Стать (обов'язково)
+  gender: Стать
   male: Чоловіча
   female: Жіноча
   number_of_family_members: Кількість членів родини
@@ -59,3 +63,49 @@ profile:
   privacy_policy: Типової оферти
   register: Зареєструватися
   update: Поновити дані
+
+menu:
+  avatar_hint: Додати аватар
+  close_hint: Закрити
+  edit_hint: Відредагувати
+  
+  menu: Меню
+  abonement: Абонемент
+  individual: Індивідуальні
+  history: Історія
+  statistics: Статистика
+  support: Підтримка
+
+settings:
+  settings: Налаштування
+  
+  language:
+    language: Мова
+    en_US: Англійська
+    uk_UA: Українська
+  
+  theme:
+    theme: Тема
+    system: Системна
+    light: Світла
+    dark: Темна
+  
+  notification:
+    notification: Повідомлення
+  
+  about:
+    about: Про додаток
+    version: Версія
+    privacy_policy: Політика конфіденційності
+    terms_of_use: Правила користування
+  
+  logout: Вийти
+
+bonus:
+  purchase: Купити
+
+container:
+  containers: Сортомати
+
+delivery:
+  delivery: Курʼєр

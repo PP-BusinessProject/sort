@@ -14,6 +14,10 @@ alert:
     title: Exception occured
     body: Please, try again later.
     approve: I understood
+  success:
+    title: Success
+    body: Operation successfull.
+    approve: Okay, thanks
 
 pull_to_refresh:
   idle: Тяни вниз чтобы обновить
@@ -51,7 +55,7 @@ profile:
   email_error: Email is invalid.
   birthday: Birthday (required)
   birthday_confirm: Confirm
-  gender: Gender (required)
+  gender: Gender
   male: Male
   female: Female
   number_of_family_members: Number of family members
@@ -59,3 +63,51 @@ profile:
   privacy_policy: Privacy Policy
   register: Register
   update: Update
+
+menu:
+  avatar_hint: Add avatar
+  close_hint: Close
+  edit_hint: Edit
+  
+  menu: Menu
+  abonement: Abonement
+  individual: Individual
+  history: History
+  statistics: Statistics
+  support: Support
+
+settings:
+  settings: Settings
+
+  language:
+    language: Language
+    en_US: English
+    uk_UA: Ukrainian
+  
+  theme:
+    theme: Theme
+    system: System
+    light: Light
+    dark: Dark
+  
+  notification:
+    notification: Notifications
+  
+  about:
+    about: About
+    version: Version
+    privacy_policy: Privacy Policy
+    terms_of_use: Terms of Use
+  
+  logout: Log Out
+
+
+bonus:
+  purchase: Swap
+
+container:
+  containers: Containers
+
+delivery:
+  delivery: Delivery
+

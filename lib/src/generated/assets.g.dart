@@ -19,12 +19,44 @@ const Assets assets = Assets._();
 class Assets {
   const Assets._();
 
+  /// The path to the `container.png` in `source`/`assets`.
+  String get container => 'source/assets/container.png';
+
+  /// The path to the `delivery.png` in `source`/`assets`.
+  String get delivery => 'source/assets/delivery.png';
+
   /// The path to the `logo.png` in `source`/`assets`.
   String get logo => 'source/assets/logo.png';
 
+  /// The path to the `countries` folder in `source`/`assets`.
+  AssetsCountries get countries => AssetsCountries._(this);
+
+  /// The path to the `EcoCoin.png` in `source`/`assets`.
+  String get ecocoin => 'source/assets/EcoCoin.png';
+
   @override
   bool operator ==(final Object? other) =>
-      identical(this, other) || other is Assets;
+      identical(this, other) || other is Assets && other.countries == countries;
+
+  @override
+  int get hashCode => runtimeType.hashCode ^ countries.hashCode;
+}
+
+/// The file structure of the `source`/`assets`/`countries` folder.
+@sealed
+@immutable
+class AssetsCountries {
+  const AssetsCountries._(final Assets _);
+
+  /// The path to the `ukraine.png` in `source`/`assets`/`countries`.
+  String get ukraine => 'source/assets/countries/ukraine.png';
+
+  /// The path to the `england.png` in `source`/`assets`/`countries`.
+  String get england => 'source/assets/countries/england.png';
+
+  @override
+  bool operator ==(final Object? other) =>
+      identical(this, other) || other is AssetsCountries;
 
   @override
   int get hashCode => runtimeType.hashCode;

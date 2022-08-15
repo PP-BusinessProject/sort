@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
@@ -25,11 +26,6 @@ class ProviderObserver extends WidgetsBindingObserver {
   /// The observer on any [Provider].
   ProviderObserver._(final this._ref);
   final ProviderRef<ProviderObserver> _ref;
-
-  @override
-  FutureOr<void> didChangeAppLifecycleState(
-    final AppLifecycleState state,
-  ) {}
 
   @override
   FutureOr<void> didChangeLocales(final Iterable<Locale>? locales) async {

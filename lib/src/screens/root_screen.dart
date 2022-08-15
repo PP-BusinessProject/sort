@@ -1,14 +1,19 @@
 import 'dart:ui' as ui;
 
 import 'package:catcher/catcher.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:json_converters_lite/json_converters_lite.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../api.dart';
 import '../flavors.dart';
 import '../generated/assets.g.dart';
 import '../generated/i18n.g.dart';
@@ -18,21 +23,37 @@ import '../providers/misc_providers.dart';
 import '../styles.dart';
 import '../widgets/animated_background.dart';
 
-class RootScreen extends HookConsumerWidget {
+class RootScreen extends HookWidget {
   const RootScreen({final super.key});
 
   /// The [AnimatedCrossFade.duration] of this screen.
   static const Duration transitionDuration = Duration(seconds: 2);
 
   @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
-    final WidgetsBinding widgetsBinding = ref.watch(widgetsBindingProvider);
-    final Iterable<Object?>? $ = ref.watch(
-      initialisationProvider.select(
-        (final AsyncValue<Iterable<Object?>> initialisation) =>
-            initialisation.valueOrNull,
+  Widget build(final BuildContext context) {
+    final WidgetsBinding widgetsBinding = WidgetsBinding.instance;
+    final Iterable<Object?>? $ = useFuture(
+      useMemoized(
+        () => Future.wait<Object?>(<Future<Object?>>[
+          PackageInfo.fromPlatform(),
+          Future<Box<String>>(() async {
+            Hive.init((await getApplicationDocumentsDirectory()).path);
+            return Hive.openBox<String>('storage');
+          }),
+          sortApi.get<DateTime>(
+            '/settings/time',
+            fromJson: (final Object? value) =>
+                dateTimeConverter.fromJson(value! as String),
+          ),
+          Firebase.initializeApp(),
+          SystemChrome.setEnabledSystemUIMode(
+            SystemUiMode.manual,
+            overlays: SystemUiOverlay.values,
+          ),
+          Future<void>.delayed(const Duration(seconds: 2)),
+        ]),
       ),
-    );
+    ).data;
     return Directionality(
       textDirection: ui.TextDirection.ltr,
       child: AnimatedCrossFade(
@@ -97,8 +118,10 @@ class RootApp extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final SortFlavor flavor = ref.watch(flavorProvider);
     useMemoized(
-      () => (ref.read(widgetsBindingProvider))
-          .addObserver(ref.read(providerObserverProvider)),
+      () {
+        (ref.read(widgetsBindingProvider))
+            .addObserver(ref.read(providerObserverProvider));
+      },
     );
     return MaterialApp(
       title: flavor.title,
@@ -114,10 +137,10 @@ class RootApp extends HookConsumerWidget {
       initialRoute: flavor.path,
       routes: <String, Widget Function(BuildContext)>{
         for (final SortFlavor flavor in SortFlavor.values)
-          if (flavor.builder != null) flavor.path: flavor.builder!
+          flavor.path: flavor.builder
       },
       navigatorKey: Catcher.navigatorKey,
-      // locale: ref.watch(localeProvider),
+      locale: ref.watch(localeProvider),
       supportedLocales:
           I18NLocale.values.map((final I18NLocale locale) => locale.toLocale()),
       theme: ThemeData.from(
@@ -131,14 +154,25 @@ class RootApp extends HookConsumerWidget {
         textTheme: textTheme,
       ).apply(),
       builder: (final BuildContext context, final Widget? child) {
-        final ThemeData theme =
-            ref.read(rootThemeProvider.notifier).state = Theme.of(context);
-        final MediaQueryData mediaQuery = MediaQuery.of(context);
+        final ThemeData theme = Theme.of(context);
+        MediaQueryData mediaQuery = MediaQuery.of(context);
+        mediaQuery = mediaQuery.copyWith(
+          textScaleFactor: mediaQuery.textScaleFactor.clamp(.5, 1.3),
+        );
+        ref.read(widgetsBindingProvider).addPostFrameCallback((final _) {
+          final StateController<ThemeData?> themeNotifier =
+              ref.read(rootThemeProvider.notifier);
+          if (themeNotifier.state != theme) {
+            themeNotifier.state = theme;
+          }
+          final StateController<MediaQueryData?> mediaQueryNotifier =
+              ref.read(rootMediaQueryProvider.notifier);
+          if (mediaQueryNotifier.state != mediaQuery) {
+            mediaQueryNotifier.state = mediaQuery;
+          }
+        });
         return MediaQuery(
-          data: ref.read(rootMediaQueryProvider.notifier).state =
-              mediaQuery.copyWith(
-            textScaleFactor: mediaQuery.textScaleFactor.clamp(.5, 1.3),
-          ),
+          data: mediaQuery,
           child: DefaultTextStyle(
             style: theme.textTheme.headlineMedium ?? const TextStyle(),
             maxLines: 1,

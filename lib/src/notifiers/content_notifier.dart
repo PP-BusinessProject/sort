@@ -1,22 +1,19 @@
 import 'dart:async';
 
-import 'hive_notifier.dart';
+import 'package:riverpod/riverpod.dart';
 
-/// The callback to refresh the [ContentNotifier].
-typedef RefreshContent<T extends Object?> = FutureOr<T?> Function(
-  RefreshListener<T> notifier,
-);
+import '../api.dart';
 
 /// The callback on refresh of the [ContentNotifier].
 typedef ContentListener = FutureOr<void> Function();
 
 /// The callback on completed refresh of the [ContentNotifier].
-typedef ContentCallback = FutureOr<void> Function({required bool success});
+typedef ContentCallback = FutureOr<void> Function(bool success);
 
 /// Refresh the state with a callback.
 mixin RefreshListener<T extends Object?> {
   /// The callback to refresh a state of this provider.
-  RefreshContent<T> get refreshState;
+  FutureOr<T> Function() get refreshState;
 
   Completer<bool> _isRefreshingCompleter = Completer<bool>()..complete(false);
   Iterable<ContentListener> _onRefreshListeners =
@@ -70,12 +67,12 @@ mixin RefreshListener<T extends Object?> {
       await Future.wait<void>(futures.whereType<Future<void>>());
     } finally {
       try {
-        success = await refreshState(this) != null;
+        success = await refreshState() != null;
       } finally {
         try {
           final Iterable<FutureOr<void>> futures = <FutureOr<void>>[
             for (final ContentCallback callback in _onRefreshCallbacks)
-              callback(success: success)
+              callback(success)
           ];
           await Future.wait<void>(futures.whereType<Future<void>>());
         } finally {
@@ -88,69 +85,85 @@ mixin RefreshListener<T extends Object?> {
 }
 
 /// The provider of content in the external API.
-class ContentNotifier<T extends Object?> extends HiveNotifier<T, String>
-    with RefreshListener<T> {
+class ContentNotifier<T extends Object> extends StateNotifier<Iterable<T>>
+    with RefreshListener<Iterable<T>> {
   /// The provider of content in the external API.
   ///
   /// - **`refreshInterval`** The interval for automatic refreshing of the state
   /// of this RefreshContent.
-  ContentNotifier(
-    super._, {
-    required final super.key,
-    required final super.converter,
-    required final super.initialValue,
-    required final RefreshContent<T> refreshState,
-    final super.onValue,
+  ContentNotifier({
+    required final FutureOr<Iterable<T>> Function() refreshState,
+    final Stream<StreamEvent<Iterable<T>>>? stream,
     final Duration refreshInterval = Duration.zero,
-  }) {
-    this.refreshState = (final RefreshListener<T> notifier) async {
-      final T? state = await refreshState(notifier);
-      if (state != null) {
-        await setStateAsync(state);
+  }) : super(<T>[]) {
+    stream?.listen((final StreamEvent<Iterable<T>> event) async {
+      if (event.prevValue.isNotEmpty) {
+        removeAll(event.prevValue);
       }
-      return state;
-    };
-    final Timer refreshTimer =
-        Timer.periodic(refreshInterval, (final _) => refresh());
-    if (refreshInterval == Duration.zero) {
-      refreshTimer.cancel();
+      if (event.value.isNotEmpty) {
+        addAll(event.value);
+      }
+    });
+    this.refreshState = () async => state = await refreshState();
+    if (refreshInterval != Duration.zero) {
+      Timer.periodic(refreshInterval, (final _) => refresh());
+    } else {
+      refresh();
     }
   }
 
   @override
-  late final RefreshContent<T> refreshState;
+  late final FutureOr<Iterable<T>> Function() refreshState;
+
+  /// Add an [item] to this notifier.
+  void add(final T item) => state = <T>[...state, item];
+
+  /// Add [items] to this notifier.
+  void addAll(final Iterable<T> items) => <T>[...state, ...items];
+
+  /// Remove an [item] from this notifier.
+  void remove(final T item) => <T>[
+        for (final T $item in state)
+          if ($item != item) $item
+      ];
+
+  /// Remove all [items] from this notifier.
+  void removeAll(final Iterable<T> items) => <T>[
+        for (final T item in state)
+          if (!items.contains(item)) item
+      ];
+
+  /// Remove everything from this notifier.
+  void clear() => Iterable<T>.empty();
 }
 
 /// The provider of content in the external API.
-class ContentIterableNotifier<T extends Object?>
-    extends HiveIterableNotifier<T, String> with RefreshListener<Iterable<T>> {
+class ContentOptionalNotifier<T extends Object?> extends StateNotifier<T?>
+    with RefreshListener<T?> {
   /// The provider of content in the external API.
   ///
   /// - **`refreshInterval`** The interval for automatic refreshing of the state
   /// of this RefreshContent.
-  ContentIterableNotifier(
-    super._, {
-    required final super.key,
-    required final super.converter,
-    required final super.initialValue,
-    required final RefreshContent<Iterable<T>> refreshState,
-    final super.onValue,
+  ContentOptionalNotifier({
+    required final FutureOr<T> Function() refreshState,
+    final Stream<StreamEvent<Iterable<T>>>? stream,
     final Duration refreshInterval = Duration.zero,
-  }) {
-    this.refreshState = (final RefreshListener<Iterable<T>> notifier) async {
-      final Iterable<T>? state = await refreshState(notifier);
-      if (state != null) {
-        await setStateAsync(state);
+  }) : super(null) {
+    stream?.listen((final StreamEvent<Iterable<T>> event) async {
+      if (event.prevValue.isNotEmpty && event.value.isEmpty) {
+        state = null;
+      } else if (event.value.isNotEmpty) {
+        state = event.value.single;
       }
-      return state;
-    };
-    final Timer refreshTimer =
-        Timer.periodic(refreshInterval, (final _) => refresh());
-    if (refreshInterval == Duration.zero) {
-      refreshTimer.cancel();
+    });
+    this.refreshState = () async => state = await refreshState();
+    if (refreshInterval != Duration.zero) {
+      Timer.periodic(refreshInterval, (final _) => refresh());
+    } else {
+      refresh();
     }
   }
 
   @override
-  late final RefreshContent<Iterable<T>> refreshState;
+  late final FutureOr<T> Function() refreshState;
 }

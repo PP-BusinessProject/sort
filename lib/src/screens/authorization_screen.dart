@@ -125,75 +125,88 @@ class AuthorizationScreen extends HookConsumerWidget {
 
     return FocusWrapper(
       unfocussableKeys: <GlobalKey<State<StatefulWidget>>>[inputFieldKey],
-      child: Scaffold(
+      child: CupertinoPageScaffold(
         resizeToAvoidBottomInset: false,
-        body: Center(
-          child: ListView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: contentPadding,
+        child: Material(
+          child: Column(
             children: <Widget>[
-              AppBar(backgroundColor: Colors.transparent),
-              PhoneFormField(
-                key: inputFieldKey,
-                defaultCountry: IsoCode.UA,
-                decoration: InputDecoration(
-                  errorText: errorText.value,
-                  hintText: $.auth.phoneNumber.enter,
-                  contentPadding: const EdgeInsets.all(12),
-                ),
-                flagSize: 18,
-                isCountryChipPersistent: true,
-                isCountrySelectionEnabled: false,
-                textAlignVertical: TextAlignVertical.center,
-                style: theme.textTheme.headlineSmall,
-                strutStyle: StrutStyle(
-                  height:
-                      (theme.textTheme.headlineSmall?.height ?? 1 / 1.1) * 1.1,
-                ),
-                countryCodeStyle: theme.textTheme.headlineSmall,
-                countrySelectorNavigator:
-                    const CountrySelectorNavigator.bottomSheet(),
-                onSaved: (final _) async => await authorizePhoneNumber(),
-                onChanged: (final _) =>
-                    isMounted() ? phoneNumber.value = _ : null,
-                toolbarOptions: const ToolbarOptions(
-                  copy: true,
-                  cut: true,
-                  paste: true,
-                  selectAll: true,
-                ),
-                validator: PhoneValidator.validMobile(
-                  errorText: $.auth.phoneNumber.error.invalid,
+              Expanded(
+                child: Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: contentPadding,
+                    children: <Widget>[
+                      const CupertinoNavigationBar(
+                        heroTag: 'authorization_screen',
+                        transitionBetweenRoutes: false,
+                        border: Border(),
+                      ),
+                      PhoneFormField(
+                        key: inputFieldKey,
+                        defaultCountry: IsoCode.UA,
+                        decoration: InputDecoration(
+                          errorText: errorText.value,
+                          hintText: $.auth.phoneNumber.enter,
+                          contentPadding: const EdgeInsets.all(12),
+                        ),
+                        flagSize: 18,
+                        isCountryChipPersistent: true,
+                        isCountrySelectionEnabled: false,
+                        textAlignVertical: TextAlignVertical.center,
+                        style: theme.textTheme.headlineSmall,
+                        strutStyle: StrutStyle(
+                          height: (theme.textTheme.headlineSmall?.height ??
+                                  1 / 1.1) *
+                              1.1,
+                        ),
+                        countryCodeStyle: theme.textTheme.headlineSmall,
+                        countrySelectorNavigator:
+                            const CountrySelectorNavigator.bottomSheet(),
+                        onSaved: (final _) => authorizePhoneNumber(),
+                        onChanged: (final _) =>
+                            isMounted() ? phoneNumber.value = _ : null,
+                        toolbarOptions: const ToolbarOptions(
+                          copy: true,
+                          cut: true,
+                          paste: true,
+                          selectAll: true,
+                        ),
+                        validator: PhoneValidator.validMobile(
+                          errorText: $.auth.phoneNumber.error.invalid,
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                      Consumer(
+                        builder: (final _, final WidgetRef ref,
+                                final Widget? child) =>
+                            ElevatedButton(
+                          onPressed: !ref.watch(_isAuthorizationLoading) &&
+                                  (phoneNumber.value?.validate() ?? false)
+                              ? authorizePhoneNumber
+                              : null,
+                          child: Text($.auth.phoneNumber.getCode),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 100),
-              Consumer(
-                builder: (final _, final WidgetRef ref, final Widget? child) =>
-                    ElevatedButton(
-                  onPressed: !ref.watch(_isAuthorizationLoading) &&
-                          (phoneNumber.value?.validate() ?? false)
-                      ? authorizePhoneNumber
-                      : null,
-                  child: Text($.auth.phoneNumber.getCode),
+              InkWell(
+                splashFactory: NoSplash.splashFactory,
+                onTap: () => logger.i('ACTION: Contact support.'),
+                child: Text(
+                  $.auth.support,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    decoration: TextDecoration.underline,
+                    color: theme.colorScheme.onPrimary,
+                  ),
                 ),
               ),
+              const SizedBox(height: 12),
             ],
           ),
         ),
-        persistentFooterButtons: <Widget>[
-          Align(
-            child: TextButton(
-              onPressed: () => logger.i('ACTION: Contact support.'),
-              style: TextButton.styleFrom(
-                textStyle: theme.textTheme.headlineMedium?.copyWith(
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-              child: Text($.auth.support),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -244,77 +257,86 @@ class SMSScreen extends HookConsumerWidget {
         (mediaQuery.size.width - contentPadding.horizontal) / (codeLength + 10);
     return FocusWrapper(
       unfocussableKeys: <GlobalKey<State<StatefulWidget>>>[codeFieldKey],
-      child: Scaffold(
+      child: CupertinoPageScaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
+        navigationBar: CupertinoNavigationBar(
+          heroTag: 'sms_screen',
+          transitionBetweenRoutes: false,
+          border: const Border(
+            bottom: BorderSide(width: 0, color: Color(0x33000000)),
+          ),
+          padding: const EdgeInsetsDirectional.only(start: 4),
           leading: CupertinoNavigationBarBackButton(
             previousPageTitle: $.misc.prevPage,
+            color: theme.colorScheme.onPrimary,
           ),
         ),
-        body: Center(
-          child: ListView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: contentPadding,
-            children: <Widget>[
-              Text($.auth.phoneNumber.codeSent(phoneNumber.international)),
-              const SizedBox(height: 24),
-              PinCodeTextField(
-                key: codeFieldKey,
-                appContext: context,
-                errorAnimationController: errorController,
-                length: codeLength,
-                animationType: AnimationType.fade,
-                showCursor: false,
-                hintCharacter: '-',
-                textStyle: theme.textTheme.displaySmall,
-                animationDuration: const Duration(milliseconds: 200),
-                pinTheme: PinTheme(
-                  shape: PinCodeFieldShape.box,
-                  fieldHeight: fieldSize < 40 ? 40 : fieldSize,
-                  fieldWidth: fieldSize < 40 ? 40 : fieldSize,
-                  errorBorderColor: theme.colorScheme.error,
-                  borderWidth: 3,
-                  activeColor: theme.colorScheme.onPrimary,
-                  disabledColor: theme.colorScheme.primaryContainer,
-                  inactiveColor: theme.colorScheme.primary,
-                  selectedColor: theme.colorScheme.tertiary,
-                  activeFillColor: theme.colorScheme.onPrimary,
-                  inactiveFillColor: theme.colorScheme.primary,
-                  selectedFillColor: Colors.transparent,
+        child: Material(
+          child: Center(
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: contentPadding,
+              children: <Widget>[
+                Text($.auth.phoneNumber.codeSent(phoneNumber.international)),
+                const SizedBox(height: 24),
+                PinCodeTextField(
+                  key: codeFieldKey,
+                  appContext: context,
+                  errorAnimationController: errorController,
+                  length: codeLength,
+                  animationType: AnimationType.fade,
+                  showCursor: false,
+                  hintCharacter: '-',
+                  textStyle: theme.textTheme.displaySmall,
+                  animationDuration: const Duration(milliseconds: 200),
+                  pinTheme: PinTheme(
+                    shape: PinCodeFieldShape.box,
+                    fieldHeight: fieldSize < 40 ? 40 : fieldSize,
+                    fieldWidth: fieldSize < 40 ? 40 : fieldSize,
+                    errorBorderColor: theme.colorScheme.error,
+                    borderWidth: 3,
+                    activeColor: theme.colorScheme.onPrimary,
+                    disabledColor: theme.colorScheme.primaryContainer,
+                    inactiveColor: theme.colorScheme.primary,
+                    selectedColor: theme.colorScheme.tertiary,
+                    activeFillColor: theme.colorScheme.onPrimary,
+                    inactiveFillColor: theme.colorScheme.primary,
+                    selectedFillColor: Colors.transparent,
+                  ),
+                  backgroundColor: Colors.transparent,
+                  onCompleted: (final String value) async => isMounted()
+                      ? (errorText.value = await verify(value)).isNotEmpty
+                          ? isMounted()
+                              ? errorController.add(ErrorAnimationType.shake)
+                              : null
+                          : await navigator.maybePop()
+                      : null,
+                  onChanged: (final _) {},
+                  beforeTextPaste: (final String? value) {
+                    logger.i('Allowing to paste $value');
+                    return true;
+                  },
                 ),
-                backgroundColor: Colors.transparent,
-                onCompleted: (final String value) async => isMounted()
-                    ? (errorText.value = await verify(value)).isNotEmpty
-                        ? isMounted()
-                            ? errorController.add(ErrorAnimationType.shake)
-                            : null
-                        : await navigator.maybePop()
-                    : null,
-                onChanged: (final _) {},
-                beforeTextPaste: (final String? value) {
-                  logger.i('Allowing to paste $value');
-                  return true;
-                },
-              ),
-              const SizedBox(height: 100),
-              if (resend != null)
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text($.auth.phoneNumber.resendCodePrompt),
-                    const SizedBox(height: 8),
-                    Consumer(
-                      builder:
-                          (final _, final WidgetRef ref, final Widget? child) =>
-                              ElevatedButton(
-                        onPressed: ref.watch(_isCodeLoading) ? null : resend,
-                        child: Text($.auth.phoneNumber.resendCode),
-                      ),
-                    )
-                  ],
-                ),
-            ],
+                const SizedBox(height: 100),
+                if (resend != null)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text($.auth.phoneNumber.resendCodePrompt),
+                      const SizedBox(height: 8),
+                      Consumer(
+                        builder: (final _, final WidgetRef ref,
+                                final Widget? child) =>
+                            ElevatedButton(
+                          onPressed: ref.watch(_isCodeLoading) ? null : resend,
+                          child: Text($.auth.phoneNumber.resendCode),
+                        ),
+                      )
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
         // bottomNavigationBar: Align(

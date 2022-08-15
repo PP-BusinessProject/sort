@@ -61,7 +61,9 @@ class FocusWrapper extends StatelessWidget {
   }
 }
 
-extension on GlobalKey<Object?> {
+/// The extension on [GlobalKey] to return its current paint bounds.
+extension GlobalPaintBounds on GlobalKey<Object?> {
+  /// Return current paint bounds of this key.
   Rect? get globalPaintBounds {
     final RenderObject? renderObject = currentContext?.findRenderObject();
     final Vector3? translation =

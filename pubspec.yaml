@@ -7,11 +7,18 @@ environment:
   flutter: '>=3.0.0 <4.0.0'
 
 dependencies:
+  animate_do: ^2.1.0
+  blur: ^3.1.0
+  cached_network_image: ^3.2.1
+  card_swiper: ^2.0.4
   catcher: ^0.6.9
   collection: ^1.16.0
   control_style: ^0.0.2
+  cupertino_icons: ^1.0.5
   dio: ^4.0.6
+  dismissible_page: ^0.7.3 
   email_validator: ^2.1.17
+  expand_tap_area: ^1.1.1
   firebase_auth: ^3.6.1
   firebase_core: ^1.20.0
   firebase_crashlytics: ^2.8.6
@@ -20,14 +27,16 @@ dependencies:
   flutter_hooks: ^0.18.5+1
   flutter_localizations:
     sdk: flutter
+  flutter_map: ^2.2.0
+  flutter_map_marker_cluster: ^0.5.0
   flutter_riverpod: ^2.0.0-dev.9
   geolocator: ^9.0.0
-  google_maps_flutter: ^2.1.8
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hooks_riverpod: ^2.0.0-dev.9
   intl: ^0.17.0
   json_converters_lite: ^1.0.2+1
+  latlong2: ^0.8.1
   logger: ^1.1.0
   logging: ^1.0.2
   meta: ^1.8.0
@@ -39,6 +48,7 @@ dependencies:
   pin_code_fields: ^7.4.0
   pull_to_refresh: ^2.0.0
   riverpod: ^2.0.0-dev.9
+  snapping_sheet: ^3.1.0
   splash: ^1.1.0
   syncfusion_flutter_barcodes: ^20.2.40
   syncfusion_flutter_charts: ^20.2.40
@@ -58,24 +68,18 @@ dev_dependencies:
     path: ../generators
 
 dependency_overrides:
+  flutter_map: ^2.2.0
   meta: ^1.8.0
 
 flutter:
   assets:
     - source/assets/
+    - source/assets/countries/
+
   fonts:
     - family: Icons
       fonts:
         - asset: source/icons.ttf
-
-    - family: SF Pro Text
-      fonts:
-        - asset: source/fonts/SF-Pro-Text-Regular.otf
-          weight: 400
-        - asset: source/fonts/SF-Pro-Text-Medium.otf
-          weight: 500
-        - asset: source/fonts/SF-Pro-Text-Bold.otf
-          weight: 700
 
 flavorizr:
   ide: vscode
