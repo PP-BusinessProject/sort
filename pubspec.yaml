@@ -16,7 +16,7 @@ dependencies:
   control_style: ^0.0.2
   cupertino_icons: ^1.0.5
   dio: ^4.0.6
-  dismissible_page: ^0.7.3 
+  dismissible_page: ^0.7.3
   email_validator: ^2.1.17
   expand_tap_area: ^1.1.1
   firebase_auth: ^3.6.1
@@ -80,6 +80,16 @@ flutter:
     - family: Icons
       fonts:
         - asset: source/icons.ttf
+
+    # Use only for Android
+    - family: .SF Pro Text
+      fonts:
+        - asset: source/fonts/SF-Pro-Text-Regular.otf
+          weight: 400
+        - asset: source/fonts/SF-Pro-Text-Medium.otf
+          weight: 500
+        - asset: source/fonts/SF-Pro-Text-Bold.otf
+          weight: 700
 
 flavorizr:
   ide: vscode

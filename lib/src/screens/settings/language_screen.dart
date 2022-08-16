@@ -17,6 +17,7 @@ class LanguageScreen extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final I18NLocale currentLocale = ref.watch(i18nProvider);
     final I18N $ = currentLocale();
     return CupertinoPageScaffold(
@@ -25,41 +26,45 @@ class LanguageScreen extends HookConsumerWidget {
         border: const Border(),
         previousPageTitle: $.settings.settings,
       ),
-      child: Align(
-        child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              for (final Widget widget
-                  in I18NLocale.values.reversed.map((final I18NLocale locale) {
-                final String localeTitle;
-                final String translatedLocaleTitle;
-                final String imagePath;
-                switch (locale) {
-                  case I18NLocale.ukUA:
-                    localeTitle = locale().settings.language.ukUa;
-                    translatedLocaleTitle = $.settings.language.ukUa;
-                    imagePath = assets.countries.ukraine;
-                    break;
-                  case I18NLocale.enUS:
-                    localeTitle = locale().settings.language.enUs;
-                    translatedLocaleTitle = $.settings.language.enUs;
-                    imagePath = assets.countries.england;
-                    break;
-                }
-                return _button(
-                  title: localeTitle,
-                  secondTitle: translatedLocaleTitle,
-                  imagePath: imagePath,
-                  onPressed: currentLocale == locale
-                      ? null
-                      : () => ref.read(i18nProvider.notifier).state = locale,
-                  theme,
-                );
-              })) ...<Widget>[widget, const SizedBox(height: 36)]
-            ]..removeLast(),
+      child: SafeArea(
+        child: Align(
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                for (final Widget widget in I18NLocale.values.reversed
+                    .map((final I18NLocale locale) {
+                  final String localeTitle;
+                  final String translatedLocaleTitle;
+                  final String imagePath;
+                  switch (locale) {
+                    case I18NLocale.ukUA:
+                      localeTitle = locale().settings.language.ukUa;
+                      translatedLocaleTitle = $.settings.language.ukUa;
+                      imagePath = assets.countries.ukraine;
+                      break;
+                    case I18NLocale.enUS:
+                      localeTitle = locale().settings.language.enUs;
+                      translatedLocaleTitle = $.settings.language.enUs;
+                      imagePath = assets.countries.england;
+                      break;
+                  }
+                  return _button(
+                    title: localeTitle,
+                    secondTitle: translatedLocaleTitle,
+                    imagePath: imagePath,
+                    onPressed: currentLocale == locale
+                        ? null
+                        : () => ref.read(i18nProvider.notifier).state = locale,
+                    theme,
+                  );
+                })) ...<Widget>[widget, const SizedBox(height: 36)],
+                if (mediaQuery.orientation == Orientation.portrait)
+                  const SizedBox(height: 72),
+              ],
+            ),
           ),
         ),
       ),

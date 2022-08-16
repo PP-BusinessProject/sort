@@ -13,11 +13,11 @@ import '../utils/l10n.dart';
 
 /// The generated [I18N] enumeration.
 enum I18NLocale {
-  /// The implementation of the [ukUA] locale.
-  ukUA,
-
   /// The implementation of the [enUS] locale.
-  enUS;
+  enUS,
+
+  /// The implementation of the [ukUA] locale.
+  ukUA;
 
   /// Return the current active locale.
   static I18NLocale get current {
@@ -31,20 +31,20 @@ enum I18NLocale {
   /// Return the localization for this locale.
   I18N call() {
     switch (this) {
-      case I18NLocale.ukUA:
-        return ukUAI18N;
       case I18NLocale.enUS:
         return enUSI18N;
+      case I18NLocale.ukUA:
+        return ukUAI18N;
     }
   }
 
   /// Return the name of this locale.
   String get name {
     switch (this) {
-      case I18NLocale.ukUA:
-        return 'uk_UA';
       case I18NLocale.enUS:
         return 'en_US';
+      case I18NLocale.ukUA:
+        return 'uk_UA';
     }
   }
 }

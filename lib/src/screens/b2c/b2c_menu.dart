@@ -55,207 +55,219 @@ class B2CMenu extends HookConsumerWidget {
                     color: Colors.transparent,
                     clipBehavior: Clip.hardEdge,
                     borderRadius: BorderRadius.circular(10),
-                    child: const Blur(
+                    child: Blur(
                       blur: 16,
-                      colorOpacity: 0,
-                      child: SizedBox.expand(),
+                      blurColor: theme.brightness == Brightness.light
+                          ? Colors.white
+                          : Colors.black,
+                      colorOpacity: 1 / 5,
+                      child: const SizedBox.expand(),
                     ),
                   ),
 
                   /// Main Content
-                  SingleChildScrollView(
-                    physics: const ClampingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ).copyWith(bottom: 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        /// Title
-                        Stack(
-                          alignment: Alignment.topCenter,
-                          children: <Widget>[
-                            Text(
-                              $.menu.menu,
-                              style: theme.textTheme.displaySmall?.copyWith(
-                                color: theme.colorScheme.onSurface,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Tooltip(
-                                message: $.menu.closeHint,
-                                child: SortIconButton(
-                                  CupertinoIcons.clear,
-                                  onTap: navigator.maybePop,
-                                  iconSize: 16,
-                                  radius: 24 / 2,
+                  SafeArea(
+                    left: mediaQuery.orientation == Orientation.landscape,
+                    top: mediaQuery.orientation == Orientation.landscape,
+                    right: mediaQuery.orientation == Orientation.landscape,
+                    bottom: mediaQuery.orientation == Orientation.landscape,
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ).copyWith(bottom: 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          /// Title
+                          Stack(
+                            alignment: Alignment.topCenter,
+                            children: <Widget>[
+                              Text(
+                                $.menu.menu,
+                                style: theme.textTheme.displaySmall?.copyWith(
+                                  color: theme.colorScheme.onSurface,
                                 ),
                               ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Tooltip(
+                                  message: $.menu.closeHint,
+                                  child: SortIconButton(
+                                    CupertinoIcons.clear,
+                                    onTap: navigator.maybePop,
+                                    iconSize: 16,
+                                    radius: 24 / 2,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          /// Profile Edit
+                          const SizedBox(height: 24),
+                          const SizedBox(
+                            height: 48,
+                            child: B2CMenuProfileCard(),
+                          ),
+
+                          /// Payment
+                          const SizedBox(height: 36),
+                          SizedBox(
+                            height: 36,
+                            child: Row(
+                              children: <Widget>[
+                                /// Abonement
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size.infinite,
+                                    ),
+                                    onPressed: () {},
+                                    child: Text(
+                                      $.menu.abonement,
+                                      style: theme.textTheme.bodyLarge,
+                                    ),
+                                  ),
+                                ),
+
+                                /// Individual
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size.infinite,
+                                    ),
+                                    onPressed: () {},
+                                    child: Text(
+                                      $.menu.individual,
+                                      style: theme.textTheme.bodyLarge,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-
-                        /// Profile Edit
-                        const SizedBox(height: 24),
-                        const SizedBox(height: 48, child: B2CMenuProfileCard()),
-
-                        /// Payment
-                        const SizedBox(height: 36),
-                        SizedBox(
-                          height: 36,
-                          child: Row(
+                          ),
+                          const SizedBox(height: 36),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              /// Abonement
-                              Expanded(
+                              /// History
+                              SizedBox(
+                                height: 36,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     minimumSize: Size.infinite,
+                                    primary: theme.colorScheme.surface,
                                   ),
                                   onPressed: () {},
                                   child: Text(
-                                    $.menu.abonement,
+                                    $.menu.history,
                                     style: theme.textTheme.bodyLarge,
                                   ),
                                 ),
                               ),
 
-                              /// Individual
-                              const SizedBox(width: 12),
-                              Expanded(
+                              /// Statistics
+                              const SizedBox(height: 12),
+                              SizedBox(
+                                height: 36,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     minimumSize: Size.infinite,
+                                    primary: theme.colorScheme.surface,
                                   ),
                                   onPressed: () {},
                                   child: Text(
-                                    $.menu.individual,
+                                    $.menu.statistics,
+                                    style: theme.textTheme.bodyLarge,
+                                  ),
+                                ),
+                              ),
+
+                              /// Settings
+                              const SizedBox(height: 12),
+                              SizedBox(
+                                height: 36,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size.infinite,
+                                    primary: theme.colorScheme.surface,
+                                  ),
+                                  onPressed: () => navigator.push<void>(
+                                    PageTransition<void>(
+                                      type: PageTransitionType.fade,
+                                      child: const SettingsScreen(),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    $.settings.settings,
+                                    style: theme.textTheme.bodyLarge,
+                                  ),
+                                ),
+                              ),
+
+                              /// Support
+                              const SizedBox(height: 12),
+                              SizedBox(
+                                height: 36,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize: Size.infinite,
+                                    primary: theme.colorScheme.surface,
+                                  ),
+                                  onPressed: () {},
+                                  child: Text(
+                                    $.menu.support,
                                     style: theme.textTheme.bodyLarge,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 36),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            /// History
-                            SizedBox(
-                              height: 36,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size.infinite,
+                          const SizedBox(height: 18),
+                          Wrap(
+                            spacing: 8,
+                            children: <Widget>[
+                              TextButton(
+                                style: TextButton.styleFrom(
                                   primary: theme.colorScheme.surface,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
                                 ),
                                 onPressed: () {},
                                 child: Text(
-                                  $.menu.history,
-                                  style: theme.textTheme.bodyLarge,
+                                  $.settings.about.privacyPolicy,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.onSurface,
+                                  ),
                                 ),
                               ),
-                            ),
-
-                            /// Statistics
-                            const SizedBox(height: 12),
-                            SizedBox(
-                              height: 36,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size.infinite,
+                              TextButton(
+                                style: TextButton.styleFrom(
                                   primary: theme.colorScheme.surface,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
                                 ),
                                 onPressed: () {},
                                 child: Text(
-                                  $.menu.statistics,
-                                  style: theme.textTheme.bodyLarge,
-                                ),
-                              ),
-                            ),
-
-                            /// Settings
-                            const SizedBox(height: 12),
-                            SizedBox(
-                              height: 36,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size.infinite,
-                                  primary: theme.colorScheme.surface,
-                                ),
-                                onPressed: () => navigator.push<void>(
-                                  PageTransition<void>(
-                                    type: PageTransitionType.fade,
-                                    child: const SettingsScreen(),
+                                  $.settings.about.termsOfUse,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.onSurface,
                                   ),
                                 ),
-                                child: Text(
-                                  $.settings.settings,
-                                  style: theme.textTheme.bodyLarge,
-                                ),
-                              ),
-                            ),
-
-                            /// Support
-                            const SizedBox(height: 12),
-                            SizedBox(
-                              height: 36,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size.infinite,
-                                  primary: theme.colorScheme.surface,
-                                ),
-                                onPressed: () {},
-                                child: Text(
-                                  $.menu.support,
-                                  style: theme.textTheme.bodyLarge,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 18),
-                        Wrap(
-                          spacing: 8,
-                          children: <Widget>[
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                primary: theme.colorScheme.surface,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: Text(
-                                $.settings.about.privacyPolicy,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onSurface,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              style: TextButton.styleFrom(
-                                primary: theme.colorScheme.surface,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8),
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: Text(
-                                $.settings.about.termsOfUse,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onSurface,
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -297,10 +309,7 @@ class B2CMenuProfileCard extends HookConsumerWidget {
                   ),
                   child: const Padding(
                     padding: EdgeInsets.all(8),
-                    child: Icon(
-                      CupertinoIcons.person_fill,
-                      size: 32,
-                    ),
+                    child: Icon(CupertinoIcons.person_fill, size: 32),
                   ),
                 ),
               ),

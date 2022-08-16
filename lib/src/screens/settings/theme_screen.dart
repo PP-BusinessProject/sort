@@ -25,44 +25,46 @@ class ThemeScreen extends HookConsumerWidget {
         border: const Border(),
         previousPageTitle: $.settings.settings,
       ),
-      child: Align(
-        child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              for (final Widget widget
-                  in ThemeMode.values.map((final ThemeMode $theme) {
-                final String title;
-                final IconData icon;
-                switch ($theme) {
-                  case ThemeMode.system:
-                    title = $.settings.theme.system;
-                    icon = mediaQuery.platformBrightness == Brightness.dark
-                        ? CupertinoIcons.moon_fill
-                        : CupertinoIcons.sun_max_fill;
-                    break;
-                  case ThemeMode.light:
-                    title = $.settings.theme.light;
-                    icon = CupertinoIcons.sun_max;
-                    break;
-                  case ThemeMode.dark:
-                    title = $.settings.theme.dark;
-                    icon = CupertinoIcons.moon;
-                    break;
-                }
-                return _button(
-                  title: title,
-                  icon: icon,
-                  onPressed: themeMode == $theme
-                      ? null
-                      : () =>
-                          ref.read(themeModeProvider.notifier).state = $theme,
-                  theme,
-                );
-              })) ...<Widget>[widget, const SizedBox(height: 36)]
-            ]..removeLast(),
+      child: SafeArea(
+        child: Align(
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                for (final Widget widget
+                    in ThemeMode.values.map((final ThemeMode $theme) {
+                  final String title;
+                  final IconData icon;
+                  switch ($theme) {
+                    case ThemeMode.system:
+                      title = $.settings.theme.system;
+                      icon = mediaQuery.platformBrightness == Brightness.dark
+                          ? CupertinoIcons.moon_fill
+                          : CupertinoIcons.sun_max_fill;
+                      break;
+                    case ThemeMode.light:
+                      title = $.settings.theme.light;
+                      icon = CupertinoIcons.sun_max;
+                      break;
+                    case ThemeMode.dark:
+                      title = $.settings.theme.dark;
+                      icon = CupertinoIcons.moon;
+                      break;
+                  }
+                  return _button(
+                    title: title,
+                    icon: icon,
+                    onPressed: themeMode == $theme
+                        ? null
+                        : () =>
+                            ref.read(themeModeProvider.notifier).state = $theme,
+                    theme,
+                  );
+                })) ...<Widget>[widget, const SizedBox(height: 36)]
+              ]..removeLast(),
+            ),
           ),
         ),
       ),

@@ -22,17 +22,17 @@ class Assets {
   /// The path to the `container.png` in `source`/`assets`.
   String get container => 'source/assets/container.png';
 
-  /// The path to the `delivery.png` in `source`/`assets`.
-  String get delivery => 'source/assets/delivery.png';
-
-  /// The path to the `logo.png` in `source`/`assets`.
-  String get logo => 'source/assets/logo.png';
-
   /// The path to the `countries` folder in `source`/`assets`.
   AssetsCountries get countries => AssetsCountries._(this);
 
-  /// The path to the `EcoCoin.png` in `source`/`assets`.
-  String get ecocoin => 'source/assets/EcoCoin.png';
+  /// The path to the `delivery.png` in `source`/`assets`.
+  String get delivery => 'source/assets/delivery.png';
+
+  /// The path to the `ecocoin.png` in `source`/`assets`.
+  String get ecocoin => 'source/assets/ecocoin.png';
+
+  /// The path to the `logo.png` in `source`/`assets`.
+  String get logo => 'source/assets/logo.png';
 
   @override
   bool operator ==(final Object? other) =>
@@ -48,11 +48,11 @@ class Assets {
 class AssetsCountries {
   const AssetsCountries._(final Assets _);
 
-  /// The path to the `ukraine.png` in `source`/`assets`/`countries`.
-  String get ukraine => 'source/assets/countries/ukraine.png';
-
   /// The path to the `england.png` in `source`/`assets`/`countries`.
   String get england => 'source/assets/countries/england.png';
+
+  /// The path to the `ukraine.png` in `source`/`assets`/`countries`.
+  String get ukraine => 'source/assets/countries/ukraine.png';
 
   @override
   bool operator ==(final Object? other) =>

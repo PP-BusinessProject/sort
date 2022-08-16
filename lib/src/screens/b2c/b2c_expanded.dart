@@ -9,6 +9,7 @@ import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
 import '../../providers/flutter_providers.dart';
 import '../../providers/model_providers.dart';
+import '../../styles.dart';
 import '../../widgets/eco_coin_balance.dart';
 import '../../widgets/sort_bonus_card.dart';
 import '../../widgets/sort_icon_button.dart';
@@ -68,19 +69,22 @@ class B2CExpanded extends HookConsumerWidget {
                     children: <Widget>[
                       /// EcoCoin button
                       Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: ElevatedButton(
-                            style: theme.elevatedButtonTheme.style?.copyWith(
-                              padding: MaterialStateProperty.all(
-                                const EdgeInsets.symmetric(
-                                  vertical: 4,
-                                  horizontal: 8,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: SizedBox(
+                            height: 30,
+                            child: ElevatedButton(
+                              style: theme.elevatedButtonTheme.style?.copyWith(
+                                padding: MaterialStateProperty.all(
+                                  const EdgeInsets.symmetric(
+                                    vertical: 4,
+                                    horizontal: 8,
+                                  ),
                                 ),
                               ),
+                              onPressed: () {},
+                              child: const EcoCoinBalance(1500),
                             ),
-                            onPressed: () {},
-                            child: const EcoCoinBalance(1500),
                           ),
                         ),
                       ),
@@ -90,6 +94,7 @@ class B2CExpanded extends HookConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
+                            /// Notifications
                             Consumer(
                               builder: (
                                 final _,
@@ -110,7 +115,7 @@ class B2CExpanded extends HookConsumerWidget {
                                       right: 2,
                                       child: Material(
                                         type: MaterialType.circle,
-                                        color: theme.colorScheme.error,
+                                        color: lightScheme.error,
                                         child:
                                             const SizedBox(height: 8, width: 8),
                                       ),
@@ -118,6 +123,8 @@ class B2CExpanded extends HookConsumerWidget {
                                 ],
                               ),
                             ),
+
+                            /// Menu
                             const SizedBox(width: 16),
                             SortIconButton(
                               CupertinoIcons.person_fill,
@@ -129,8 +136,6 @@ class B2CExpanded extends HookConsumerWidget {
                                   transitionDuration: Duration.zero,
                                   reverseTransitionDuration: Duration.zero,
                                   builder: (final _) => DismissiblePage(
-                                    isFullScreen: mediaQuery.orientation ==
-                                        Orientation.landscape,
                                     direction:
                                         DismissiblePageDismissDirection.none,
                                     minScale: 3 / 4,
@@ -183,7 +188,7 @@ class B2CExpanded extends HookConsumerWidget {
                           builder: DotSwiperPaginationBuilder(
                             size: 6,
                             activeSize: 6,
-                            color: theme.colorScheme.surfaceTint,
+                            color: theme.colorScheme.outline,
                             activeColor: theme.colorScheme.primary,
                           ),
                         )

@@ -58,7 +58,7 @@ class B2CScreen extends HookConsumerWidget {
   static final Provider<double> _expandedSnappingPositionHeightProvider =
       Provider<double>(
     (final ProviderRef<double> ref) => ref.watch(
-      rootMediaQueryProvider.select(
+      mediaQueryProvider.select(
         (final MediaQueryData? mediaQuery) {
           double height = mediaQuery!.size.height;
           height = (height - expandedHeight).clamp(0, height);
@@ -66,7 +66,7 @@ class B2CScreen extends HookConsumerWidget {
         },
       ),
     ),
-    dependencies: <ProviderOrFamily>[rootMediaQueryProvider],
+    dependencies: <ProviderOrFamily>[mediaQueryProvider],
   );
 
   /// Sheet height from 0 to 1.
@@ -75,6 +75,7 @@ class B2CScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
+    final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final LatLng? latLng =
         ref.watch(latLngProvider.select((final _) => _.valueOrNull));
@@ -182,9 +183,16 @@ class B2CScreen extends HookConsumerWidget {
               ),
               child: Stack(
                 alignment: Alignment.topCenter,
-                children: const <Widget>[
-                  Blur(blur: 8, colorOpacity: 0, child: SizedBox.expand()),
-                  SafeArea(child: B2CExpanded()),
+                children: <Widget>[
+                  Blur(
+                    blur: 8,
+                    blurColor: theme.brightness == Brightness.light
+                        ? Colors.white
+                        : Colors.black,
+                    colorOpacity: 1 / 5,
+                    child: const SizedBox.expand(),
+                  ),
+                  const SafeArea(child: B2CExpanded()),
                 ],
               ),
             ),
@@ -227,7 +235,8 @@ class B2CScreen extends HookConsumerWidget {
                       opacity: ref.watch(
                         _sheetHeight.select(
                           (final double height) => Curves.easeOutQuad.transform(
-                              1 - (height * 2 + 1 / 4).clamp(.001, 1)),
+                            1 - (height * 2 + 1 / 4).clamp(.001, 1),
+                          ),
                         ),
                       ),
                       child: child,

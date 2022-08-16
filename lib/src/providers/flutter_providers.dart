@@ -32,13 +32,14 @@ final Provider<Locale> localeProvider = Provider<Locale>(
 );
 
 /// The provider of the current app's root [Theme].
-final StateProvider<ThemeData?> rootThemeProvider =
-    StateProvider<ThemeData?>((final StateProviderRef<ThemeData?> ref) => null);
+final StateProvider<ThemeData> themeProvider = StateProvider<ThemeData>(
+  (final StateProviderRef<ThemeData?> ref) => ThemeData(),
+);
 
 /// The provider of the current app's root [MediaQuery].
-final StateProvider<MediaQueryData?> rootMediaQueryProvider =
-    StateProvider<MediaQueryData?>(
-  (final StateProviderRef<MediaQueryData?> ref) => null,
+final StateProvider<MediaQueryData> mediaQueryProvider =
+    StateProvider<MediaQueryData>(
+  (final StateProviderRef<MediaQueryData?> ref) => const MediaQueryData(),
 );
 
 /// The provider of the current [ThemeMode].

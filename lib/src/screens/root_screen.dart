@@ -161,12 +161,12 @@ class RootApp extends HookConsumerWidget {
         );
         ref.read(widgetsBindingProvider).addPostFrameCallback((final _) {
           final StateController<ThemeData?> themeNotifier =
-              ref.read(rootThemeProvider.notifier);
+              ref.read(themeProvider.notifier);
           if (themeNotifier.state != theme) {
             themeNotifier.state = theme;
           }
           final StateController<MediaQueryData?> mediaQueryNotifier =
-              ref.read(rootMediaQueryProvider.notifier);
+              ref.read(mediaQueryProvider.notifier);
           if (mediaQueryNotifier.state != mediaQuery) {
             mediaQueryNotifier.state = mediaQuery;
           }

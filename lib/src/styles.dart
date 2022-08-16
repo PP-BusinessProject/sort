@@ -46,7 +46,6 @@ final ImageFilter backgroundBlur = ImageFilter.blur(sigmaX: 64, sigmaY: 64);
 /// The [Brightness.light] [ColorScheme] used as a default.
 const ColorScheme lightScheme = ColorScheme.light(
   background: Color(0xffFAFAFA),
-  surface: Color(0xffFAFAFA),
   onPrimary: Color(0xff79D682),
   primary: Color(0xffC9EACC),
   secondary: Color(0xffF9E8BC),
@@ -55,6 +54,7 @@ const ColorScheme lightScheme = ColorScheme.light(
   tertiary: Color(0xff5FB464),
   shadow: Color(0x40000000),
   surfaceTint: Color(0xff8F8F8F),
+  outline: Color(0xff9D9D9D),
 );
 
 /// The [Brightness.dark] [ColorScheme] used as a default.
@@ -69,6 +69,7 @@ const ColorScheme darkScheme = ColorScheme.dark(
   tertiary: Color(0xff73B676),
   shadow: Color(0x40000000),
   surfaceTint: Color(0xff6D6C6C),
+  outline: Color(0xffBDBDBD),
 );
 
 /// The `Material3` [TextTheme] used as a default.
@@ -157,6 +158,7 @@ extension ApplyThemeData on ThemeData {
         visualDensity: VisualDensity.compact,
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         dividerColor: Colors.transparent,
+        scaffoldBackgroundColor: colorScheme.background,
         disabledColor: colorScheme.primaryContainer,
         splashColor: colorScheme.shadow.withOpacity(1 / 10),
         appBarTheme: AppBarTheme(
@@ -171,7 +173,7 @@ extension ApplyThemeData on ThemeData {
           selectionColor: colorScheme.onPrimary,
           selectionHandleColor: colorScheme.onPrimary,
         ),
-        iconTheme: const IconThemeData(size: 24),
+        iconTheme: IconThemeData(size: 24, color: colorScheme.onSurface),
         tooltipTheme: TooltipThemeData(
           textStyle: textTheme.bodyMedium,
           waitDuration: const Duration(seconds: 1),
@@ -215,7 +217,7 @@ extension ApplyThemeData on ThemeData {
             onPrimary: colorScheme.onSurface,
             textStyle: textTheme.headlineSmall,
             splashFactory: NoSplash.splashFactory,
-          ).apply(this, foregroundColor: colorScheme.onBackground),
+          ).apply(this, foregroundColor: colorScheme.onSurface),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(

@@ -5,6 +5,7 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../generated/i18n.g.dart';
 import '../../providers/flutter_providers.dart';
+import 'about_screen.dart';
 import 'language_screen.dart';
 import 'theme_screen.dart';
 
@@ -27,54 +28,61 @@ class SettingsScreen extends HookConsumerWidget {
         border: const Border(),
         previousPageTitle: $.menu.menu,
       ),
-      child: Align(
-        child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _button(
-                title: $.settings.language.language,
-                onPressed: () => navigator.push<void>(
-                  PageTransition<void>(
-                    type: PageTransitionType.fade,
-                    child: const LanguageScreen(),
+      child: SafeArea(
+        child: Align(
+          child: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _button(
+                  title: $.settings.language.language,
+                  onPressed: () => navigator.push<void>(
+                    PageTransition<void>(
+                      type: PageTransitionType.fade,
+                      child: const LanguageScreen(),
+                    ),
                   ),
+                  theme,
                 ),
-                theme,
-              ),
-              const SizedBox(height: buttonHeight * 3 / 4),
-              _button(
-                title: $.settings.theme.theme,
-                onPressed: () => navigator.push<void>(
-                  PageTransition<void>(
-                    type: PageTransitionType.fade,
-                    child: const ThemeScreen(),
+                const SizedBox(height: buttonHeight * 3 / 4),
+                _button(
+                  title: $.settings.theme.theme,
+                  onPressed: () => navigator.push<void>(
+                    PageTransition<void>(
+                      type: PageTransitionType.fade,
+                      child: const ThemeScreen(),
+                    ),
                   ),
+                  theme,
                 ),
-                theme,
-              ),
-              const SizedBox(height: buttonHeight * 3 / 4),
-              _button(
-                title: $.settings.notification.notification,
-                onPressed: () {},
-                theme,
-              ),
-              const SizedBox(height: buttonHeight * 3 / 4),
-              _button(
-                title: $.settings.about.about,
-                onPressed: () {},
-                theme,
-              ),
-              const SizedBox(height: buttonHeight * 3 / 4),
-              _button(
-                logOut: true,
-                title: $.settings.logout,
-                onPressed: () {},
-                theme,
-              ),
-            ],
+                const SizedBox(height: buttonHeight * 3 / 4),
+                _button(
+                  title: $.settings.notification.notification,
+                  onPressed: () {},
+                  theme,
+                ),
+                const SizedBox(height: buttonHeight * 3 / 4),
+                _button(
+                  title: $.settings.about.about,
+                  onPressed: () => navigator.push<void>(
+                    PageTransition<void>(
+                      type: PageTransitionType.fade,
+                      child: const AboutScreen(),
+                    ),
+                  ),
+                  theme,
+                ),
+                const SizedBox(height: buttonHeight * 3 / 4),
+                _button(
+                  logOut: true,
+                  title: $.settings.logout,
+                  onPressed: () {},
+                  theme,
+                ),
+              ],
+            ),
           ),
         ),
       ),
