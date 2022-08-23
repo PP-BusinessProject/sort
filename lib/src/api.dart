@@ -9,6 +9,7 @@ import 'package:meta/meta.dart';
 
 import 'utils/logger.dart';
 
+/// The api on the [https://sort-api.herokuapp.com/].
 final SortAPI sortApi = SortAPI._(
   BaseOptions(
     baseUrl: 'https://sort-api.herokuapp.com',
@@ -22,14 +23,19 @@ final SortAPI sortApi = SortAPI._(
   ),
 );
 
+/// The api on the [https://sort-api.herokuapp.com/].
 @sealed
 @immutable
 class SortAPI {
   SortAPI._([final BaseOptions? options]) : _dio = Dio(options) {
-    _dio.interceptors.add(ExceptionInterceptor());
+    _dio.interceptors.add(ExceptionInterceptor._());
   }
   final Dio _dio;
 
+  /// Return the count of values on [path] with [parameters].
+  ///
+  /// - **path**: The local path on this api to get events from.
+  /// - **parameters**: The parameters on the [path] request.
   Future<int> getCount(
     final String path, {
     final Map<String, Object?>? parameters,
@@ -42,10 +48,17 @@ class SortAPI {
     return int.parse(response.data!);
   }
 
+  /// Return the [Stream] of events on [path] with [parameters].
+  ///
+  /// - **path**: The local path on this api to get events from.
+  /// - **parameters**: The parameters on the [path] request.
+  /// - **fromJson**: The convertion function used to convert received value.
+  /// - **suppress**: If this is true, any errors on [Stream] are ignored and
+  /// [Stream] is requested indefinetely.
   Stream<StreamEvent<T>> getStream<T extends Object?>(
     final String path, {
-    final T Function(Object? value)? fromJson,
     final Map<String, Object?>? parameters,
+    final T Function(Object? value)? fromJson,
     final bool suppress = false,
   }) async* {
     final String $path =
@@ -80,16 +93,29 @@ class SortAPI {
     }
   }
 
+  /// Return the value of type [T] on [path] with [parameters].
+  ///
+  /// - **path**: The local path on this api to get value of type [T] from.
+  /// - **parameters**: The parameters on the [path] request.
+  /// - **fromJson**: The convertion function used to convert received value.
   Future<T> get<T extends Object?>(
     final String path, {
-    final T Function(Object? value)? fromJson,
     final Map<String, Object?>? parameters,
+    final T Function(Object? value)? fromJson,
   }) async {
     final Response<Object?> response =
         await _dio.get<Object?>(path, queryParameters: parameters);
     return fromJson != null ? fromJson(response.data) : response.data as T;
   }
 
+  /// Send the [value] of type [T] to [path], optionally [returning] it.
+  ///
+  /// - **path**: The local path on this api to send the [value] to.
+  /// - **value**: The value to send to [path].
+  /// - **toJson**: The convertion function used to convert sent [value].
+  /// - **fromJson**: The convertion function used to convert received value.
+  /// - **returning**: If the sent value should be returned from [path].
+  ///     - If this is `false`, the return value is always null.
   Future<T?> post<T extends Object?>(
     final String path,
     final T value, {
@@ -105,6 +131,14 @@ class SortAPI {
     return data != null && fromJson != null ? fromJson(data) : null;
   }
 
+  /// Update the [value] of type [T] on [path], optionally [returning] it.
+  ///
+  /// - **path**: The local path on this api to update the [value] on.
+  /// - **value**: The value to update on [path].
+  /// - **toJson**: The convertion function used to convert sent [value].
+  /// - **fromJson**: The convertion function used to convert received value.
+  /// - **returning**: If the updated [value] should be returned from [path].
+  ///     - If this is `false`, the return value is always `null`.
   Future<T?> put<T extends Object?>(
     final String path,
     final T value, {
@@ -120,6 +154,13 @@ class SortAPI {
     return data != null && fromJson != null ? fromJson(data) : null;
   }
 
+  /// Delete the value of type [T] defined by [parameters] on [path],
+  /// optionally [returning] it.
+  ///
+  /// - **path**: The local path on this api to get events from.
+  /// - **fromJson**: The convertion function used to convert received value.
+  /// - **returning**: If the deleted value should be returned from [path].
+  ///     - If this is `false`, the return value is always `null`.
   Future<T?> delete<T extends Object>(
     final String path, {
     final T Function(Object? value)? fromJson,
@@ -133,21 +174,6 @@ class SortAPI {
     final Object? data = response.data;
     return data != null && fromJson != null ? fromJson(data) : null;
   }
-}
-
-/// The type of the event on [SortAPI.getStream].
-enum StreamEventType {
-  /// Event is a `PING`.
-  ping,
-
-  /// Event is a database `INSERT` of the model.
-  insert,
-
-  /// Event is a database `UPDATE` of the model.
-  update,
-
-  /// Event is a database `DELETE` of the model.
-  delete
 }
 
 /// The event on [SortAPI.getStream].
@@ -198,9 +224,15 @@ class StreamEvent<T extends Object?> {
       'timestamp: $timestamp)';
 }
 
+/// The exception on the [SortAPI].
 class SortAPIException extends DioError {
-  SortAPIException({required final super.requestOptions, final super.response});
+  /// The exception on the [SortAPI].
+  SortAPIException._({
+    required final super.requestOptions,
+    final super.response,
+  });
 
+  /// The data of this exception.
   Map<String, Object?>? get data => response?.data is Map<String, Object?>
       ? response!.data! as Map<String, Object?>
       : null;
@@ -221,8 +253,11 @@ class SortAPIException extends DioError {
   }
 }
 
+/// The exception interceptor of the [SortAPI].
 @immutable
 class ExceptionInterceptor extends Interceptor {
+  ExceptionInterceptor._();
+
   @override
   void onResponse(
     final Response<Object?> response,
@@ -232,7 +267,7 @@ class ExceptionInterceptor extends Interceptor {
     if (statusCode == null) {
       handler.next(response);
     } else if (statusCode >= 400) {
-      final SortAPIException exception = SortAPIException(
+      final SortAPIException exception = SortAPIException._(
         requestOptions: response.requestOptions,
         response: response,
       );

@@ -1,1 +1,2139 @@
-{"AddressModel":{"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"country":{"type":"str","default":"Ukraine","doc":null,"nullable":false,"compare":false,"equality":true},"state":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"city":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"street":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"building":{"type":"int","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"appartment":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"postal_code":{"type":"int","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"banks":{"type":"BankModel[]","default":[],"doc":null,"nullable":false,"equality":false},"companies":{"type":"CompanyModel[]","default":[],"doc":null,"nullable":false,"equality":false},"containers":{"type":"ContainerModel[]","default":[],"doc":null,"nullable":false,"equality":false},"deliveries":{"type":"DeliveryModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"BankModel":{"code":{"type":"int","default":null,"doc":null,"nullable":false,"compare":true,"equality":true},"name":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"address_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"address":{"type":"AddressModel","default":null,"doc":null,"nullable":true,"equality":false},"companies":{"type":"CompanyModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"ImageModel":{"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"url":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"bonuses":{"type":"BonusImageModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"MeasurementModel":{"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"name":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"container_tank_types":{"type":"ContainerTankTypeModel[]","default":[],"doc":null,"nullable":false,"equality":false},"services":{"type":"ServiceModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"PriceModel":{"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"name":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"deals":{"type":"DealModel[]","default":[],"doc":null,"nullable":false,"equality":false},"bonuses":{"type":"BonusPriceModel[]","default":[],"doc":null,"nullable":false,"equality":false},"services":{"type":"ServicePriceModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"LocaleModel":{"locale_alpha_2":{"type":"str","default":null,"doc":null,"nullable":false,"compare":true,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"texts":{"type":"LocaleTextModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"TextModel":{"key":{"type":"str","default":null,"doc":null,"nullable":false,"compare":true,"equality":true},"text":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"locales":{"type":"LocaleTextModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"LocaleTextModel":{"key":{"type":"str","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"locale_alpha_2":{"type":"str","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"fallback_text":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"locale":{"type":"LocaleModel","default":null,"doc":null,"nullable":true,"equality":false},"text":{"type":"TextModel","default":null,"doc":null,"nullable":true,"equality":false}},"SettingsModel":{"id":{"type":"bool","default":true,"doc":null,"nullable":false,"compare":false,"equality":true},"fallback_locale_alpha_2":{"type":"str","default":"UA","doc":null,"nullable":true,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false}},"UserModel":{"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"first_name":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"last_name":{"type":"str","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"phone_number":{"type":"int","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"email":{"type":"str","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"birthday":{"type":"date","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"deals":{"type":"DealModel[]","default":[],"doc":null,"nullable":false,"equality":false},"active_deal":{"type":"DealModel","default":null,"doc":null,"nullable":true,"equality":false},"company":{"type":"CompanyModel","default":null,"doc":null,"nullable":true,"equality":false},"person":{"type":"PersonModel","default":null,"doc":null,"nullable":true,"equality":false},"group":{"type":"GroupModel","default":null,"doc":null,"nullable":true,"equality":false},"bonuses":{"type":"BonusModel[]","default":[],"doc":null,"nullable":false,"equality":false},"containers":{"type":"ContainerModel[]","default":[],"doc":null,"nullable":false,"equality":false},"openings":{"type":"ContainerTankOpeningModel[]","default":[],"doc":null,"nullable":false,"equality":false},"clearings":{"type":"ContainerTankClearingModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"CompanyModel":{"registry_number":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"tax_number":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"address_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"real_address_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"bank_code":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"bank_account_number":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"bank":{"type":"BankModel","default":null,"doc":null,"nullable":true,"equality":false},"address":{"type":"AddressModel","default":null,"doc":null,"nullable":true,"equality":false},"real_address":{"type":"AddressModel","default":null,"doc":null,"nullable":true,"equality":false},"contacts":{"type":"CompanyContactModel[]","default":[],"doc":null,"nullable":false,"equality":false},"user":{"type":"UserModel","default":null,"doc":null,"nullable":true,"equality":false}},"CompanyContactModel":{"company_registry_number":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"type":{"type":"enum[DIRECTOR, ACCOUNTANT, MANAGER]","default":"DIRECTOR","doc":null,"nullable":false,"compare":false,"equality":true},"first_name":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"last_name":{"type":"str","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"phone_number":{"type":"int","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"email":{"type":"str","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"birthday":{"type":"date","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"company":{"type":"CompanyModel","default":null,"doc":null,"nullable":true,"equality":false}},"DealModel":{"owner_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"price_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"payment_type":{"type":"bool","default":false,"doc":null,"nullable":false,"compare":false,"equality":true},"refferal_discount":{"type":"float","default":0.0,"doc":null,"nullable":false,"compare":false,"equality":true},"active_till":{"type":"datetime","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"owner":{"type":"UserModel","default":null,"doc":null,"nullable":true,"equality":false},"price":{"type":"PriceModel","default":null,"doc":null,"nullable":true,"equality":false},"services":{"type":"DealServiceModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"ServiceModel":{"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"name":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"description":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"measurement_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"measurement":{"type":"MeasurementModel","default":null,"doc":null,"nullable":true,"equality":false},"prices":{"type":"ServicePriceModel[]","default":[],"doc":null,"nullable":false,"equality":false},"deals":{"type":"DealServiceModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"DealServiceModel":{"deal_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"service_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"amount":{"type":"float","default":1,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"deal":{"type":"DealModel","default":null,"doc":null,"nullable":true,"equality":false},"service":{"type":"ServiceModel","default":null,"doc":null,"nullable":true,"equality":false},"openings":{"type":"ContainerTankOpeningModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"GroupModel":{"owner_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"name":{"type":"str","default":"","doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"owner":{"type":"UserModel","default":null,"doc":null,"nullable":true,"equality":false},"members":{"type":"GroupMemberModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"GroupMemberModel":{"group_owner_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"user_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"accepted":{"type":"bool","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"rights":{"type":"flag[OPEN_CONTAINERS, SCAN_BONUSES, EDIT_BONUSES, MANAGE_MEMBERS]","default":"EDIT_BONUSES|OPEN_CONTAINERS","doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"group":{"type":"GroupModel","default":null,"doc":null,"nullable":true,"equality":false}},"PersonModel":{"user_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"gender":{"type":"bool","default":false,"doc":null,"nullable":false,"compare":false,"equality":true},"family_count":{"type":"int","default":1,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"user":{"type":"UserModel","default":null,"doc":null,"nullable":true,"equality":false}},"ServicePriceModel":{"service_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"price_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"value":{"type":"float","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"service":{"type":"ServiceModel","default":null,"doc":null,"nullable":true,"equality":false},"price":{"type":"PriceModel","default":null,"doc":null,"nullable":true,"equality":false}},"BonusModel":{"owner_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"name":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"description":{"type":"str","default":"","doc":null,"nullable":false,"compare":false,"equality":true},"user_limit":{"type":"int","default":0,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"owner":{"type":"UserModel","default":null,"doc":null,"nullable":true,"equality":false},"images":{"type":"BonusImageModel[]","default":[],"doc":null,"nullable":false,"equality":false},"coupons":{"type":"BonusCouponModel[]","default":[],"doc":null,"nullable":false,"equality":false},"prices":{"type":"BonusPriceModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"BonusCouponModel":{"bonus_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"hash":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"active":{"type":"bool","default":true,"doc":null,"nullable":false,"compare":false,"equality":true},"owner_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"bonus":{"type":"BonusModel","default":null,"doc":null,"nullable":true,"equality":false}},"BonusImageModel":{"bonus_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"image_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"bonus":{"type":"BonusModel","default":null,"doc":null,"nullable":true,"equality":false},"image":{"type":"ImageModel","default":null,"doc":null,"nullable":true,"equality":false}},"BonusPriceModel":{"bonus_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"price_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"value":{"type":"float","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"bonus":{"type":"BonusModel","default":null,"doc":null,"nullable":true,"equality":false},"price":{"type":"PriceModel","default":null,"doc":null,"nullable":true,"equality":false}},"ContainerModel":{"owner_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"latitude":{"type":"float","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"longtitude":{"type":"float","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"address_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"address":{"type":"AddressModel","default":null,"doc":null,"nullable":true,"equality":false},"owner":{"type":"UserModel","default":null,"doc":null,"nullable":true,"equality":false},"tanks":{"type":"ContainerTankModel[]","default":[],"doc":null,"nullable":false,"equality":false},"reports":{"type":"ContainerReportModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"ContainerReportTypeModel":{"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"reports":{"type":"ContainerReportModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"ContainerTankTypeModel":{"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"name":{"type":"str","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"measurement_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"volume":{"type":"int","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"clearing_period":{"type":"timedelta","default":0.0,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"measurement":{"type":"MeasurementModel","default":null,"doc":null,"nullable":true,"equality":false},"tanks":{"type":"ContainerTankModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"ContainerTankModel":{"container_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"type_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"current_volume":{"type":"float","default":0.0,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"container":{"type":"ContainerModel","default":null,"doc":null,"nullable":true,"equality":false},"type":{"type":"ContainerTankTypeModel","default":null,"doc":null,"nullable":true,"equality":false},"openings":{"type":"ContainerTankOpeningModel[]","default":[],"doc":null,"nullable":false,"equality":false},"clearings":{"type":"ContainerTankClearingModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"ContainerReportModel":{"user_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"container_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"type":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"information":{"type":"str","default":"","doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"type_":{"type":"ContainerReportTypeModel","default":null,"doc":null,"nullable":true,"equality":false},"container":{"type":"ContainerModel","default":null,"doc":null,"nullable":true,"equality":false}},"ContainerTankClearingModel":{"user_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"container_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"tank_type_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"volume":{"type":"int","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"user":{"type":"UserModel","default":null,"doc":null,"nullable":true,"equality":false},"tank":{"type":"ContainerTankModel","default":null,"doc":null,"nullable":true,"equality":false}},"ContainerTankOpeningModel":{"user_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"container_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"tank_type_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"deal_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"service_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"user":{"type":"UserModel","default":null,"doc":null,"nullable":true,"equality":false},"tank":{"type":"ContainerTankModel","default":null,"doc":null,"nullable":true,"equality":false},"deal_service":{"type":"DealServiceModel","default":null,"doc":null,"nullable":true,"equality":false},"drops":{"type":"ContainerTankOpeningDropModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"ContainerTankOpeningDropModel":{"opening_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"volume":{"type":"int","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"opening":{"type":"ContainerTankOpeningModel","default":null,"doc":null,"nullable":true,"equality":false}},"DeliveryModel":{"owner_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"user_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"latitude":{"type":"float","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"longtitude":{"type":"float","default":null,"doc":null,"nullable":false,"compare":false,"equality":true},"address_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"timestamp":{"type":"datetime","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"success":{"type":"bool","default":null,"doc":null,"nullable":true,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"address":{"type":"AddressModel","default":null,"doc":null,"nullable":true,"equality":false},"services":{"type":"DeliveryServiceModel[]","default":[],"doc":null,"nullable":false,"equality":false}},"DeliveryServiceModel":{"user_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"service_id":{"type":"int","default":null,"doc":null,"nullable":true,"compare":true,"equality":true},"amount":{"type":"float","default":1,"doc":null,"nullable":false,"compare":false,"equality":true},"created_at":{"type":"datetime","default":null,"doc":"Set the date and time when the instance was created.","nullable":true,"compare":false,"equality":false},"updated_at":{"type":"datetime","default":null,"doc":"Set the date and time of the last time the instance was updated.","nullable":true,"compare":false,"equality":false},"delivery":{"type":"DeliveryModel","default":null,"doc":null,"nullable":true,"equality":false},"service":{"type":"ServiceModel","default":null,"doc":null,"nullable":true,"equality":false}}}
+{
+  "UserModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "first_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "last_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "phone_number": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "email": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "birthday": {
+      "type": "date",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "deals": {
+      "type": "DealModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "active_deal": {
+      "type": "DealModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "company": {
+      "type": "CompanyModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "person": {
+      "type": "PersonModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "group": {
+      "type": "GroupModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "bonuses": {
+      "type": "BonusModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "containers": {
+      "type": "ContainerModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "openings": {
+      "type": "ContainerTankOpeningModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "clearings": {
+      "type": "ContainerTankClearingModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "BonusModel": {
+    "owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "description": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "user_limit": {
+      "type": "int",
+      "default": 0,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "owner": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "images": {
+      "type": "BonusImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "coupons": {
+      "type": "BonusCouponModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "prices": {
+      "type": "BonusPriceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "BonusCouponModel": {
+    "bonus_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "hash": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "active": {
+      "type": "bool",
+      "default": true,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "bonus": {
+      "type": "BonusModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "ImageModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "url": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "bonuses": {
+      "type": "BonusImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "containers": {
+      "type": "ContainerImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "BonusImageModel": {
+    "bonus_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "image_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "bonus": {
+      "type": "BonusModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "image": {
+      "type": "ImageModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "PriceModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "deals": {
+      "type": "DealModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "bonuses": {
+      "type": "BonusPriceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "services": {
+      "type": "ServicePriceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "BonusPriceModel": {
+    "bonus_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "price_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "value": {
+      "type": "float",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "bonus": {
+      "type": "BonusModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "price": {
+      "type": "PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "AddressModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "country": {
+      "type": "str",
+      "default": "Ukraine",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "state": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "city": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "street": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "building": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "postal_code": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "banks": {
+      "type": "BankModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "companies": {
+      "type": "CompanyModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "containers": {
+      "type": "ContainerModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "deliveries": {
+      "type": "DeliveryModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "BankModel": {
+    "code": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "address_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "address": {
+      "type": "AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "companies": {
+      "type": "CompanyModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "CompanyModel": {
+    "registry_number": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "tax_number": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "address_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "real_address_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "bank_code": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "bank_account_number": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "bank": {
+      "type": "BankModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "address": {
+      "type": "AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "real_address": {
+      "type": "AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "contacts": {
+      "type": "CompanyContactModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "user": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "CompanyContactModel": {
+    "company_registry_number": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "type": {
+      "type": "enum[DIRECTOR, ACCOUNTANT, MANAGER]",
+      "default": "DIRECTOR",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "first_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "last_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "phone_number": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "email": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "birthday": {
+      "type": "date",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "company": {
+      "type": "CompanyModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "DealModel": {
+    "owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "price_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "payment_type": {
+      "type": "bool",
+      "default": false,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "refferal_discount": {
+      "type": "float",
+      "default": 0.0,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "active_till": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "owner": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "price": {
+      "type": "PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "services": {
+      "type": "DealServiceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "MeasurementModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "container_tank_types": {
+      "type": "ContainerTankTypeModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "services": {
+      "type": "ServiceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "ServiceModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "description": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "measurement_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "measurement": {
+      "type": "MeasurementModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "prices": {
+      "type": "ServicePriceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "deals": {
+      "type": "DealServiceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "DealServiceModel": {
+    "deal_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "service_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "amount": {
+      "type": "float",
+      "default": 1,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "deal": {
+      "type": "DealModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "service": {
+      "type": "ServiceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "openings": {
+      "type": "ContainerTankOpeningModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "GroupModel": {
+    "owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "owner": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "members": {
+      "type": "GroupMemberModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "GroupMemberModel": {
+    "group_owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "accepted": {
+      "type": "bool",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "rights": {
+      "type": "flag[OPEN_CONTAINERS, SCAN_BONUSES, EDIT_BONUSES, MANAGE_MEMBERS]",
+      "default": "EDIT_BONUSES|OPEN_CONTAINERS",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "group": {
+      "type": "GroupModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "PersonModel": {
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "gender": {
+      "type": "bool",
+      "default": false,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "family_count": {
+      "type": "int",
+      "default": 1,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "user": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "ServicePriceModel": {
+    "service_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "price_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "value": {
+      "type": "float",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "service": {
+      "type": "ServiceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "price": {
+      "type": "PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "ContainerModel": {
+    "owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "latitude": {
+      "type": "float",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "longtitude": {
+      "type": "float",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "address_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "owner": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "address": {
+      "type": "AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "images": {
+      "type": "ContainerImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "tanks": {
+      "type": "ContainerTankModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "reports": {
+      "type": "ContainerReportModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "ContainerImageModel": {
+    "container_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "image_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "container": {
+      "type": "ContainerModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "image": {
+      "type": "ImageModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "ContainerReportTypeModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "reports": {
+      "type": "ContainerReportModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "ContainerTankTypeModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "measurement_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "volume": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "clearing_period": {
+      "type": "timedelta",
+      "default": 0.0,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "measurement": {
+      "type": "MeasurementModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "tanks": {
+      "type": "ContainerTankModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "ContainerTankModel": {
+    "container_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "type_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "current_volume": {
+      "type": "float",
+      "default": 0.0,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "container": {
+      "type": "ContainerModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "type": {
+      "type": "ContainerTankTypeModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "openings": {
+      "type": "ContainerTankOpeningModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "clearings": {
+      "type": "ContainerTankClearingModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "ContainerReportModel": {
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "container_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "type": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "information": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "type_": {
+      "type": "ContainerReportTypeModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "container": {
+      "type": "ContainerModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "ContainerTankClearingModel": {
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "container_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "tank_type_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "volume": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "user": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "tank": {
+      "type": "ContainerTankModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "ContainerTankOpeningModel": {
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "container_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "tank_type_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "deal_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "service_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "user": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "tank": {
+      "type": "ContainerTankModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "deal_service": {
+      "type": "DealServiceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "drops": {
+      "type": "ContainerTankOpeningDropModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "ContainerTankOpeningDropModel": {
+    "opening_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "volume": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "opening": {
+      "type": "ContainerTankOpeningModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "DeliveryModel": {
+    "owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "latitude": {
+      "type": "float",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "longtitude": {
+      "type": "float",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "address_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "timestamp": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "success": {
+      "type": "bool",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "address": {
+      "type": "AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "services": {
+      "type": "DeliveryServiceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "DeliveryServiceModel": {
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "service_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "amount": {
+      "type": "float",
+      "default": 1,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "delivery": {
+      "type": "DeliveryModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "service": {
+      "type": "ServiceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "LocaleModel": {
+    "locale_alpha_2": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "texts": {
+      "type": "LocaleTextModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "TextModel": {
+    "key": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "text": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locales": {
+      "type": "LocaleTextModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "LocaleTextModel": {
+    "key": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_alpha_2": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_text": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "text": {
+      "type": "TextModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "SettingsModel": {
+    "id": {
+      "type": "bool",
+      "default": true,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_locale_alpha_2": {
+      "type": "str",
+      "default": "UA",
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    }
+  }
+}

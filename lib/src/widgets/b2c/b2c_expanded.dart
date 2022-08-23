@@ -3,16 +3,16 @@ import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../generated/assets.g.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
-import '../../providers/flutter_providers.dart';
 import '../../providers/model_providers.dart';
 import '../../styles.dart';
-import '../../widgets/eco_coin_balance.dart';
-import '../../widgets/sort_bonus_card.dart';
-import '../../widgets/sort_icon_button.dart';
+import '../bonuses/bonus_card.dart';
+import '../containers/containers_screen.dart';
+import '../shared/shared_widgets.dart';
 import 'b2c_menu.dart';
 import 'b2c_screen.dart';
 
@@ -30,9 +30,8 @@ class B2CExpanded extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = ref.watch(i18nProvider)();
+    final I18N $ = I18NLocalizations.of(context)!.current();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -83,7 +82,7 @@ class B2CExpanded extends HookConsumerWidget {
                                 ),
                               ),
                               onPressed: () {},
-                              child: const EcoCoinBalance(1500),
+                              child: ecoCoinBalance(theme, balance: 1500),
                             ),
                           ),
                         ),
@@ -104,7 +103,8 @@ class B2CExpanded extends HookConsumerWidget {
                                   Stack(
                                 alignment: Alignment.topRight,
                                 children: <Widget>[
-                                  SortIconButton(
+                                  iconButton(
+                                    theme,
                                     CupertinoIcons.bell_fill,
                                     radius: 15,
                                     iconSize: 18.75,
@@ -126,7 +126,8 @@ class B2CExpanded extends HookConsumerWidget {
 
                             /// Menu
                             const SizedBox(width: 16),
-                            SortIconButton(
+                            iconButton(
+                              theme,
                               CupertinoIcons.person_fill,
                               radius: 15,
                               iconSize: 18.75,
@@ -169,7 +170,7 @@ class B2CExpanded extends HookConsumerWidget {
           ),
         ))
           SizedBox(
-            height: 140 + SortBonusCard.padding.vertical,
+            height: 140 + BonusCard.padding.vertical,
             child: Consumer(
               builder: (final _, final WidgetRef ref, final Widget? child) {
                 final List<BonusModel> bonuses = ref.watch(
@@ -183,7 +184,7 @@ class B2CExpanded extends HookConsumerWidget {
                   pagination: bonuses.length > 1
                       ? SwiperPagination(
                           margin: EdgeInsets.only(
-                            bottom: 5 + SortBonusCard.padding.bottom,
+                            bottom: 5 + BonusCard.padding.bottom,
                           ),
                           builder: DotSwiperPaginationBuilder(
                             size: 6,
@@ -195,7 +196,7 @@ class B2CExpanded extends HookConsumerWidget {
                       : null,
                   itemCount: bonuses.length,
                   itemBuilder: (final BuildContext context, final int index) =>
-                      SortBonusCard(bonuses.elementAt(index)),
+                      BonusCard(bonuses.elementAt(index)),
                 );
               },
             ),
@@ -215,7 +216,12 @@ class B2CExpanded extends HookConsumerWidget {
                       primary: theme.colorScheme.surface,
                       padding: EdgeInsets.zero,
                     ),
-                    onPressed: () {},
+                    onPressed: () => navigator.push(
+                      PageTransition<void>(
+                        type: PageTransitionType.fade,
+                        child: const ContainersScreen(),
+                      ),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: Column(
@@ -226,7 +232,7 @@ class B2CExpanded extends HookConsumerWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            $.container.containers,
+                            $.containers.containers,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
@@ -275,11 +281,7 @@ class B2CExpanded extends HookConsumerWidget {
         Padding(
           padding: const EdgeInsets.all(horizontalPadding)
               .copyWith(top: 12, bottom: 4),
-          child: const Material(
-            color: Color(0xFFC4C4C4),
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            child: SizedBox(height: 4, width: 130),
-          ),
+          child: divider(width: 130),
         ),
       ],
     );

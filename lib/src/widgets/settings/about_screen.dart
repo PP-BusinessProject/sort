@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../generated/i18n.g.dart';
-import '../../providers/flutter_providers.dart';
 import '../../providers/misc_providers.dart';
+import '../shared/shared_widgets.dart';
 
 /// The screen that provides shows app's info and privacy rules.
 class AboutScreen extends HookConsumerWidget {
@@ -19,50 +19,44 @@ class AboutScreen extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = ref.watch(i18nProvider)();
+    final I18N $ = I18NLocalizations.of(context)!.current();
     final PackageInfo packageInfo = ref.watch(packageInfoProvider);
     final int year = ref.watch(
       serverTimeProvider.select((final DateTime serverTime) => serverTime.year),
     );
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        brightness: theme.brightness,
-        border: const Border(),
+      navigationBar: navigationBar(
+        theme,
         previousPageTitle: $.menu.menu,
+        onPressed: navigator.maybePop,
       ),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _button(
-                title: packageInfo.appName,
-                secondTitle: '@${packageInfo.appName}, $year',
-                theme,
-              ),
-              const SizedBox(height: 16),
-              _button(
-                title: $.settings.about.version,
-                secondTitle: packageInfo.version,
-                theme,
-              ),
-              const SizedBox(height: 16),
-              _button(
-                title: $.settings.about.privacyPolicy,
-                onPressed: () {},
-                theme,
-              ),
-              const SizedBox(height: 16),
-              _button(
-                title: $.settings.about.termsOfUse,
-                onPressed: () {},
-                theme,
-              )
-            ],
+      child: listView(
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          _button(
+            title: packageInfo.appName,
+            secondTitle: '@${packageInfo.appName}, $year',
+            theme,
           ),
-        ),
+          const SizedBox(height: 16),
+          _button(
+            title: $.settings.about.version,
+            secondTitle: packageInfo.version,
+            theme,
+          ),
+          const SizedBox(height: 16),
+          _button(
+            title: $.settings.about.privacyPolicy,
+            onPressed: () {},
+            theme,
+          ),
+          const SizedBox(height: 16),
+          _button(
+            title: $.settings.about.termsOfUse,
+            onPressed: () {},
+            theme,
+          )
+        ],
       ),
     );
   }
@@ -92,14 +86,14 @@ class AboutScreen extends HookConsumerWidget {
                     : MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Text(
+                  marqueeText(
                     title,
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   if (secondTitle.isNotEmpty)
-                    Text(secondTitle, style: theme.textTheme.labelMedium)
+                    marqueeText(secondTitle, style: theme.textTheme.labelMedium)
                 ],
               ),
             ),

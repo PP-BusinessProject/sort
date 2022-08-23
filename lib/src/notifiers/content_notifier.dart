@@ -115,6 +115,9 @@ class ContentNotifier<T extends Object> extends StateNotifier<Iterable<T>>
   @override
   late final FutureOr<Iterable<T>> Function() refreshState;
 
+  @override
+  set state(final Iterable<T> state) => super.state = state;
+
   /// Add an [item] to this notifier.
   void add(final T item) => state = <T>[...state, item];
 
@@ -166,4 +169,7 @@ class ContentOptionalNotifier<T extends Object?> extends StateNotifier<T?>
 
   @override
   late final FutureOr<T> Function() refreshState;
+
+  @override
+  set state(final T? state) => super.state = state;
 }

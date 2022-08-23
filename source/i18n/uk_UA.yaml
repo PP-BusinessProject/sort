@@ -18,6 +18,18 @@ alert:
     title: Успіх
     body: Операція пройшла успішно.
     approve: Дякую
+  location_denied:
+    title: Дозвіл не наданий
+    body: Ви відмовили у доступі до геолокації.
+      Тепер ви повинні надати його через налаштування.
+    approve: Відкрити налаштування
+    deny: Відмовити
+  location_disabled:
+    title: Геолокація вимкнена
+    body: Геолокація на вашому пристрої зараз вимкнена.
+      Увімкніть її у налаштуваннях.
+    approve: Відкрити налаштування
+    deny: Відмовити
 
 pull_to_refresh:
   idle: Тяни вниз чтобы обновить
@@ -68,7 +80,7 @@ menu:
   avatar_hint: Додати аватар
   close_hint: Закрити
   edit_hint: Відредагувати
-  
+
   menu: Меню
   abonement: Абонемент
   individual: Індивідуальні
@@ -78,34 +90,44 @@ menu:
 
 settings:
   settings: Налаштування
-  
+
   language:
     language: Мова
-    en_US: Англійська
-    uk_UA: Українська
-  
+    system: Системна
+    unsupported(final String locale): Не підтримується ($locale)
+    en: Англійська
+    uk: Українська
+
   theme:
     theme: Тема
     system: Системна
     light: Світла
     dark: Темна
-  
+
   notification:
     notification: Повідомлення
-  
+
   about:
     about: Про додаток
     version: Версія
     privacy_policy: Політика конфіденційності
     terms_of_use: Правила користування
-  
+
   logout: Вийти
 
 bonus:
   purchase: Купити
 
-container:
+containers:
   containers: Сортомати
+  name(final int? id): "Сортомат${id != null ? ' №$id' : ''}"
+  open: Відкрити
+  filter:
+    filter: Фільтр
+    organic: Органіка
+    dry_mixed: Сухі/Змішані
+    fullness: Наповненість
+    confirm: Застосувати
 
 delivery:
   delivery: Курʼєр

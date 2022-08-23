@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../generated/i18n.g.dart';
 import '../../providers/flutter_providers.dart';
+import '../shared/shared_widgets.dart';
 
 /// The screen that provides access to the app's [ThemeMode] settings.
 class ThemeScreen extends HookConsumerWidget {
@@ -17,56 +18,47 @@ class ThemeScreen extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final NavigatorState navigator = Navigator.of(context);
     final ThemeMode themeMode = ref.watch(themeModeProvider);
-    final I18N $ = ref.watch(i18nProvider)();
+    final I18N $ = I18NLocalizations.of(context)!.current();
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        brightness: theme.brightness,
-        border: const Border(),
+      navigationBar: navigationBar(
+        theme,
         previousPageTitle: $.settings.settings,
+        onPressed: navigator.maybePop,
       ),
-      child: SafeArea(
-        child: Align(
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                for (final Widget widget
-                    in ThemeMode.values.map((final ThemeMode $theme) {
-                  final String title;
-                  final IconData icon;
-                  switch ($theme) {
-                    case ThemeMode.system:
-                      title = $.settings.theme.system;
-                      icon = mediaQuery.platformBrightness == Brightness.dark
-                          ? CupertinoIcons.moon_fill
-                          : CupertinoIcons.sun_max_fill;
-                      break;
-                    case ThemeMode.light:
-                      title = $.settings.theme.light;
-                      icon = CupertinoIcons.sun_max;
-                      break;
-                    case ThemeMode.dark:
-                      title = $.settings.theme.dark;
-                      icon = CupertinoIcons.moon;
-                      break;
-                  }
-                  return _button(
-                    title: title,
-                    icon: icon,
-                    onPressed: themeMode == $theme
-                        ? null
-                        : () =>
-                            ref.read(themeModeProvider.notifier).state = $theme,
-                    theme,
-                  );
-                })) ...<Widget>[widget, const SizedBox(height: 36)]
-              ]..removeLast(),
-            ),
-          ),
-        ),
+      child: listView(
+        children: <Widget>[
+          for (final Widget widget
+              in ThemeMode.values.map((final ThemeMode $theme) {
+            final String title;
+            final IconData icon;
+            switch ($theme) {
+              case ThemeMode.system:
+                title = $.settings.theme.system;
+                icon = mediaQuery.platformBrightness == Brightness.dark
+                    ? CupertinoIcons.moon_fill
+                    : CupertinoIcons.sun_max_fill;
+                break;
+              case ThemeMode.light:
+                title = $.settings.theme.light;
+                icon = CupertinoIcons.sun_max;
+                break;
+              case ThemeMode.dark:
+                title = $.settings.theme.dark;
+                icon = CupertinoIcons.moon;
+                break;
+            }
+            return _button(
+              title: title,
+              icon: icon,
+              onPressed: themeMode == $theme
+                  ? null
+                  : () => ref.read(themeModeProvider.notifier).state = $theme,
+              theme,
+            );
+          })) ...<Widget>[widget, const SizedBox(height: 36)]
+        ],
       ),
     );
   }

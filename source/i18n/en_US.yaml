@@ -18,6 +18,18 @@ alert:
     title: Success
     body: Operation successfull.
     approve: Okay, thanks
+  location_denied:
+    title: Permission denied
+    body: You denied location permission multiple times.
+      Now you need to provide this permission in the app settings.
+    approve: Open Settings
+    deny: Cancel
+  location_disabled:
+    title: Location Services Disabled
+    body: The location services on your device are disabled.
+      Enable them in the settings.
+    approve: Open Settings
+    deny: Cancel
 
 pull_to_refresh:
   idle: Тяни вниз чтобы обновить
@@ -68,7 +80,7 @@ menu:
   avatar_hint: Add avatar
   close_hint: Close
   edit_hint: Edit
-  
+
   menu: Menu
   abonement: Abonement
   individual: Individual
@@ -81,33 +93,41 @@ settings:
 
   language:
     language: Language
-    en_US: English
-    uk_UA: Ukrainian
-  
+    system: System
+    unsupported(final String locale): Unsuported ($locale)
+    en: English
+    uk: Ukrainian
+
   theme:
     theme: Theme
     system: System
     light: Light
     dark: Dark
-  
+
   notification:
     notification: Notifications
-  
+
   about:
     about: About
     version: Version
     privacy_policy: Privacy Policy
     terms_of_use: Terms of Use
-  
-  logout: Log Out
 
+  logout: Log Out
 
 bonus:
   purchase: Swap
 
-container:
+containers:
   containers: Containers
+  name(final int? id): "ARB${id != null ? ' #$id' : ''}"
+  open: Open
+  filter:
+    filter: Filter
+    organic: Organic
+    dry_mixed: Dry/Mixed
+    fullness: Fullness
+    confirm: Apply
 
 delivery:
   delivery: Delivery
-

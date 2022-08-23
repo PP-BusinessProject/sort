@@ -1,11 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/widgets.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../flavors.dart';
@@ -34,27 +29,6 @@ final Provider<Box<String>> hiveProvider =
     Provider<Box<String>>((final ProviderRef<Box<String>> ref) {
   throw Exception('Hive was not initialised.');
 });
-
-/// If the [RefreshConfiguration] header should display a connection error.
-final StateProvider<bool> connectionErrorProvider =
-    StateProvider<bool>((final StateProviderRef<bool> ref) => false);
-
-/// The [Provider] of the current user's [LatLng].
-final StreamProvider<LatLng> latLngProvider = StreamProvider<LatLng>(
-  (final StreamProviderRef<LatLng> ref) => GeolocatorPlatform.instance
-      .getPositionStream(locationSettings: const LocationSettings())
-      .handleError(
-        (final Object error) {},
-        test: (final Object? error) =>
-            error is PermissionDeniedException ||
-            error is LocationServiceDisabledException ||
-            error is TimeoutException,
-      )
-      .map(
-        (final Position position) =>
-            LatLng(position.latitude, position.longitude),
-      ),
-);
 
 /// The provider of the current server time.
 final StateNotifierProvider<ServerTimeNotifier, DateTime> serverTimeProvider =

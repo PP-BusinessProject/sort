@@ -23,6 +23,8 @@ targets:
           import_path: source/i18n
           export_path: lib/src/generated/i18n.g.dart
           imports: ../utils/l10n.dart
+          only_language_code: true
+          fallback_locale: uk
 
       generators|models:
         enabled: true

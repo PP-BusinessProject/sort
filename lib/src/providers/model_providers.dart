@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_converters_lite/json_converters_lite.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../api.dart';
 import '../generated/models.g.dart';
 import '../notifiers/content_notifier.dart';
 import 'flutter_providers.dart';
+import 'location_providers.dart';
 
 /// An alias to the [StateNotifierProvider] for a [ContentNotifier].
 typedef ContentProvider<T extends Object>
@@ -96,6 +98,14 @@ ContentOptionalNotifier<T?> contentOptionalProvider<T extends Object>(
 final StateProviderFamily<bool, String> _loadingProvider =
     StateProvider.family<bool, String>(
   (final StateProviderRef<bool> ref, final String key) => true,
+);
+
+final ContentProvider<ContainerTankTypeModel> containerTankTypesProvider =
+    ContentProvider<ContainerTankTypeModel>(
+  (final ContentProviderRef<ContainerTankTypeModel> ref) => contentProvider(
+    '/containerTankTypes',
+    converter: containerTankTypeConverter,
+  ),
 );
 
 final ContentProvider<ContainerModel> containersProvider =

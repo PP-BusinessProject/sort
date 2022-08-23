@@ -54,6 +54,17 @@ final HiveProvider<ThemeMode> themeModeProvider = HiveProvider<ThemeMode>(
   dependencies: <ProviderOrFamily>[hiveProvider],
 );
 
+/// The provider of the list of the current system [Locale].
+final StateProvider<List<Locale>> systemLocalesProvider =
+    StateProvider<List<Locale>>(
+  (final StateProviderRef<List<Locale>> ref) => ref.watch(
+    widgetsBindingProvider.select(
+      (final WidgetsBinding widgetsBinding) =>
+          widgetsBinding.window.platformDispatcher.locales,
+    ),
+  ),
+);
+
 /// The provider of the current [I18NLocale].
 final HiveProvider<bool> i18nChangedProvider = HiveProvider<bool>(
   (final HiveProviderRef<bool> ref) => HiveNotifier<bool, String>(
@@ -73,21 +84,46 @@ final HiveProvider<I18NLocale> i18nProvider = HiveProvider<I18NLocale>(
     key: 'locale',
     toJson: const EnumConverter<I18NLocale>(I18NLocale.values).toJson,
     fromJson: const EnumConverter<I18NLocale>(I18NLocale.values).fromJson,
-    initialValue: I18NLocale.current,
+    initialValue: I18NLocale.uk,
   ),
   dependencies: <ProviderOrFamily>[hiveProvider],
 );
 
-// /// The provider of the current user's phone number.
-// final HiveOptionalProvider<PhoneNumber> phoneNumberProvider =
-//     HiveOptionalProvider<PhoneNumber>(
-//   (final HiveOptionalProviderRef<PhoneNumber> ref) =>
-//       HiveOptionalNotifier<PhoneNumber, String>(
-//     ref.watch(hiveProvider),
-//     key: 'phone_number',
-//     converter: const StringConverter(phoneNumberConverter),
-//   ),
-// );
+/// Observe the changes on [i18nProvider].
+class I18NChangedObserver extends ProviderObserver {
+  /// Observe the changes on [i18nProvider].
+  const I18NChangedObserver();
+
+  @override
+  Future<void> didUpdateProvider(
+    final ProviderBase<Object?> provider,
+    final Object? previousValue,
+    final Object? newValue,
+    final ProviderContainer container,
+  ) async {
+    if (provider == i18nProvider) {
+      final HiveNotifier<bool, String> i18nChangedNotifier =
+          container.read(i18nChangedProvider.notifier);
+      if (!i18nChangedNotifier.state) {
+        await i18nChangedNotifier.setStateAsync(true);
+      }
+    } else if (provider == systemLocalesProvider) {
+      final HiveNotifier<bool, String> i18nChangedNotifier =
+          container.read(i18nChangedProvider.notifier);
+      if (!i18nChangedNotifier.state) {
+        await (container.read(i18nProvider.notifier)).setStateAsync(
+          I18NLocale.values.firstWhere(
+            (final I18NLocale locale) =>
+                locale.locale.languageCode ==
+                (newValue! as List<Locale>).first.languageCode,
+            orElse: () => I18NLocale.uk,
+          ),
+        );
+        await i18nChangedNotifier.setStateAsync(false);
+      }
+    }
+  }
+}
 
 /// The provider of the current user signed in from [FirebaseAuth].
 final StreamProvider<User?> signedInProvider =
@@ -103,7 +139,7 @@ final Provider<PhoneNumber?> phoneNumberProvider = Provider<PhoneNumber?>(
           (final AsyncValue<User?> user) => user.valueOrNull?.phoneNumber ?? '',
         ),
       );
-      return phoneNumber.isEmpty ? null : PhoneNumber.fromRaw(phoneNumber);
+      return phoneNumber.isEmpty ? null : PhoneNumber.parse(phoneNumber);
     } on Exception catch (exception) {
       logger.e('Exception occured while parsing phoneNumber.', exception);
       return null;

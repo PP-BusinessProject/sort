@@ -14,22 +14,21 @@ import 'package:phone_form_field/phone_form_field.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-import '../api.dart';
-import '../const.dart';
-import '../generated/i18n.g.dart';
-import '../generated/models.g.dart';
-import '../providers/flutter_providers.dart';
-import '../providers/misc_providers.dart';
-import '../providers/model_providers.dart';
-import '../styles.dart';
+import '../../api.dart';
+import '../../const.dart';
+import '../../generated/i18n.g.dart';
+import '../../generated/models.g.dart';
+import '../../providers/flutter_providers.dart';
+import '../../providers/misc_providers.dart';
+import '../../providers/model_providers.dart';
+import '../../styles.dart';
+import '../shared/shared_dialogs.dart';
+import '../shared/shared_widgets.dart';
 
 /// The screen for a user to fill in his personal data.
 class ProfileScreen extends HookConsumerWidget {
   /// The screen for a user to fill in his personal data.
   const ProfileScreen({final super.key});
-
-  /// The padding of the main content on this screen.
-  static const EdgeInsets contentPadding = EdgeInsets.symmetric(horizontal: 24);
 
   /// The validator for the first name and last name fields.
   static final RegExp nameRegExp = RegExp(
@@ -179,7 +178,7 @@ class ProfileScreen extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = ref.watch(i18nProvider)();
+    final I18N $ = I18NLocalizations.of(context)!.current();
 
     final bool Function() isMounted = useIsMounted();
     final TextEditingController firstNameController = useTextEditingController(
@@ -307,237 +306,199 @@ class ProfileScreen extends HookConsumerWidget {
 
     return CupertinoPageScaffold(
       resizeToAvoidBottomInset: false,
-      navigationBar: CupertinoNavigationBar(
-        heroTag: 'profile_screen',
-        transitionBetweenRoutes: false,
-        border: const Border(
-          bottom: BorderSide(width: 0, color: Color(0x33000000)),
-        ),
-        padding: const EdgeInsetsDirectional.only(start: 4),
-        leading: CupertinoNavigationBarBackButton(
-          previousPageTitle: $.misc.prevPage,
-          color: theme.colorScheme.onPrimary,
-          onPressed: () => NDialog(
-            dialogStyle: DialogStyle(titleDivider: true),
-            title: Text($.alert.exitRegister.title),
-            actions: <Widget>[
-              TextButton(
-                style: theme.textButtonTheme.style?.copyWith(
-                  shape: MaterialStateProperty.all<OutlinedBorder?>(
-                    const RoundedRectangleBorder(),
-                  ),
-                ),
-                onPressed: () async {
+      navigationBar: navigationBar(
+        theme,
+        previousPageTitle: $.misc.prevPage,
+        onPressed: () => ref.read(userProvider) == null
+            ? dialog(
+                theme,
+                title: $.alert.exitRegister.title,
+                approve: $.alert.exitRegister.approve,
+                onApprove: () async {
                   try {
                     await FirebaseAuth.instance.signOut();
                   } finally {
                     await navigator.maybePop();
                   }
                 },
-                child: Text(
-                  $.alert.exitRegister.approve,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                  ),
-                ),
-              ),
-              TextButton(
-                style: theme.textButtonTheme.style?.copyWith(
-                  shape: MaterialStateProperty.all<OutlinedBorder?>(
-                    const RoundedRectangleBorder(),
-                  ),
-                ),
-                onPressed: navigator.maybePop,
-                child: Text(
-                  $.alert.exitRegister.deny,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.error,
-                  ),
-                ),
-              ),
-            ],
-          ).show<void>(
-            context,
-            transitionType: DialogTransitionType.Bubble,
-          ),
-        ),
+                deny: $.alert.exitRegister.deny,
+                onDeny: navigator.maybePop,
+              ).show<void>(
+                context,
+                transitionType: DialogTransitionType.Bubble,
+              )
+            : navigator.maybePop(),
       ),
-      child: Center(
-        child: ListView(
-          shrinkWrap: true,
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: contentPadding,
-          cacheExtent: double.infinity,
-          children: <Widget>[
-            const CupertinoNavigationBar(border: Border()),
-            Consumer(
-              builder: (final _, final WidgetRef ref, final Widget? child) =>
-                  CupertinoTextFormFieldRow(
-                readOnly: true,
-                padding: EdgeInsets.zero,
-                placeholder: ref.watch(
-                  phoneNumberProvider.select(
-                    (final PhoneNumber? phoneNumber) =>
-                        phoneNumber?.international ?? $.profile.phoneNumber,
-                  ),
-                ),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: theme.colorScheme.surfaceTint),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 48),
-            CupertinoTextFormFieldRow(
-              controller: firstNameController,
-              placeholder: $.profile.firstName,
-              padding: EdgeInsets.zero,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: theme.colorScheme.surfaceTint),
-                ),
-              ),
-              inputFormatters: <TextInputFormatter>[
-                LengthLimitingTextInputFormatter(64),
-                FilteringTextInputFormatter.deny(trimmingRegExp)
-              ],
-              autovalidateMode: AutovalidateMode.always,
-              validator: (final String? value) => value == null ||
-                      value.isEmpty ||
-                      nameRegExp.hasMatch(value.trim())
-                  ? null
-                  : $.profile.firstNameError,
-              onChanged: (final String value) => isMounted()
-                  ? ref.read(_firstNameProvider.notifier).state =
-                      value.isEmpty || nameRegExp.hasMatch(value.trim())
-                          ? value
-                          : null
-                  : null,
-              toolbarOptions: const ToolbarOptions(
-                copy: true,
-                cut: true,
-                paste: true,
-                selectAll: true,
-              ),
-            ),
-            const SizedBox(height: 48),
-            CupertinoTextFormFieldRow(
-              controller: lastNameController,
-              placeholder: $.profile.lastName,
-              padding: EdgeInsets.zero,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: theme.colorScheme.surfaceTint),
-                ),
-              ),
-              inputFormatters: <TextInputFormatter>[
-                LengthLimitingTextInputFormatter(64),
-                FilteringTextInputFormatter.deny(trimmingRegExp)
-              ],
-              autovalidateMode: AutovalidateMode.always,
-              validator: (final String? value) => value == null ||
-                      value.isEmpty ||
-                      nameRegExp.hasMatch(value.trim())
-                  ? null
-                  : $.profile.lastNameError,
-              onChanged: (final String value) => isMounted()
-                  ? ref.read(_lastNameProvider.notifier).state =
-                      value.isEmpty || nameRegExp.hasMatch(value.trim())
-                          ? value
-                          : null
-                  : null,
-            ),
-            const SizedBox(height: 48),
-            CupertinoTextFormFieldRow(
-              controller: emailController,
-              placeholder: $.profile.email,
-              padding: EdgeInsets.zero,
-              inputFormatters: <TextInputFormatter>[
-                LengthLimitingTextInputFormatter(255),
-                FilteringTextInputFormatter.deny(trimmingRegExp)
-              ],
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: theme.colorScheme.surfaceTint),
-                ),
-              ),
-              autovalidateMode: AutovalidateMode.always,
-              validator: (final String? value) => value == null ||
-                      value.isEmpty ||
-                      EmailValidator.validate(value)
-                  ? null
-                  : $.profile.emailError,
-              onChanged: (final String value) => isMounted()
-                  ? ref.read(_emailProvider.notifier).state =
-                      value.isEmpty || EmailValidator.validate(value)
-                          ? value
-                          : null
-                  : null,
-            ),
-            const SizedBox(height: 48),
-            CupertinoTextFormFieldRow(
-              controller: birthdayController,
+      child: listView(
+        alignment: Alignment.topCenter,
+        children: <Widget>[
+          Consumer(
+            builder: (final _, final WidgetRef ref, final Widget? child) =>
+                CupertinoTextFormFieldRow(
               readOnly: true,
               padding: EdgeInsets.zero,
-              placeholder: $.profile.birthday,
+              placeholder: ref.watch(
+                phoneNumberProvider.select(
+                  (final PhoneNumber? phoneNumber) =>
+                      phoneNumber?.international ?? $.profile.phoneNumber,
+                ),
+              ),
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(color: theme.colorScheme.surfaceTint),
                 ),
               ),
-              onTap: () => const DialogBackground(
-                dialog: _RegistrationBirthdayDialog(),
-              ).show<void>(context),
             ),
-            const SizedBox(height: 48),
-            const _RegistrationGender(),
-            const SizedBox(height: 48),
-            const _RegistrationNumberOfFamilyMembers(),
-            const SizedBox(height: 48),
-            Consumer(
-              builder: (final _, final WidgetRef ref, final Widget? child) {
-                final bool userExists =
-                    ref.watch(userProvider.select((final _) => _ != null));
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    if (!userExists) ...<Widget>[
-                      const _RegistrationPrivacyPolicy(),
-                      const SizedBox(height: 48),
-                    ],
-                    ElevatedButton.icon(
-                      onPressed: ref.watch(_isRegistrationLoading) ||
-                              !ref.watch(_registrationValid)
-                          ? null
-                          : process,
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 0),
-                      ),
-                      icon: ref.watch(_isRegistrationLoading)
-                          ? const CircularProgressIndicator.adaptive()
-                          : const SizedBox.shrink(),
-                      label: Text(
-                        userExists ? $.profile.update : $.profile.register,
-                        style: theme.textTheme.headlineSmall,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+          ),
+          const SizedBox(height: 48),
+          CupertinoTextFormFieldRow(
+            controller: firstNameController,
+            placeholder: $.profile.firstName,
+            padding: EdgeInsets.zero,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: theme.colorScheme.surfaceTint),
+              ),
+            ),
+            inputFormatters: <TextInputFormatter>[
+              LengthLimitingTextInputFormatter(64),
+              FilteringTextInputFormatter.deny(trimmingRegExp)
+            ],
+            autovalidateMode: AutovalidateMode.always,
+            validator: (final String? value) => value == null ||
+                    value.isEmpty ||
+                    nameRegExp.hasMatch(value.trim())
+                ? null
+                : $.profile.firstNameError,
+            onChanged: (final String value) => isMounted()
+                ? ref.read(_firstNameProvider.notifier).state =
+                    value.isEmpty || nameRegExp.hasMatch(value.trim())
+                        ? value
+                        : null
+                : null,
+            toolbarOptions: const ToolbarOptions(
+              copy: true,
+              cut: true,
+              paste: true,
+              selectAll: true,
+            ),
+          ),
+          const SizedBox(height: 48),
+          CupertinoTextFormFieldRow(
+            controller: lastNameController,
+            placeholder: $.profile.lastName,
+            padding: EdgeInsets.zero,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: theme.colorScheme.surfaceTint),
+              ),
+            ),
+            inputFormatters: <TextInputFormatter>[
+              LengthLimitingTextInputFormatter(64),
+              FilteringTextInputFormatter.deny(trimmingRegExp)
+            ],
+            autovalidateMode: AutovalidateMode.always,
+            validator: (final String? value) => value == null ||
+                    value.isEmpty ||
+                    nameRegExp.hasMatch(value.trim())
+                ? null
+                : $.profile.lastNameError,
+            onChanged: (final String value) => isMounted()
+                ? ref.read(_lastNameProvider.notifier).state =
+                    value.isEmpty || nameRegExp.hasMatch(value.trim())
+                        ? value
+                        : null
+                : null,
+          ),
+          const SizedBox(height: 48),
+          CupertinoTextFormFieldRow(
+            controller: emailController,
+            placeholder: $.profile.email,
+            padding: EdgeInsets.zero,
+            inputFormatters: <TextInputFormatter>[
+              LengthLimitingTextInputFormatter(255),
+              FilteringTextInputFormatter.deny(trimmingRegExp)
+            ],
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: theme.colorScheme.surfaceTint),
+              ),
+            ),
+            autovalidateMode: AutovalidateMode.always,
+            validator: (final String? value) =>
+                value == null || value.isEmpty || EmailValidator.validate(value)
+                    ? null
+                    : $.profile.emailError,
+            onChanged: (final String value) => isMounted()
+                ? ref.read(_emailProvider.notifier).state =
+                    value.isEmpty || EmailValidator.validate(value)
+                        ? value
+                        : null
+                : null,
+          ),
+          const SizedBox(height: 48),
+          CupertinoTextFormFieldRow(
+            controller: birthdayController,
+            readOnly: true,
+            padding: EdgeInsets.zero,
+            placeholder: $.profile.birthday,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: theme.colorScheme.surfaceTint),
+              ),
+            ),
+            onTap: () => const DialogBackground(
+              dialog: _ProfileBirthdayDialog(),
+            ).show<void>(context),
+          ),
+          const SizedBox(height: 48),
+          const _ProfileGender(),
+          const SizedBox(height: 48),
+          const _ProfileNumberOfFamilyMembers(),
+          const SizedBox(height: 48),
+          Consumer(
+            builder: (final _, final WidgetRef ref, final Widget? child) {
+              final bool userExists =
+                  ref.watch(userProvider.select((final _) => _ != null));
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  if (!userExists) ...<Widget>[
+                    const _RegistrationPrivacyPolicy(),
+                    const SizedBox(height: 48),
                   ],
-                );
-              },
-            ),
-            const SizedBox(height: 48),
-          ],
-        ),
+                  ElevatedButton.icon(
+                    onPressed: ref.watch(_isRegistrationLoading) ||
+                            !ref.watch(_registrationValid)
+                        ? null
+                        : process,
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 0),
+                      maximumSize: const Size(double.infinity, 48),
+                    ),
+                    icon: ref.watch(_isRegistrationLoading)
+                        ? const CircularProgressIndicator.adaptive()
+                        : const SizedBox.shrink(),
+                    label: Text(
+                      userExists ? $.profile.update : $.profile.register,
+                      style: theme.textTheme.headlineSmall,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          const SizedBox(height: 24),
+        ],
       ),
     );
   }
 }
 
-class _RegistrationBirthdayDialog extends HookConsumerWidget {
-  const _RegistrationBirthdayDialog();
+class _ProfileBirthdayDialog extends HookConsumerWidget {
+  const _ProfileBirthdayDialog();
 
   static final StateProvider<bool> _isSelected =
       StateProvider<bool>((final _) => false);
@@ -546,7 +507,7 @@ class _RegistrationBirthdayDialog extends HookConsumerWidget {
   NAlertDialog build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = ref.watch(i18nProvider)();
+    final I18N $ = I18NLocalizations.of(context)!.current();
     final bool Function() isMounted = useIsMounted();
     final ObjectRef<DateTime?> selection =
         useRef<DateTime?>(ref.read(ProfileScreen._birthdayProvider));
@@ -604,13 +565,13 @@ class _RegistrationBirthdayDialog extends HookConsumerWidget {
   }
 }
 
-class _RegistrationGender extends HookConsumerWidget {
-  const _RegistrationGender();
+class _ProfileGender extends HookConsumerWidget {
+  const _ProfileGender();
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final I18N $ = ref.watch(i18nProvider)();
+    final I18N $ = I18NLocalizations.of(context)!.current();
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<bool?> gender =
         useState<bool?>(ref.read(ProfileScreen._genderProvider));
@@ -679,13 +640,13 @@ class _RegistrationGender extends HookConsumerWidget {
   }
 }
 
-class _RegistrationNumberOfFamilyMembers extends HookConsumerWidget {
-  const _RegistrationNumberOfFamilyMembers();
+class _ProfileNumberOfFamilyMembers extends HookConsumerWidget {
+  const _ProfileNumberOfFamilyMembers();
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final I18N $ = ref.watch(i18nProvider)();
+    final I18N $ = I18NLocalizations.of(context)!.current();
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<int> $numberOfFamilyMembers = useState<int>(
       ref.read(ProfileScreen._numberOfFamilyMembersProvider),
@@ -734,7 +695,7 @@ class _RegistrationPrivacyPolicy extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final I18N $ = ref.watch(i18nProvider)();
+    final I18N $ = I18NLocalizations.of(context)!.current();
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<bool> privacyPolicy =
         useState<bool>(ref.read(ProfileScreen._privacyPolicy));
