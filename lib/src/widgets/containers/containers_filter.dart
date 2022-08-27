@@ -32,9 +32,9 @@ enum ContainerTankType {
 }
 
 /// The filter used on [ContainerModel].
-class B2CContainersFilter extends HookConsumerWidget {
+class ContainersFilter extends HookConsumerWidget {
   /// The filter used on [ContainerModel].
-  const B2CContainersFilter({final super.key});
+  const ContainersFilter({final super.key});
 
   /// The current set [ContainerTankTypeModel] filter.
   static final StateProvider<Iterable<ContainerTankType>>
@@ -143,7 +143,7 @@ class _B2CContainersTypeFilterButton extends HookConsumerWidget {
     final ThemeData theme = Theme.of(context);
     final I18N $ = I18NLocalizations.of(context)!.current();
     final StateProvider<Iterable<ContainerTankType>> filter =
-        B2CContainersFilter.containerTypeFilterProvider;
+        ContainersFilter.containerTypeFilterProvider;
     final bool filtered = ref.watch(
       filter.select((final _) => _.contains(type)),
     );
@@ -214,7 +214,7 @@ class _B2CContainersFullnessFilterState extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final bool Function() isMounted = useIsMounted();
     final StateProvider<double> fullnessFilter =
-        B2CContainersFilter.containerFullnessFilterProvider;
+        ContainersFilter.containerFullnessFilterProvider;
     final ValueNotifier<double> state =
         useState<double>(ref.read(fullnessFilter));
     final NumberFormat format = useMemoized(NumberFormat.percentPattern);

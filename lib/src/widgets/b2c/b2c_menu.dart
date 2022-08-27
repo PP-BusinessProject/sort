@@ -15,7 +15,6 @@ import '../../widgets/shared/shared_widgets.dart';
 import '../auth/profile_screen.dart';
 import '../settings/settings_screen.dart';
 import 'b2c_expanded.dart';
-import 'b2c_screen.dart';
 
 /// The menu of the [B2CScreen] that is accessed from the [B2CExpanded].
 class B2CMenu extends HookConsumerWidget {
@@ -311,7 +310,8 @@ class B2CMenuProfileCard extends HookConsumerWidget {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
     final I18N $ = I18NLocalizations.of(context)!.current();
-    final UserModel? user = ref.watch(userProvider);
+    final UserModel? user =
+        ref.watch(userProvider.select((final _) => _.valueOrNull));
     return Row(
       children: <Widget>[
         /// Avatar with Add Button

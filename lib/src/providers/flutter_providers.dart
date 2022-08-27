@@ -57,12 +57,8 @@ final HiveProvider<ThemeMode> themeModeProvider = HiveProvider<ThemeMode>(
 /// The provider of the list of the current system [Locale].
 final StateProvider<List<Locale>> systemLocalesProvider =
     StateProvider<List<Locale>>(
-  (final StateProviderRef<List<Locale>> ref) => ref.watch(
-    widgetsBindingProvider.select(
-      (final WidgetsBinding widgetsBinding) =>
-          widgetsBinding.window.platformDispatcher.locales,
-    ),
-  ),
+  (final StateProviderRef<List<Locale>> ref) =>
+      WidgetsBinding.instance.window.platformDispatcher.locales,
 );
 
 /// The provider of the current [I18NLocale].

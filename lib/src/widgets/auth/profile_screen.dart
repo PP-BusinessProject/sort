@@ -45,7 +45,7 @@ class ProfileScreen extends HookConsumerWidget {
   static final StateProvider<String?> _firstNameProvider =
       StateProvider<String?>(
     (final StateProviderRef<String?> ref) => ref.watch(
-      userProvider.select((final UserModel? user) => user?.firstName ?? ''),
+      userProvider.select((final _) => _.valueOrNull?.firstName ?? ''),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
@@ -53,14 +53,14 @@ class ProfileScreen extends HookConsumerWidget {
   static final StateProvider<String?> _lastNameProvider =
       StateProvider<String?>(
     (final StateProviderRef<String?> ref) => ref.watch(
-      userProvider.select((final UserModel? user) => user?.lastName ?? ''),
+      userProvider.select((final _) => _.valueOrNull?.lastName ?? ''),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
 
   static final StateProvider<String?> _emailProvider = StateProvider<String?>(
     (final StateProviderRef<String?> ref) => ref.watch(
-      userProvider.select((final UserModel? user) => user?.email ?? ''),
+      userProvider.select((final _) => _.valueOrNull?.email ?? ''),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
@@ -68,15 +68,14 @@ class ProfileScreen extends HookConsumerWidget {
   static final StateProvider<DateTime?> _birthdayProvider =
       StateProvider<DateTime?>(
     (final StateProviderRef<DateTime?> ref) => ref.watch(
-      userProvider.select((final UserModel? user) => user?.birthday),
+      userProvider.select((final _) => _.valueOrNull?.birthday),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
 
   static final StateProvider<bool> _genderProvider = StateProvider<bool>(
     (final StateProviderRef<bool> ref) => ref.watch(
-      userProvider
-          .select((final UserModel? user) => user?.person?.gender ?? false),
+      userProvider.select((final _) => _.valueOrNull?.person?.gender ?? false),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
@@ -85,7 +84,7 @@ class ProfileScreen extends HookConsumerWidget {
       StateProvider<int>(
     (final StateProviderRef<int> ref) => ref.watch(
       userProvider.select(
-        (final UserModel? user) => user?.person?.familyCount ?? 1,
+        (final _) => _.valueOrNull?.person?.familyCount ?? 1,
       ),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
@@ -96,7 +95,8 @@ class ProfileScreen extends HookConsumerWidget {
 
   static final Provider<bool> _registrationValid = Provider<bool>(
     (final ProviderRef<bool> ref) {
-      final UserModel? user = ref.watch(userProvider);
+      final UserModel? user =
+          ref.watch(userProvider.select((final _) => _.valueOrNull));
       return ref.watch($phoneNumberProvider.select((final _) => _ != null)) &&
           ref.watch(
             _firstNameProvider.select((final _) => _?.isNotEmpty ?? false),
@@ -142,7 +142,8 @@ class ProfileScreen extends HookConsumerWidget {
         ),
       );
 
-      final UserModel? user = ref.watch(userProvider);
+      final UserModel? user =
+          ref.watch(userProvider.select((final _) => _.valueOrNull));
       return user?.copyWith(
             phoneNumber: phoneNumber,
             firstName: firstName,
@@ -208,7 +209,7 @@ class ProfileScreen extends HookConsumerWidget {
         (final _, final DateTime? birthday) => birthdayController.text =
             birthday?.toIso8601String().split('T').first ?? '',
       )
-      ..listen<UserModel?>(userProvider,
+      ..listen<UserModel?>(userProvider.select((final _) => _.valueOrNull),
           (final UserModel? prevUser, final UserModel? user) {
         if (prevUser?.firstName != user?.firstName) {
           ref.read(_firstNameProvider.notifier).state = user?.firstName;
@@ -240,14 +241,13 @@ class ProfileScreen extends HookConsumerWidget {
     FutureOr<void> process() async {
       final StateController<bool> isLoading =
           ref.read(_isRegistrationLoading.notifier)..state = true;
-      final UserModel? user = ref.read(userProvider);
+      final UserModel? user = ref.read(userProvider).valueOrNull;
       try {
         final UserModel newUser = ref.read(_newUser)!;
-        final Iterable<UserModel>? response = await (user != null
-            ? sortApi.put
-            : sortApi.post)<Iterable<UserModel>>(
+        await (user != null ? sortApi.put : sortApi.post)<Iterable<UserModel>>(
           '/users',
           <UserModel>[newUser],
+          returning: false,
           toJson: (final Iterable<UserModel> users) =>
               const IterableConverter(userConverter)
                   .toJson(users)
@@ -257,26 +257,25 @@ class ProfileScreen extends HookConsumerWidget {
             (value! as Iterable<Object?>).cast<Map<String, Object?>>(),
           ),
         );
-        if (!isMounted() || response == null || response.isEmpty) {
-          throw Exception('User response is empty.');
-        }
-        ref.read(userProvider.notifier).state = response.first;
-        // ignore: use_build_context_synchronously
-        await NDialog(
-          title: Text($.alert.success.title),
-          content: Text($.alert.success.body),
-          actions: <Widget>[
-            TextButton(
-              style: theme.textButtonTheme.style?.copyWith(
-                shape: MaterialStateProperty.all<OutlinedBorder?>(
-                  const RoundedRectangleBorder(),
+        if (isMounted()) {
+          await ref.refresh(userProvider.future);
+          // ignore: use_build_context_synchronously
+          await NDialog(
+            title: Text($.alert.success.title),
+            content: Text($.alert.success.body),
+            actions: <Widget>[
+              TextButton(
+                style: theme.textButtonTheme.style?.copyWith(
+                  shape: MaterialStateProperty.all<OutlinedBorder?>(
+                    const RoundedRectangleBorder(),
+                  ),
                 ),
-              ),
-              onPressed: navigator.maybePop,
-              child: Text($.alert.success.approve),
-            )
-          ],
-        ).show<void>(context);
+                onPressed: navigator.maybePop,
+                child: Text($.alert.success.approve),
+              )
+            ],
+          ).show<void>(context);
+        }
       } on Exception catch (_) {
         try {
           if (isMounted()) {
@@ -309,7 +308,7 @@ class ProfileScreen extends HookConsumerWidget {
       navigationBar: navigationBar(
         theme,
         previousPageTitle: $.misc.prevPage,
-        onPressed: () => ref.read(userProvider) == null
+        onPressed: () => ref.read(userProvider).valueOrNull == null
             ? dialog(
                 theme,
                 title: $.alert.exitRegister.title,
@@ -458,8 +457,9 @@ class ProfileScreen extends HookConsumerWidget {
           const SizedBox(height: 48),
           Consumer(
             builder: (final _, final WidgetRef ref, final Widget? child) {
-              final bool userExists =
-                  ref.watch(userProvider.select((final _) => _ != null));
+              final bool userExists = ref.watch(
+                userProvider.select((final _) => _.valueOrNull != null),
+              );
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[

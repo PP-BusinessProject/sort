@@ -5,7 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../flavors.dart';
 import '../../generated/i18n.g.dart';
+import '../../providers/misc_providers.dart';
 import '../shared/shared_dialogs.dart';
 import '../shared/shared_widgets.dart';
 import 'about_screen.dart';
@@ -80,10 +82,11 @@ class SettingsScreen extends HookConsumerWidget {
               title: $.alert.exitRegister.title,
               approve: $.alert.exitRegister.approve,
               onApprove: () async {
+                final SortFlavor flavor = ref.read(flavorProvider);
                 try {
                   await FirebaseAuth.instance.signOut();
                 } finally {
-                  await navigator.maybePop();
+                  navigator.popUntil(flavor.withName);
                 }
               },
               deny: $.alert.exitRegister.deny,

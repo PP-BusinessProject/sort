@@ -5,13 +5,6 @@ import 'package:riverpod/riverpod.dart';
 
 import '../flavors.dart';
 
-/// The [Provider] of the initialised Flutter [WidgetsBinding] instance.
-final Provider<WidgetsBinding> widgetsBindingProvider =
-    Provider<WidgetsBinding>(
-  (final ProviderRef<WidgetsBinding> ref) =>
-      throw UnimplementedError('WidgetsBinding has not been provided yet.'),
-);
-
 /// The [Provider] of the current application flavor.
 final Provider<SortFlavor> flavorProvider = Provider<SortFlavor>(
   (final ProviderRef<SortFlavor> ref) =>

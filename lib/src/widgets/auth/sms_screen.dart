@@ -67,47 +67,53 @@ class SMSScreen extends HookConsumerWidget {
           padding: contentPadding,
           children: <Widget>[
             /// Input Code
-            Text($.auth.phoneNumber.codeSent(phoneNumber.international)),
+            Text(
+              $.auth.phoneNumber.codeSent(phoneNumber.international),
+              maxLines: 3,
+            ),
             const SizedBox(height: 24),
 
             /// Code Field
-            PinCodeTextField(
-              key: codeFieldKey,
-              appContext: context,
-              errorAnimationController: errorController,
-              length: codeLength,
-              animationType: AnimationType.fade,
-              showCursor: false,
-              hintCharacter: '-',
-              textStyle: theme.textTheme.displaySmall,
-              animationDuration: const Duration(milliseconds: 200),
-              pinTheme: PinTheme(
-                shape: PinCodeFieldShape.box,
-                fieldHeight: fieldSize < 40 ? 40 : fieldSize,
-                fieldWidth: fieldSize < 40 ? 40 : fieldSize,
-                errorBorderColor: theme.colorScheme.error,
-                borderWidth: 3,
-                activeColor: theme.colorScheme.onPrimary,
-                disabledColor: theme.colorScheme.primaryContainer,
-                inactiveColor: theme.colorScheme.primary,
-                selectedColor: theme.colorScheme.tertiary,
-                activeFillColor: theme.colorScheme.onPrimary,
-                inactiveFillColor: theme.colorScheme.primary,
-                selectedFillColor: Colors.transparent,
+            Material(
+              child: PinCodeTextField(
+                key: codeFieldKey,
+                appContext: context,
+                errorAnimationController: errorController,
+                length: codeLength,
+                animationType: AnimationType.fade,
+                showCursor: false,
+                hintCharacter: '-',
+                textStyle: theme.textTheme.displaySmall,
+                animationDuration: const Duration(milliseconds: 200),
+                keyboardType: TextInputType.number,
+                pinTheme: PinTheme(
+                  shape: PinCodeFieldShape.box,
+                  fieldHeight: fieldSize < 40 ? 40 : fieldSize,
+                  fieldWidth: fieldSize < 40 ? 40 : fieldSize,
+                  errorBorderColor: theme.colorScheme.error,
+                  borderWidth: 3,
+                  activeColor: theme.colorScheme.onPrimary,
+                  disabledColor: theme.colorScheme.primaryContainer,
+                  inactiveColor: theme.colorScheme.primary,
+                  selectedColor: theme.colorScheme.tertiary,
+                  activeFillColor: theme.colorScheme.onPrimary,
+                  inactiveFillColor: theme.colorScheme.primary,
+                  selectedFillColor: Colors.transparent,
+                ),
+                backgroundColor: Colors.transparent,
+                onCompleted: (final String value) async => isMounted()
+                    ? (errorText.value = await verify(value)).isNotEmpty
+                        ? isMounted()
+                            ? errorController.add(ErrorAnimationType.shake)
+                            : null
+                        : await navigator.maybePop()
+                    : null,
+                onChanged: (final _) {},
+                beforeTextPaste: (final String? value) {
+                  logger.i('Allowing to paste $value');
+                  return true;
+                },
               ),
-              backgroundColor: Colors.transparent,
-              onCompleted: (final String value) async => isMounted()
-                  ? (errorText.value = await verify(value)).isNotEmpty
-                      ? isMounted()
-                          ? errorController.add(ErrorAnimationType.shake)
-                          : null
-                      : await navigator.maybePop()
-                  : null,
-              onChanged: (final _) {},
-              beforeTextPaste: (final String? value) {
-                logger.i('Allowing to paste $value');
-                return true;
-              },
             ),
             const SizedBox(height: 100),
 
@@ -119,6 +125,9 @@ class SMSScreen extends HookConsumerWidget {
                   Text($.auth.phoneNumber.resendCodePrompt),
                   const SizedBox(height: 8),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(0),
+                    ),
                     onPressed: resend == null || isLoading.value
                         ? null
                         : () async {

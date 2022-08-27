@@ -14,7 +14,6 @@ import '../bonuses/bonus_card.dart';
 import '../containers/containers_screen.dart';
 import '../shared/shared_widgets.dart';
 import 'b2c_menu.dart';
-import 'b2c_screen.dart';
 
 /// The expanded variant of the [B2CScreen].
 class B2CExpanded extends HookConsumerWidget {
@@ -165,9 +164,8 @@ class B2CExpanded extends HookConsumerWidget {
 
         /// Bonus Cards
         if (ref.watch(
-          bonusesProvider.select(
-            (final Iterable<BonusModel> bonuses) => bonuses.isNotEmpty,
-          ),
+          bonusesProvider
+              .select((final _) => _.valueOrNull?.isNotEmpty ?? false),
         ))
           SizedBox(
             height: 140 + BonusCard.padding.vertical,
@@ -175,8 +173,8 @@ class B2CExpanded extends HookConsumerWidget {
               builder: (final _, final WidgetRef ref, final Widget? child) {
                 final List<BonusModel> bonuses = ref.watch(
                   bonusesProvider.select(
-                    (final Iterable<BonusModel> bonuses) =>
-                        bonuses.toList().sublist(0, bonuses.length.clamp(0, 5)),
+                    (final _) => (_.valueOrNull!.toList())
+                        .sublist(0, _.valueOrNull!.length.clamp(0, 5)),
                   ),
                 );
                 return Swiper(

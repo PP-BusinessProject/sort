@@ -9,8 +9,8 @@ import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
 import '../../providers/location_providers.dart';
 import '../../providers/model_providers.dart';
-import '../b2c/b2c_containers_filter.dart';
 import '../shared/shared_widgets.dart';
+import 'containers_filter.dart';
 import 'container_card.dart';
 
 /// The screen used to show off the list of [ContainerModel].
@@ -33,7 +33,7 @@ class ContainersScreen extends HookConsumerWidget {
       onTapClose: true,
       swipe: false,
       offset: const IDOffset.horizontal(1 / 3),
-      rightChild: const B2CContainersFilter(),
+      rightChild: const ContainersFilter(),
       scaffold: CupertinoPageScaffold(
         navigationBar: navigationBar(
           theme,
@@ -53,8 +53,10 @@ class ContainersScreen extends HookConsumerWidget {
         child: listView(
           alignment: Alignment.topCenter,
           children: <Widget>[
-            for (final ContainerModel container
-                in ref.watch(containersProvider))
+            for (final ContainerModel container in ref.watch(
+              containersProvider
+                  .select((final _) => _.valueOrNull ?? <ContainerModel>[]),
+            ))
               Consumer(
                 builder: (final _, final WidgetRef ref, final Widget? child) {
                   final String? address = ref.watch(

@@ -7,7 +7,7 @@ import '../../flavors.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
 import '../../styles.dart';
-import '../b2c/b2c_screen.dart';
+import '../b2c/b2c_map.dart';
 import '../shared/shared_widgets.dart';
 
 /// The card used to display info about a [ContainerModel] on map.
@@ -16,6 +16,7 @@ class ContainerCard extends StatelessWidget {
   const ContainerCard(
     final this.container,
     final this.address, {
+    final this.onMap = false,
     final super.key,
   });
 
@@ -25,8 +26,14 @@ class ContainerCard extends StatelessWidget {
   /// The address of the [container] to display in this card.
   final String address;
 
-  /// The outer paddinng of this widget
-  static const EdgeInsets padding = EdgeInsets.all(16);
+  /// If this card is shown on map.
+  final bool onMap;
+
+  /// The height of this widget when [onMap] is `false`.
+  static const double height = 100;
+
+  /// The height of this widget when [onMap] is `true`.
+  static const double onMapHeight = 104;
 
   @override
   Widget build(final BuildContext context) {
@@ -34,7 +41,7 @@ class ContainerCard extends StatelessWidget {
     final NavigatorState navigator = Navigator.of(context);
     final I18N $ = I18NLocalizations.of(context)!.current();
     return SizedBox(
-      height: 104,
+      height: onMap ? onMapHeight : height,
       child: Card(
         shape: outlinedBorder(theme, radius: 10),
         child: Padding(
@@ -43,7 +50,7 @@ class ContainerCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               /// Grabbing
-              divider(width: 80),
+              if (onMap) divider(width: 80),
 
               /// Main Content
               Expanded(
@@ -112,7 +119,7 @@ class ContainerCard extends StatelessWidget {
                                       onPressed: () {
                                         navigator
                                             .popUntil(SortFlavor.b2c.withName);
-                                        B2CScreen.mapNavigation.add(
+                                        B2CMap.navigation?.add(
                                           LatLng(
                                             container.latitude,
                                             container.longtitude,
@@ -189,7 +196,8 @@ class ContainerCard extends StatelessWidget {
         ..add(
           DiagnosticsProperty<ContainerModel>('container', container),
         )
-        ..add(StringProperty('address', address)),
+        ..add(StringProperty('address', address))
+        ..add(DiagnosticsProperty<bool>('onMap', onMap)),
     );
   }
 }

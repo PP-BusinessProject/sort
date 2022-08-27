@@ -9,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../generated/i18n.g.dart';
+import '../../providers/model_providers.dart';
 import '../../utils/logger.dart';
 import '../shared/shared_widgets.dart';
 import '../utils/focus_wrapper.dart';
@@ -93,6 +94,7 @@ class AuthorizationScreen extends HookConsumerWidget {
               }
               logger.i('SMS Code is verified: $smsCode.');
               success = true;
+              await ref.refresh(userProvider.future);
               return '';
             }
 
@@ -135,38 +137,40 @@ class AuthorizationScreen extends HookConsumerWidget {
                   ),
 
                   /// Phone Number Field
-                  PhoneFormField(
-                    key: inputFieldKey,
-                    defaultCountry: IsoCode.UA,
-                    decoration: InputDecoration(
-                      errorText: errorText.value,
-                      hintText: $.auth.phoneNumber.enter,
-                      contentPadding: const EdgeInsets.all(12),
-                    ),
-                    flagSize: 18,
-                    isCountryChipPersistent: true,
-                    isCountrySelectionEnabled: false,
-                    textAlignVertical: TextAlignVertical.center,
-                    style: theme.textTheme.headlineSmall,
-                    strutStyle: StrutStyle(
-                      height:
-                          (theme.textTheme.headlineSmall?.height ?? 1 / 1.1) *
-                              1.1,
-                    ),
-                    countryCodeStyle: theme.textTheme.headlineSmall,
-                    countrySelectorNavigator:
-                        const CountrySelectorNavigator.bottomSheet(),
-                    onSaved: (final _) => authorizePhoneNumber(),
-                    onChanged: (final _) =>
-                        isMounted() ? phoneNumber.value = _ : null,
-                    toolbarOptions: const ToolbarOptions(
-                      copy: true,
-                      cut: true,
-                      paste: true,
-                      selectAll: true,
-                    ),
-                    validator: PhoneValidator.validMobile(
-                      errorText: $.auth.phoneNumber.error.invalid,
+                  Material(
+                    child: PhoneFormField(
+                      key: inputFieldKey,
+                      defaultCountry: IsoCode.UA,
+                      decoration: InputDecoration(
+                        errorText: errorText.value,
+                        hintText: $.auth.phoneNumber.enter,
+                        contentPadding: const EdgeInsets.all(12),
+                      ),
+                      flagSize: 18,
+                      isCountryChipPersistent: true,
+                      isCountrySelectionEnabled: false,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: theme.textTheme.headlineSmall,
+                      strutStyle: StrutStyle(
+                        height:
+                            (theme.textTheme.headlineSmall?.height ?? 1 / 1.1) *
+                                1.1,
+                      ),
+                      countryCodeStyle: theme.textTheme.headlineSmall,
+                      countrySelectorNavigator:
+                          const CountrySelectorNavigator.bottomSheet(),
+                      onSaved: (final _) => authorizePhoneNumber(),
+                      onChanged: (final _) =>
+                          isMounted() ? phoneNumber.value = _ : null,
+                      toolbarOptions: const ToolbarOptions(
+                        copy: true,
+                        cut: true,
+                        paste: true,
+                        selectAll: true,
+                      ),
+                      validator: PhoneValidator.validMobile(
+                        errorText: $.auth.phoneNumber.error.invalid,
+                      ),
                     ),
                   ),
 
@@ -179,6 +183,9 @@ class AuthorizationScreen extends HookConsumerWidget {
                       final Widget? child,
                     ) =>
                         ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(0),
+                      ),
                       onPressed: !ref.watch(_isAuthorizationLoading) &&
                               (phoneNumber.value?.isValid() ?? false)
                           ? authorizePhoneNumber
@@ -191,14 +198,16 @@ class AuthorizationScreen extends HookConsumerWidget {
             ),
 
             /// Contact Support Button
-            InkWell(
-              splashFactory: NoSplash.splashFactory,
-              onTap: () => logger.i('ACTION: Contact support.'),
-              child: Text(
-                $.auth.support,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: theme.colorScheme.onPrimary,
+            Material(
+              child: InkWell(
+                splashFactory: NoSplash.splashFactory,
+                onTap: () => logger.i('ACTION: Contact support.'),
+                child: Text(
+                  $.auth.support,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    decoration: TextDecoration.underline,
+                    color: theme.colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ),

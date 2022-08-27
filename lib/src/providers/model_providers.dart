@@ -1,181 +1,56 @@
-import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_converters_lite/json_converters_lite.dart';
-import 'package:latlong2/latlong.dart';
 
 import '../api.dart';
 import '../generated/models.g.dart';
-import '../notifiers/content_notifier.dart';
 import 'flutter_providers.dart';
-import 'location_providers.dart';
 
-/// An alias to the [StateNotifierProvider] for a [ContentNotifier].
-typedef ContentProvider<T extends Object>
-    = StateNotifierProvider<ContentNotifier<T>, Iterable<T>>;
-
-/// An alias to the [StateNotifierProviderRef] for a [ContentNotifier].
-typedef ContentProviderRef<T extends Object>
-    = StateNotifierProviderRef<ContentNotifier<T>, Iterable<T>>;
-
-/// An alias to the [StateNotifierProvider] for a [ContentOptionalNotifier].
-typedef ContentOptionalProvider<T extends Object?>
-    = StateNotifierProvider<ContentOptionalNotifier<T?>, T?>;
-
-/// An alias to the [StateNotifierProviderRef] for a [ContentOptionalNotifier].
-typedef ContentOptionalProviderRef<T extends Object?>
-    = StateNotifierProviderRef<ContentOptionalNotifier<T?>, T?>;
-
-ContentNotifier<T> contentProvider<T extends Object>(
-  final String path, {
-  required final JsonConverter<T, Map<String, Object?>> converter,
-  final Map<String, Object?>? parameters,
-}) =>
-    ContentNotifier<T>(
-      refreshState: () => sortApi.get(
-        path,
-        parameters: parameters,
-        fromJson: (final Object? value) =>
-            IterableConverter(converter).fromJson(
+Iterable<T> Function(Object? value) _cast<T extends Object>(
+  final JsonConverter<T, Map<String, Object?>> converter,
+) =>
+    (final Object? value) => IterableConverter(converter).fromJson(
           (value! as Iterable<Object?>).cast<Map<String, Object?>>(),
-        ),
-      ),
-      // stream: sortApi.getStream(
-      //   path,
-      //   parameters: parameters,
-      //   fromJson: (final Object? value) =>
-      //       IterableConverter(converter).fromJson(
-      //     (value! as Iterable<Object?>).cast<Map<String, Object?>>(),
-      //   ),
-      //   suppress: true,
-      // ),
-    );
-
-ContentOptionalNotifier<T?> contentOptionalProvider<T extends Object>(
-  final String path, {
-  required final JsonConverter<T, Map<String, Object?>> converter,
-  required final Map<String, Object?>? parameters,
-  final FutureOr<T?> Function()? initialState,
-}) =>
-    ContentOptionalNotifier<T?>(
-      refreshState: () async {
-        if (parameters == null) {
-          return null;
-        }
-        final T? $initialState = await initialState?.call();
-        if ($initialState != null) {
-          return $initialState;
-        }
-        final Iterable<T> items = await sortApi.get<Iterable<T>>(
-          path,
-          fromJson: (final Object? value) =>
-              IterableConverter(converter).fromJson(
-            (value! as Iterable<Object?>).cast<Map<String, Object?>>(),
-          ),
-          parameters: parameters,
         );
-        return items.isEmpty ? null : items.single;
-      },
 
-      // stream: parameters == null
-      //     ? Stream<StreamEvent<Iterable<T?>>>.empty()
-      //     : sortApi
-      //         .getStream<Iterable<T>>(
-      //           path,
-      //           fromJson: (final Object? value) =>
-      //               IterableConverter(converter).fromJson(
-      //             (value! as Iterable<Object?>).cast<Map<String, Object?>>(),
-      //           ),
-      //           parameters: parameters,
-      //           suppress: true,
-      //         )
-      //         .where(
-      //           (final StreamEvent<Iterable<T>> event) =>
-      //               event.prevValue.isNotEmpty || event.value.isNotEmpty,
-      //         ),
-    );
-
-final StateProviderFamily<bool, String> _loadingProvider =
-    StateProvider.family<bool, String>(
-  (final StateProviderRef<bool> ref, final String key) => true,
+final FutureProvider<Iterable<ContainerTankTypeModel>>
+    containerTankTypesProvider =
+    FutureProvider<Iterable<ContainerTankTypeModel>>(
+  (final FutureProviderRef<Iterable<ContainerTankTypeModel>> ref) => sortApi
+      .get('/containerTankTypes', fromJson: _cast(containerTankTypeConverter)),
 );
 
-final ContentProvider<ContainerTankTypeModel> containerTankTypesProvider =
-    ContentProvider<ContainerTankTypeModel>(
-  (final ContentProviderRef<ContainerTankTypeModel> ref) => contentProvider(
-    '/containerTankTypes',
-    converter: containerTankTypeConverter,
-  ),
+final FutureProvider<Iterable<ContainerModel>> containersProvider =
+    FutureProvider<Iterable<ContainerModel>>(
+  (final FutureProviderRef<Iterable<ContainerModel>> ref) =>
+      sortApi.get('/containers', fromJson: _cast(containerConverter)),
 );
 
-final ContentProvider<ContainerModel> containersProvider =
-    ContentProvider<ContainerModel>(
-  (final ContentProviderRef<ContainerModel> ref) => contentProvider(
-    '/containers',
-    converter: containerConverter,
-  ),
-);
-
-final ContentProvider<BonusModel> bonusesProvider = ContentProvider<BonusModel>(
-  (final ContentProviderRef<BonusModel> ref) => contentProvider(
+final FutureProvider<Iterable<BonusModel>> bonusesProvider =
+    FutureProvider<Iterable<BonusModel>>(
+  (final FutureProviderRef<Iterable<BonusModel>> ref) => sortApi.get(
     '/bonuses',
-    converter: bonusConverter,
     parameters: <String, Object?>{
       'field': <String>['owner', 'prices', 'images.image']
     },
+    fromJson: _cast(bonusConverter),
   ),
 );
 
-final Provider<bool> userLoadingProvider = Provider<bool>(
-  (final ProviderRef<bool> ref) => ref.watch(_loadingProvider('user')),
-  dependencies: <ProviderOrFamily>[_loadingProvider],
-);
-
-final ContentOptionalProvider<UserModel?> userProvider =
-    ContentOptionalProvider<UserModel?>(
-  (final ContentOptionalProviderRef<UserModel?> ref) {
-    final StateController<bool> isLoading =
-        ref.refresh(_loadingProvider('user').notifier);
+final FutureProvider<UserModel?> userProvider = FutureProvider<UserModel?>(
+  (final FutureProviderRef<UserModel?> ref) async {
     final int? phoneNumber = ref.watch($phoneNumberProvider);
-    return contentOptionalProvider(
+    if (phoneNumber == null) {
+      return null;
+    }
+    final Iterable<UserModel> users = await sortApi.get(
       '/users',
-      converter: userConverter,
-      parameters: phoneNumber != null
-          ? <String, Object?>{
-              'phone_number': phoneNumber,
-              'field': <String>['person']
-            }
-          : null,
-    )
-      ..addRefreshListener(() => isLoading.state = true)
-      ..addRefreshCallback((final bool success) => isLoading.state = false);
+      parameters: <String, Object?>{
+        'phone_number': phoneNumber,
+        'field': <String>['person']
+      },
+      fromJson: _cast(userConverter),
+    );
+    return users.isEmpty ? null : users.first;
   },
-  dependencies: <ProviderOrFamily>[
-    $phoneNumberProvider,
-    _loadingProvider('user').notifier,
-  ],
+  dependencies: <ProviderOrFamily>[$phoneNumberProvider],
 );
-
-// final Provider<bool> personLoadingProvider = Provider<bool>(
-//   (final ProviderRef<bool> ref) => ref.watch(_loadingProvider('person')),
-//   dependencies: <ProviderOrFamily>[_loadingProvider],
-// );
-
-// final ContentOptionalProvider<PersonModel?> personProvider =
-//     ContentOptionalProvider<PersonModel?>(
-//   (final ContentOptionalProviderRef<PersonModel?> ref) {
-//     final StateController<bool> isLoading =
-//         ref.refresh(_loadingProvider('person').notifier);
-//     final int? userId =
-//         ref.watch(userProvider.select((final UserModel? user) => user?.id));
-//     return contentOptionalProvider(
-//       '/people',
-//       converter: personConverter,
-//       parameters: userId != null ? <String, Object?>{'user_id': userId} : null,
-//       initialState: () => ref.read(userProvider)?.person,
-//     )
-//       ..addRefreshListener(() => isLoading.state = true)
-//       ..addRefreshCallback((final bool success) => isLoading.state = false);
-//   },
-//   dependencies: <ProviderOrFamily>[userProvider, _loadingProvider],
-// );

@@ -10,11 +10,11 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 
 import '../../providers/flutter_providers.dart';
 import 'b2c_expanded.dart';
-import 'b2c_screen.dart';
+import 'b2c_map.dart';
 
-/// The overlay for the [B2CExpanded] on [B2CScreen].
+/// The overlay for the [B2CExpanded] on [B2CMap].
 class B2CExpandedOverlay extends HookConsumerWidget {
-  /// The overlay for the [B2CExpanded] on [B2CScreen].
+  /// The overlay for the [B2CExpanded] on [B2CMap].
   const B2CExpandedOverlay({final super.key});
 
   /// The height of the [B2CExpanded].
