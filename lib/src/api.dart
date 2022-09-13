@@ -121,7 +121,7 @@ class SortAPI {
     final T value, {
     required final Object? Function(T value) toJson,
     final T Function(Object? value)? fromJson,
-    final bool returning = true,
+    final bool returning = false,
   }) async {
     final Response<Object?> response = await _dio.post<Object?>(
       returning ? (path.endsWith('/return') ? path : '$path/return') : path,
@@ -144,7 +144,7 @@ class SortAPI {
     final T value, {
     required final Object? Function(T value) toJson,
     final T Function(Object? value)? fromJson,
-    final bool returning = true,
+    final bool returning = false,
   }) async {
     final Response<Object?> response = await _dio.put<Object?>(
       returning ? (path.endsWith('/return') ? path : '$path/return') : path,

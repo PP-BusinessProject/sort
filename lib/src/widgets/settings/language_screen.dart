@@ -19,8 +19,8 @@ class LanguageScreen extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final NavigatorState navigator = Navigator.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
+    final NavigatorState navigator = Navigator.of(context);
     final bool localeChanged = ref.watch(i18nChangedProvider);
     final I18NLocale currentLocale = ref.watch(i18nProvider);
 
@@ -29,7 +29,10 @@ class LanguageScreen extends HookConsumerWidget {
         (final List<Locale> locales) =>
             (I18NLocale.values.cast<I18NLocale?>()).firstWhere(
           (final I18NLocale? locale) =>
-              locale!.locale.languageCode == locales.first.languageCode,
+              locale!.locale.languageCode == locales.first.languageCode &&
+              (locale.locale.countryCode == null ||
+                  locales.first.countryCode == null ||
+                  locale.locale.countryCode == locales.first.countryCode),
           orElse: () => null,
         ),
       ),
@@ -39,9 +42,9 @@ class LanguageScreen extends HookConsumerWidget {
     String translatedTitle(final I18NLocale locale) {
       switch (locale) {
         case I18NLocale.uk:
-          return $.settings.language.uk;
+          return $.settings.language.ukUa;
         case I18NLocale.en:
-          return $.settings.language.en;
+          return $.settings.language.enUs;
       }
     }
 
@@ -61,6 +64,7 @@ class LanguageScreen extends HookConsumerWidget {
         onPressed: navigator.maybePop,
       ),
       child: listView(
+        mediaQuery,
         children: <Widget>[
           _button(
             title: $.settings.language.system,
@@ -93,9 +97,9 @@ class LanguageScreen extends HookConsumerWidget {
               title: () {
                 switch (locale) {
                   case I18NLocale.uk:
-                    return locale().settings.language.uk;
+                    return locale().settings.language.ukUa;
                   case I18NLocale.en:
-                    return locale().settings.language.en;
+                    return locale().settings.language.enUs;
                 }
               }(),
               secondTitle: translatedTitle(locale),

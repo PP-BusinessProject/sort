@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../extensions.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
 import '../../styles.dart';
@@ -14,20 +15,20 @@ class BonusCard extends StatelessWidget {
   /// The bonus to display in this card.
   final BonusModel bonus;
 
-  /// The outer paddinng of this widget
-  static const EdgeInsets padding = EdgeInsets.all(16);
+  /// The recommended height of this widget.
+  static const double recommendedHeight = 140;
 
   @override
   Widget build(final BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18NLocale currentLocale = I18NLocalizations.of(context)!.current;
+    final I18N $ = currentLocale();
     return Card(
-      margin: padding,
       shape: outlinedBorder(theme, radius: 10),
       child: Stack(
         children: <Widget>[
           Padding(
-            padding: padding,
+            padding: const EdgeInsets.all(16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -38,39 +39,48 @@ class BonusCard extends StatelessWidget {
                         : null,
                   ),
                 ),
+                const SizedBox(width: 16),
                 Expanded(
                   flex: 2,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Align(
-                        child: Text(
-                          bonus.name,
+                      Flexible(
+                        child: marqueeText(
+                          bonus.name(currentLocale.locale),
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      Align(
-                        child: Text(
-                          bonus.owner?.firstName ?? '',
+                      Flexible(
+                        child: marqueeText(
+                          bonus.owner?.fullName(currentLocale.locale) ?? '',
                           style: theme.textTheme.bodyMedium,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Flexible(
+                      const SizedBox(height: 12),
+                      Expanded(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              minimumSize: const Size.fromHeight(0),
+                            ),
                             onPressed: () {},
-                            child: Text(
-                              $.bonus.purchase,
-                              style: theme.textTheme.bodyLarge,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
+                              ),
+                              child: Text(
+                                $.bonus.purchase,
+                                style: theme.textTheme.bodyLarge,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 6),
                     ],
                   ),
                 )

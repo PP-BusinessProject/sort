@@ -8,13 +8,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../generated/i18n.g.dart';
-import '../../generated/models.g.dart';
 import '../../providers/model_providers.dart';
 import '../../styles.dart';
 import '../../widgets/shared/shared_widgets.dart';
-import '../auth/profile_screen.dart';
 import '../settings/settings_screen.dart';
+import '../users/user_card.dart';
 import 'b2c_expanded.dart';
+import 'b2c_screen.dart';
 
 /// The menu of the [B2CScreen] that is accessed from the [B2CExpanded].
 class B2CMenu extends HookConsumerWidget {
@@ -111,9 +111,22 @@ class B2CMenu extends HookConsumerWidget {
 
                         /// Profile Edit
                         const SizedBox(height: 24),
-                        const SizedBox(
+                        SizedBox(
                           height: 48,
-                          child: B2CMenuProfileCard(),
+                          child: Consumer(
+                            builder: (
+                              final _,
+                              final WidgetRef ref,
+                              final Widget? child,
+                            ) =>
+                                UserCard(
+                              ref.watch(
+                                userProvider
+                                    .select((final _) => _.valueOrNull!),
+                              ),
+                              canEdit: true,
+                            ),
+                          ),
                         ),
 
                         /// Payment
@@ -296,104 +309,6 @@ class B2CMenu extends HookConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// The current logged in user's profile card.
-class B2CMenuProfileCard extends HookConsumerWidget {
-  /// The current logged in user's profile card.
-  const B2CMenuProfileCard({final super.key});
-
-  @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
-    final ThemeData theme = Theme.of(context);
-    final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
-    final UserModel? user =
-        ref.watch(userProvider.select((final _) => _.valueOrNull));
-    return Row(
-      children: <Widget>[
-        /// Avatar with Add Button
-        Stack(
-          alignment: Alignment.bottomRight,
-          children: <Widget>[
-            /// Avatar
-            Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: GestureDetector(
-                onTap: () {},
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    shape: BoxShape.circle,
-                    boxShadow: <BoxShadow>[boxShadow(theme)],
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(CupertinoIcons.person_fill, size: 32),
-                  ),
-                ),
-              ),
-            ),
-
-            /// Add Button
-            iconButton(
-              theme,
-              CupertinoIcons.add,
-              iconSize: 12,
-              radius: 9,
-              color: theme.colorScheme.onPrimary,
-              iconColor: theme.colorScheme.surface,
-              onTap: () {},
-            )
-          ],
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Flexible(
-                child: marqueeText(
-                  '${user?.firstName ?? ''} ${user?.lastName ?? ''}'
-                      .trimRight(),
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Flexible(
-                child: marqueeText(
-                  '+${user?.phoneNumber ?? ''}',
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 16),
-
-        /// Profile Edit
-        Align(
-          alignment: Alignment.topRight,
-          child: Tooltip(
-            message: $.menu.editHint,
-            child: iconButton(
-              theme,
-              CupertinoIcons.pencil,
-              onTap: () => navigator.push(
-                PageTransition<void>(
-                  type: PageTransitionType.fade,
-                  child: const ProfileScreen(),
-                ),
-              ),
-              iconSize: 18,
-              radius: 32 / 2,
-            ),
-          ),
-        )
-      ],
     );
   }
 }

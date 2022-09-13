@@ -80,9 +80,13 @@ final HiveProvider<I18NLocale> i18nProvider = HiveProvider<I18NLocale>(
     key: 'locale',
     toJson: const EnumConverter<I18NLocale>(I18NLocale.values).toJson,
     fromJson: const EnumConverter<I18NLocale>(I18NLocale.values).fromJson,
-    initialValue: I18NLocale.uk,
+    initialValue: ((final List<Locale> systemLocales) =>
+        I18NLocale.values.firstWhere(
+          (final I18NLocale locale) => systemLocales.contains(locale.locale),
+          orElse: () => I18NLocale.values.last,
+        ))(ref.read(systemLocalesProvider)),
   ),
-  dependencies: <ProviderOrFamily>[hiveProvider],
+  dependencies: <ProviderOrFamily>[hiveProvider, systemLocalesProvider],
 );
 
 /// Observe the changes on [i18nProvider].
@@ -107,12 +111,17 @@ class I18NChangedObserver extends ProviderObserver {
       final HiveNotifier<bool, String> i18nChangedNotifier =
           container.read(i18nChangedProvider.notifier);
       if (!i18nChangedNotifier.state) {
+        final List<Locale> systemLocales = newValue! as List<Locale>;
         await (container.read(i18nProvider.notifier)).setStateAsync(
           I18NLocale.values.firstWhere(
             (final I18NLocale locale) =>
                 locale.locale.languageCode ==
-                (newValue! as List<Locale>).first.languageCode,
-            orElse: () => I18NLocale.uk,
+                    systemLocales.first.languageCode &&
+                (locale.locale.countryCode == null ||
+                    systemLocales.first.countryCode == null ||
+                    locale.locale.countryCode ==
+                        systemLocales.first.countryCode),
+            orElse: () => I18NLocale.values.last,
           ),
         );
         await i18nChangedNotifier.setStateAsync(false);

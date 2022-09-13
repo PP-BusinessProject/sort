@@ -25,6 +25,7 @@ class SettingsScreen extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
     final I18N $ = I18NLocalizations.of(context)!.current();
     return CupertinoPageScaffold(
@@ -34,6 +35,7 @@ class SettingsScreen extends HookConsumerWidget {
         onPressed: navigator.maybePop,
       ),
       child: listView(
+        mediaQuery,
         children: <Widget>[
           _button(
             title: $.settings.language.language,

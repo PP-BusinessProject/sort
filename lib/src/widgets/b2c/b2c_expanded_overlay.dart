@@ -9,6 +9,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 import '../../providers/flutter_providers.dart';
+import '../../providers/model_providers.dart';
+import '../bonuses/bonus_card.dart';
 import 'b2c_expanded.dart';
 import 'b2c_map.dart';
 
@@ -36,18 +38,34 @@ class B2CExpandedOverlay extends HookConsumerWidget {
   static final StateProvider<double> _sheetHeight =
       StateProvider<double>((final StateProviderRef<double> ref) => 0);
 
-  static final Provider<double> _expandedSnappingPositionHeightProvider =
-      Provider<double>(
+  static final Provider<double> _expandedHeightProvider = Provider<double>(
     (final ProviderRef<double> ref) => ref.watch(
-      mediaQueryProvider.select(
-        (final MediaQueryData? mediaQuery) {
-          double height = mediaQuery!.size.height;
-          height = (height - expandedHeight).clamp(0, height);
-          return height < 100 ? 0 : height;
-        },
+      bonusesProvider.select(
+        (final _) => _.valueOrNull?.isNotEmpty ?? B2CExpanded.showBonusesShimmer
+            ? expandedHeight
+            : expandedHeight - BonusCard.recommendedHeight - 16,
       ),
     ),
-    dependencies: <ProviderOrFamily>[mediaQueryProvider],
+    dependencies: <ProviderOrFamily>[bonusesProvider],
+  );
+
+  static final Provider<double> _expandedSnappingPositionHeightProvider =
+      Provider<double>(
+    (final ProviderRef<double> ref) {
+      final double expandedHeight = ref.watch(_expandedHeightProvider);
+      return ref.watch(
+        mediaQueryProvider.select(
+          (final MediaQueryData? mediaQuery) {
+            final double height = mediaQuery!.size.height - expandedHeight;
+            return height < 100 ? 0 : height;
+          },
+        ),
+      );
+    },
+    dependencies: <ProviderOrFamily>[
+      mediaQueryProvider,
+      _expandedHeightProvider
+    ],
   );
 
   @override
@@ -55,6 +73,7 @@ class B2CExpandedOverlay extends HookConsumerWidget {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
 
+    final double expandedHeight = ref.watch(_expandedHeightProvider);
     final double expandedSnappingPositionHeight =
         ref.watch(_expandedSnappingPositionHeightProvider);
     final SnappingPosition expandedSnappingPosition = SnappingPosition.pixels(
@@ -69,7 +88,7 @@ class B2CExpandedOverlay extends HookConsumerWidget {
       controller: snapController,
       lockOverflowDrag: true,
       onSheetMoved: (final _) => ref.read(_sheetHeight.notifier).state =
-          (1 - _.relativeToSheetHeight).clamp(0, 1),
+          mediaQuery.size.height - _.pixels,
       snappingPositions: <SnappingPosition>[
         if (snapController.isAttached &&
             snapController.currentSnappingPosition == mainSnappingPosition)
@@ -123,7 +142,9 @@ class B2CExpandedOverlay extends HookConsumerWidget {
                 final double opacity = ref.watch(
                   _sheetHeight.select(
                     (final double height) => Curves.easeOut
-                        .transform((height - 1 / 6).clamp(0.001, 1))
+                        .transform(
+                          (height / expandedHeight / 3).clamp(0.001, 1),
+                        )
                         .clamp(0.001, 1 / 3),
                   ),
                 );
@@ -149,7 +170,7 @@ class B2CExpandedOverlay extends HookConsumerWidget {
                 opacity: ref.watch(
                   _sheetHeight.select(
                     (final double height) => Curves.easeOutQuad.transform(
-                      1 - (height * 2 + 1 / 4).clamp(.001, 1),
+                      1 - (height / expandedHeight).clamp(.001, 1),
                     ),
                   ),
                 ),
@@ -161,7 +182,7 @@ class B2CExpandedOverlay extends HookConsumerWidget {
                   height: 64 + 8,
                   child: ExpandTapWidget(
                     onTap: () => snapController.snapToPosition(
-                      ref.read(_sheetHeight) < 0.01
+                      ref.read(_sheetHeight) / mediaQuery.size.height < 0.01
                           ? expandedSnappingPosition
                           : mainSnappingPosition,
                     ),

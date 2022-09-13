@@ -28,6 +28,7 @@ class ThemeScreen extends HookConsumerWidget {
         onPressed: navigator.maybePop,
       ),
       child: listView(
+        mediaQuery,
         children: <Widget>[
           for (final Widget widget
               in ThemeMode.values.map((final ThemeMode $theme) {

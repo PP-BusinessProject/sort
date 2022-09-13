@@ -45,7 +45,7 @@ class ProfileScreen extends HookConsumerWidget {
   static final StateProvider<String?> _firstNameProvider =
       StateProvider<String?>(
     (final StateProviderRef<String?> ref) => ref.watch(
-      userProvider.select((final _) => _.valueOrNull?.firstName ?? ''),
+      userProvider.select((final _) => _.valueOrNull?.fallbackFirstName ?? ''),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
@@ -53,7 +53,7 @@ class ProfileScreen extends HookConsumerWidget {
   static final StateProvider<String?> _lastNameProvider =
       StateProvider<String?>(
     (final StateProviderRef<String?> ref) => ref.watch(
-      userProvider.select((final _) => _.valueOrNull?.lastName ?? ''),
+      userProvider.select((final _) => _.valueOrNull?.fallbackLastName ?? ''),
     ),
     dependencies: <ProviderOrFamily>[userProvider],
   );
@@ -122,11 +122,7 @@ class ProfileScreen extends HookConsumerWidget {
         return null;
       }
       final String firstName = ref.watch(_firstNameProvider)!;
-      final String? lastName = ref.watch(
-        _lastNameProvider.select(
-          (final String? lastName) => lastName!.isEmpty ? null : lastName,
-        ),
-      );
+      final String lastName = ref.watch(_lastNameProvider)!;
       final String? email = ref.watch(
         _emailProvider.select(
           (final String? email) => email!.isEmpty ? null : email,
@@ -146,8 +142,8 @@ class ProfileScreen extends HookConsumerWidget {
           ref.watch(userProvider.select((final _) => _.valueOrNull));
       return user?.copyWith(
             phoneNumber: phoneNumber,
-            firstName: firstName,
-            lastName: lastName,
+            fallbackFirstName: firstName,
+            fallbackLastName: lastName,
             email: email,
             birthday: birthday,
             person: user.person
@@ -156,8 +152,8 @@ class ProfileScreen extends HookConsumerWidget {
           ) ??
           UserModel(
             phoneNumber: phoneNumber,
-            firstName: firstName,
-            lastName: lastName,
+            fallbackFirstName: firstName,
+            fallbackLastName: lastName,
             email: email,
             birthday: birthday,
             person: PersonModel(gender: gender, familyCount: familyCount),
@@ -178,6 +174,7 @@ class ProfileScreen extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
     final I18N $ = I18NLocalizations.of(context)!.current();
 
@@ -211,13 +208,13 @@ class ProfileScreen extends HookConsumerWidget {
       )
       ..listen<UserModel?>(userProvider.select((final _) => _.valueOrNull),
           (final UserModel? prevUser, final UserModel? user) {
-        if (prevUser?.firstName != user?.firstName) {
-          ref.read(_firstNameProvider.notifier).state = user?.firstName;
-          firstNameController.text = user?.firstName ?? '';
+        if (prevUser?.fallbackFirstName != user?.fallbackFirstName) {
+          ref.read(_firstNameProvider.notifier).state = user?.fallbackFirstName;
+          firstNameController.text = user?.fallbackFirstName ?? '';
         }
-        if (prevUser?.lastName != user?.lastName) {
-          ref.read(_lastNameProvider.notifier).state = user?.lastName;
-          lastNameController.text = user?.lastName ?? '';
+        if (prevUser?.fallbackLastName != user?.fallbackLastName) {
+          ref.read(_lastNameProvider.notifier).state = user?.fallbackLastName;
+          lastNameController.text = user?.fallbackLastName ?? '';
         }
         if (prevUser?.email != user?.email) {
           ref.read(_emailProvider.notifier).state = user?.email;
@@ -247,15 +244,9 @@ class ProfileScreen extends HookConsumerWidget {
         await (user != null ? sortApi.put : sortApi.post)<Iterable<UserModel>>(
           '/users',
           <UserModel>[newUser],
-          returning: false,
           toJson: (final Iterable<UserModel> users) =>
-              const IterableConverter(userConverter)
-                  .toJson(users)
+              (const IterableConverter(userConverter).toJson(users))
                   .toList(growable: false),
-          fromJson: (final Object? value) =>
-              const IterableConverter(userConverter).fromJson(
-            (value! as Iterable<Object?>).cast<Map<String, Object?>>(),
-          ),
         );
         if (isMounted()) {
           await ref.refresh(userProvider.future);
@@ -329,6 +320,7 @@ class ProfileScreen extends HookConsumerWidget {
             : navigator.maybePop(),
       ),
       child: listView(
+        mediaQuery,
         alignment: Alignment.topCenter,
         children: <Widget>[
           Consumer(

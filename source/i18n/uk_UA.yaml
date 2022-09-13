@@ -1,6 +1,13 @@
 misc:
   prev_page: Назад
 
+error:
+  error: Сталася помилка на сервері
+  description: Будь ласка, спробуйте оновити ваш додаток.
+  confirm: Оновити
+  copy_logs: Скопіювати
+  view_logs: Продивитися логи
+
 alert:
   exit:
     title: Ви впевнені що хочете вийти?
@@ -30,14 +37,6 @@ alert:
       Увімкніть її у налаштуваннях.
     approve: Відкрити налаштування
     deny: Відмовити
-
-pull_to_refresh:
-  idle: Тяни вниз чтобы обновить
-  release: Отпусти чтобы обновить
-  refreshing: Получаем свежие данные...
-  complete: Данные обновлены
-  complete_internet_error: Проверьте интернет соединение!
-  error: Произошла ошибка
 
 auth:
   support: Зв'язатися з підтримкою
@@ -95,8 +94,8 @@ settings:
     language: Мова
     system: Системна
     unsupported(final String locale): Не підтримується ($locale)
-    en: Англійська
-    uk: Українська
+    en_US: Англійська
+    uk_UA: Українська
 
   theme:
     theme: Тема
@@ -117,17 +116,25 @@ settings:
 
 bonus:
   purchase: Купити
+  filter:
+    filter: Фільтр
 
 containers:
   containers: Сортомати
   name(final int? id): "Сортомат${id != null ? ' №$id' : ''}"
   open: Відкрити
+  show_on_map: Показати на мапі
   filter:
     filter: Фільтр
-    organic: Органіка
-    dry_mixed: Сухі/Змішані
     fullness: Наповненість
     confirm: Застосувати
+  report:
+    report: Повідомити про несправність
+    send: Надіслати
+    other: Інше
+    information: Додаткова інформація
+    information_optional: (необов'язково)
+    information_required: (обов'язково)
 
 delivery:
   delivery: Курʼєр

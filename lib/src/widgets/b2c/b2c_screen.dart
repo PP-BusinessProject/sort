@@ -6,9 +6,9 @@ import '../../flavors.dart';
 import '../../generated/models.g.dart';
 import '../../providers/flutter_providers.dart';
 import '../../providers/model_providers.dart';
-import '../../utils/logger.dart';
 import '../auth/authorization_screen.dart';
 import '../auth/profile_screen.dart';
+import '../error_screen.dart';
 import '../splash_screen.dart';
 import 'b2c_map.dart';
 
@@ -19,17 +19,12 @@ class B2CScreen extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    Widget? onError(final Object? error, final StackTrace? stackTrace) {
-      logger.e('Exception occured.', error, stackTrace);
-      return const SizedBox.shrink();
-    }
-
     const Widget loadingWidget =
         Center(child: CircularProgressIndicator.adaptive());
     Widget? content = ref.watch(
       signedInProvider.select(
         (final _) => _.when<Widget?>(
-          error: onError,
+          error: ErrorScreen.new,
           loading: () => loadingWidget,
           data: (final User? user) =>
               user == null ? const AuthorizationScreen() : null,
@@ -39,7 +34,7 @@ class B2CScreen extends HookConsumerWidget {
     content ??= ref.watch(
       userProvider.select(
         (final _) => _.when(
-          error: onError,
+          error: ErrorScreen.new,
           loading: () => loadingWidget,
           data: (final UserModel? user) =>
               user == null ? const ProfileScreen() : const B2CMap(),

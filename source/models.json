@@ -1,4 +1,59 @@
 {
+  "ImageModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "url": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "bonuses": {
+      "type": "BonusImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "containers": {
+      "type": "ContainerImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "nomenclatures": {
+      "type": "NomenclatureImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
   "UserModel": {
     "id": {
       "type": "int",
@@ -8,7 +63,7 @@
       "compare": true,
       "equality": true
     },
-    "first_name": {
+    "fallback_first_name": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -16,11 +71,11 @@
       "compare": false,
       "equality": true
     },
-    "last_name": {
+    "fallback_last_name": {
       "type": "str",
-      "default": null,
+      "default": "",
       "doc": null,
-      "nullable": true,
+      "nullable": false,
       "compare": false,
       "equality": true
     },
@@ -64,6 +119,13 @@
       "compare": false,
       "equality": false
     },
+    "locales": {
+      "type": "UserLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
     "deals": {
       "type": "DealModel[]",
       "default": [],
@@ -90,6 +152,13 @@
       "default": null,
       "doc": null,
       "nullable": true,
+      "equality": true
+    },
+    "refferals": {
+      "type": "PersonModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
       "equality": true
     },
     "group": {
@@ -128,6 +197,122 @@
       "equality": true
     }
   },
+  "MeasurementModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locales": {
+      "type": "MeasurementLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "bonuses": {
+      "type": "BonusModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "container_tank_types": {
+      "type": "ContainerTankTypeModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "nomenclatures": {
+      "type": "NomenclatureModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "BonusCategoryModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "parent_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "locales": {
+      "type": "BonusCategoryLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "parent": {
+      "type": "BonusCategoryModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "children": {
+      "type": "BonusCategoryModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "bonuses": {
+      "type": "BonusModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
   "BonusModel": {
     "owner_id": {
       "type": "int",
@@ -145,7 +330,7 @@
       "compare": true,
       "equality": true
     },
-    "name": {
+    "fallback_name": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -153,7 +338,7 @@
       "compare": false,
       "equality": true
     },
-    "description": {
+    "fallback_description": {
       "type": "str",
       "default": "",
       "doc": null,
@@ -161,11 +346,35 @@
       "compare": false,
       "equality": true
     },
+    "category_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "measurement_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
     "user_limit": {
       "type": "int",
       "default": 0,
-      "doc": null,
+      "doc": "Coupon limit for a single user.",
       "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "active_till": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "compare": false,
       "equality": true
     },
@@ -192,11 +401,32 @@
       "nullable": true,
       "equality": true
     },
+    "locales": {
+      "type": "BonusLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
     "images": {
       "type": "BonusImageModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
+      "equality": true
+    },
+    "category": {
+      "type": "BonusCategoryModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "measurement": {
+      "type": "MeasurementModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "equality": true
     },
     "coupons": {
@@ -208,111 +438,6 @@
     },
     "prices": {
       "type": "BonusPriceModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    }
-  },
-  "BonusCouponModel": {
-    "bonus_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "hash": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "active": {
-      "type": "bool",
-      "default": true,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "owner_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "created_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "bonus": {
-      "type": "BonusModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    }
-  },
-  "ImageModel": {
-    "id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "url": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "created_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "bonuses": {
-      "type": "BonusImageModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "containers": {
-      "type": "ContainerImageModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
@@ -367,6 +492,217 @@
       "equality": true
     }
   },
+  "LocaleModel": {
+    "language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "settings": {
+      "type": "SettingsModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "address_locales": {
+      "type": "AddressLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "bank_locales": {
+      "type": "BankLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "bonus_locales": {
+      "type": "BonusLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "bonus_category_locales": {
+      "type": "BonusCategoryLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "company_contact_type_locales": {
+      "type": "CompanyContactTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "container_report_type_locales": {
+      "type": "ContainerReportTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "container_tank_type_locales": {
+      "type": "ContainerTankTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "group_right_locales": {
+      "type": "GroupRightLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "measurement_locales": {
+      "type": "MeasurementLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "price_locales": {
+      "type": "PriceLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "text_locales": {
+      "type": "TextLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "nomenclature_category_locales": {
+      "type": "NomenclatureCategoryLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "nomenclature_locales": {
+      "type": "NomenclatureLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "user_locales": {
+      "type": "UserLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "BonusLocaleModel": {
+    "bonus_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "description": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "bonus": {
+      "type": "BonusModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
   "PriceModel": {
     "id": {
       "type": "int",
@@ -376,7 +712,7 @@
       "compare": true,
       "equality": true
     },
-    "name": {
+    "fallback_name": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -400,8 +736,22 @@
       "compare": false,
       "equality": false
     },
+    "locales": {
+      "type": "PriceLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
     "deals": {
       "type": "DealModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "deal_additions": {
+      "type": "DealAdditionModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
@@ -414,8 +764,8 @@
       "nullable": false,
       "equality": true
     },
-    "services": {
-      "type": "ServicePriceModel[]",
+    "nomenclatures": {
+      "type": "NomenclaturePriceModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
@@ -478,6 +828,239 @@
       "equality": true
     }
   },
+  "BonusCategoryLocaleModel": {
+    "category_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "category": {
+      "type": "BonusCategoryModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "BonusCouponModel": {
+    "bonus_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "count": {
+      "type": "int",
+      "default": 1,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "active_till": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "bonus": {
+      "type": "BonusModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "uses": {
+      "type": "BonusCouponUseModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "BonusCouponUseModel": {
+    "coupon_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "amount": {
+      "type": "int",
+      "default": 1,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "coupon": {
+      "type": "BonusCouponModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "CompanyContactTypeModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locales": {
+      "type": "CompanyContactTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "contacts": {
+      "type": "CompanyContactModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
   "AddressModel": {
     "id": {
       "type": "int",
@@ -487,7 +1070,7 @@
       "compare": true,
       "equality": true
     },
-    "country": {
+    "fallback_country": {
       "type": "str",
       "default": "Ukraine",
       "doc": null,
@@ -495,7 +1078,7 @@
       "compare": false,
       "equality": true
     },
-    "state": {
+    "fallback_state": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -503,7 +1086,7 @@
       "compare": false,
       "equality": true
     },
-    "city": {
+    "fallback_city": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -511,7 +1094,7 @@
       "compare": false,
       "equality": true
     },
-    "street": {
+    "fallback_street": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -533,6 +1116,13 @@
       "doc": null,
       "nullable": false,
       "compare": false,
+      "equality": true
+    },
+    "locales": {
+      "type": "AddressLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
       "equality": true
     },
     "banks": {
@@ -573,7 +1163,7 @@
       "compare": true,
       "equality": true
     },
-    "name": {
+    "fallback_name": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -587,6 +1177,13 @@
       "doc": null,
       "nullable": true,
       "compare": false,
+      "equality": true
+    },
+    "locales": {
+      "type": "BankLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
       "equality": true
     },
     "address": {
@@ -706,27 +1303,27 @@
       "compare": true,
       "equality": true
     },
-    "type": {
-      "type": "enum[DIRECTOR, ACCOUNTANT, MANAGER]",
-      "default": "DIRECTOR",
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "first_name": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "last_name": {
-      "type": "str",
+    "type_id": {
+      "type": "int",
       "default": null,
       "doc": null,
       "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_first_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_last_name": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
       "compare": false,
       "equality": true
     },
@@ -760,10 +1357,160 @@
       "doc": null,
       "nullable": true,
       "equality": true
+    },
+    "type": {
+      "type": "CompanyContactTypeModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "CompanyContactTypeLocaleModel": {
+    "type_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "type": {
+      "type": "CompanyContactTypeModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
     }
   },
   "DealModel": {
-    "owner_id": {
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_price_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_payment_type": {
+      "type": "bool",
+      "default": false,
+      "doc": "Prepayment (False) or Payment (True).",
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "active_till": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "user": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "fallback_price": {
+      "type": "PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "additions": {
+      "type": "DealAdditionModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "DealAdditionModel": {
+    "deal_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -790,189 +1537,7 @@
     "payment_type": {
       "type": "bool",
       "default": false,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "refferal_discount": {
-      "type": "float",
-      "default": 0.0,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "active_till": {
-      "type": "datetime",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "created_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "owner": {
-      "type": "UserModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "price": {
-      "type": "PriceModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "services": {
-      "type": "DealServiceModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    }
-  },
-  "MeasurementModel": {
-    "id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "name": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "created_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "container_tank_types": {
-      "type": "ContainerTankTypeModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "services": {
-      "type": "ServiceModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    }
-  },
-  "ServiceModel": {
-    "id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "name": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "description": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "measurement_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "measurement": {
-      "type": "MeasurementModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "prices": {
-      "type": "ServicePriceModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "deals": {
-      "type": "DealServiceModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    }
-  },
-  "DealServiceModel": {
-    "deal_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "service_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "amount": {
-      "type": "float",
-      "default": 1,
-      "doc": null,
+      "doc": "Prepayment (False) or Payment (True).",
       "nullable": false,
       "compare": false,
       "equality": true
@@ -1000,8 +1565,216 @@
       "nullable": true,
       "equality": true
     },
-    "service": {
-      "type": "ServiceModel",
+    "price": {
+      "type": "PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "nomenclatures": {
+      "type": "DealAdditionNomenclatureModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "NomenclatureCategoryModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "parent_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "locales": {
+      "type": "NomenclatureCategoryLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "parent": {
+      "type": "NomenclatureCategoryModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "children": {
+      "type": "NomenclatureCategoryModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "nomenclatures": {
+      "type": "NomenclatureModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "NomenclatureModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_description": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "category_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "measurement_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "locales": {
+      "type": "NomenclatureLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "images": {
+      "type": "NomenclatureImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "category": {
+      "type": "NomenclatureCategoryModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "measurement": {
+      "type": "MeasurementModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "prices": {
+      "type": "NomenclaturePriceModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "deal_additions": {
+      "type": "DealAdditionNomenclatureModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "deliveries": {
+      "type": "DeliveryNomenclatureModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "DealAdditionNomenclatureModel": {
+    "addition_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "nomenclature_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "amount": {
+      "type": "int",
+      "default": 1,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "addition": {
+      "type": "DealAdditionModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "nomenclature": {
+      "type": "NomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1088,14 +1861,6 @@
       "compare": false,
       "equality": true
     },
-    "rights": {
-      "type": "flag[OPEN_CONTAINERS, SCAN_BONUSES, EDIT_BONUSES, MANAGE_MEMBERS]",
-      "default": "EDIT_BONUSES|OPEN_CONTAINERS",
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
     "created_at": {
       "type": "datetime",
       "default": null,
@@ -1118,9 +1883,192 @@
       "doc": null,
       "nullable": true,
       "equality": true
+    },
+    "rights": {
+      "type": "GroupMemberRightModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "GroupRightModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locales": {
+      "type": "GroupRightLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
+    "members": {
+      "type": "GroupMemberRightModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    }
+  },
+  "GroupMemberRightModel": {
+    "group_owner_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "right_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "member": {
+      "type": "GroupMemberModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "right": {
+      "type": "GroupRightModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "GroupRightLocaleModel": {
+    "type_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "right": {
+      "type": "GroupRightModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
     }
   },
   "PersonModel": {
+    "refferal_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
     "user_id": {
       "type": "int",
       "default": null,
@@ -1167,10 +2115,17 @@
       "doc": null,
       "nullable": true,
       "equality": true
+    },
+    "refferal": {
+      "type": "UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
     }
   },
-  "ServicePriceModel": {
-    "service_id": {
+  "UserLocaleModel": {
+    "user_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -1178,17 +2133,33 @@
       "compare": true,
       "equality": true
     },
-    "price_id": {
-      "type": "int",
+    "locale_language_code": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
       "compare": true,
       "equality": true
     },
-    "value": {
-      "type": "float",
+    "locale_country_code": {
+      "type": "str",
       "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "first_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "last_name": {
+      "type": "str",
+      "default": "",
       "doc": null,
       "nullable": false,
       "compare": false,
@@ -1210,15 +2181,15 @@
       "compare": false,
       "equality": false
     },
-    "service": {
-      "type": "ServiceModel",
+    "locale": {
+      "type": "LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
       "equality": true
     },
-    "price": {
-      "type": "PriceModel",
+    "user": {
+      "type": "UserModel",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1375,6 +2346,14 @@
       "compare": true,
       "equality": true
     },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
     "created_at": {
       "type": "datetime",
       "default": null,
@@ -1391,11 +2370,154 @@
       "compare": false,
       "equality": false
     },
+    "locales": {
+      "type": "ContainerReportTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
+    },
     "reports": {
       "type": "ContainerReportModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
+      "equality": true
+    }
+  },
+  "ContainerReportModel": {
+    "user_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "container_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "type_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "information": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "type": {
+      "type": "ContainerReportTypeModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "container": {
+      "type": "ContainerModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "ContainerReportTypeLocaleModel": {
+    "type_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "type": {
+      "type": "ContainerReportTypeModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "equality": true
     }
   },
@@ -1408,7 +2530,7 @@
       "compare": true,
       "equality": true
     },
-    "name": {
+    "fallback_name": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -1455,6 +2577,13 @@
       "nullable": true,
       "compare": false,
       "equality": false
+    },
+    "locales": {
+      "type": "ContainerTankTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true
     },
     "measurement": {
       "type": "MeasurementModel",
@@ -1541,24 +2670,8 @@
       "equality": true
     }
   },
-  "ContainerReportModel": {
-    "user_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "container_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "id": {
+  "ContainerTankTypeLocaleModel": {
+    "type_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -1566,17 +2679,25 @@
       "compare": true,
       "equality": true
     },
-    "type": {
-      "type": "int",
+    "locale_language_code": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
-      "compare": false,
+      "compare": true,
       "equality": true
     },
-    "information": {
+    "locale_country_code": {
       "type": "str",
-      "default": "",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
       "doc": null,
       "nullable": false,
       "compare": false,
@@ -1598,15 +2719,15 @@
       "compare": false,
       "equality": false
     },
-    "type_": {
-      "type": "ContainerReportTypeModel",
+    "locale": {
+      "type": "LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
       "equality": true
     },
-    "container": {
-      "type": "ContainerModel",
+    "type": {
+      "type": "ContainerTankTypeModel",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1710,7 +2831,7 @@
       "compare": false,
       "equality": true
     },
-    "deal_id": {
+    "addition_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -1718,7 +2839,7 @@
       "compare": false,
       "equality": true
     },
-    "service_id": {
+    "nomenclature_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -1764,8 +2885,8 @@
       "nullable": true,
       "equality": true
     },
-    "deal_service": {
-      "type": "DealServiceModel",
+    "nomenclature": {
+      "type": "DealAdditionNomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1785,11 +2906,19 @@
       "default": null,
       "doc": null,
       "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "compare": true,
       "equality": true
     },
     "volume": {
-      "type": "int",
+      "type": "float",
       "default": null,
       "doc": null,
       "nullable": false,
@@ -1908,15 +3037,15 @@
       "nullable": true,
       "equality": true
     },
-    "services": {
-      "type": "DeliveryServiceModel[]",
+    "nomenclatures": {
+      "type": "DeliveryNomenclatureModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
       "equality": true
     }
   },
-  "DeliveryServiceModel": {
+  "DeliveryNomenclatureModel": {
     "user_id": {
       "type": "int",
       "default": null,
@@ -1925,7 +3054,7 @@
       "compare": true,
       "equality": true
     },
-    "service_id": {
+    "nomenclature_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -1964,21 +3093,117 @@
       "nullable": true,
       "equality": true
     },
-    "service": {
-      "type": "ServiceModel",
+    "nomenclature": {
+      "type": "NomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
       "equality": true
     }
   },
-  "LocaleModel": {
-    "locale_alpha_2": {
+  "AddressLocaleModel": {
+    "address_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "country": {
+      "type": "str",
+      "default": "Ukraine",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "state": {
       "type": "str",
       "default": null,
       "doc": null,
       "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "city": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "street": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "address": {
+      "type": "AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "BankLocaleModel": {
+    "bank_code": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
       "equality": true
     },
     "created_at": {
@@ -1997,11 +3222,18 @@
       "compare": false,
       "equality": false
     },
-    "texts": {
-      "type": "LocaleTextModel[]",
-      "default": [],
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
       "doc": null,
-      "nullable": false,
+      "nullable": true,
+      "equality": true
+    },
+    "bank": {
+      "type": "BankModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "equality": true
     }
   },
@@ -2014,7 +3246,7 @@
       "compare": true,
       "equality": true
     },
-    "text": {
+    "fallback": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -2039,15 +3271,15 @@
       "equality": false
     },
     "locales": {
-      "type": "LocaleTextModel[]",
+      "type": "TextLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
       "equality": true
     }
   },
-  "LocaleTextModel": {
-    "key": {
+  "TextLocaleModel": {
+    "text_key": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -2055,7 +3287,7 @@
       "compare": true,
       "equality": true
     },
-    "locale_alpha_2": {
+    "locale_language_code": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -2063,7 +3295,15 @@
       "compare": true,
       "equality": true
     },
-    "fallback_text": {
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "value": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -2102,6 +3342,134 @@
       "equality": true
     }
   },
+  "MeasurementLocaleModel": {
+    "measurement_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "measurement": {
+      "type": "MeasurementModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "PriceLocaleModel": {
+    "price_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "price": {
+      "type": "PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
   "SettingsModel": {
     "id": {
       "type": "bool",
@@ -2111,9 +3479,17 @@
       "compare": false,
       "equality": true
     },
-    "fallback_locale_alpha_2": {
+    "fallback_locale_language_code": {
       "type": "str",
-      "default": "UA",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_locale_country_code": {
+      "type": "str",
+      "default": null,
       "doc": null,
       "nullable": true,
       "compare": false,
@@ -2134,6 +3510,237 @@
       "nullable": true,
       "compare": false,
       "equality": false
+    },
+    "fallback_locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "NomenclatureCategoryLocaleModel": {
+    "category_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "category": {
+      "type": "NomenclatureCategoryModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "NomenclatureImageModel": {
+    "nomenclature_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "image_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "nomenclature": {
+      "type": "NomenclatureModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "image": {
+      "type": "ImageModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "NomenclatureLocaleModel": {
+    "nomenclature_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "description": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "locale": {
+      "type": "LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "nomenclature": {
+      "type": "NomenclatureModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    }
+  },
+  "NomenclaturePriceModel": {
+    "nomenclature_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "price_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "value": {
+      "type": "float",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "nomenclature": {
+      "type": "NomenclatureModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
+    },
+    "price": {
+      "type": "PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true
     }
   }
 }

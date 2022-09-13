@@ -29,6 +29,7 @@ class AuthorizationScreen extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
     final I18N $ = I18NLocalizations.of(context)!.current();
 
@@ -128,6 +129,7 @@ class AuthorizationScreen extends HookConsumerWidget {
           children: <Widget>[
             Expanded(
               child: listView(
+                mediaQuery,
                 padding: contentPadding,
                 children: <Widget>[
                   /// Offset needed for [SMSScreen]
@@ -198,16 +200,13 @@ class AuthorizationScreen extends HookConsumerWidget {
             ),
 
             /// Contact Support Button
-            Material(
-              child: InkWell(
-                splashFactory: NoSplash.splashFactory,
-                onTap: () => logger.i('ACTION: Contact support.'),
-                child: Text(
-                  $.auth.support,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    decoration: TextDecoration.underline,
-                    color: theme.colorScheme.onPrimary,
-                  ),
+            TextButton(
+              onPressed: () => logger.i('ACTION: Contact support.'),
+              child: Text(
+                $.auth.support,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: theme.colorScheme.onPrimary,
                 ),
               ),
             ),

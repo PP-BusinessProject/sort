@@ -17,11 +17,6 @@ NDialog dialog(
       content: body.isNotEmpty ? Text(body) : null,
       actions: <Widget>[
         TextButton(
-          style: theme.textButtonTheme.style?.copyWith(
-            shape: MaterialStateProperty.all<OutlinedBorder?>(
-              const RoundedRectangleBorder(),
-            ),
-          ),
           onPressed: onApprove,
           child: Text(
             approve,
@@ -32,11 +27,6 @@ NDialog dialog(
         ),
         if (deny.isNotEmpty)
           TextButton(
-            style: theme.textButtonTheme.style?.copyWith(
-              shape: MaterialStateProperty.all<OutlinedBorder?>(
-                const RoundedRectangleBorder(),
-              ),
-            ),
             onPressed: onDeny,
             child: Text(
               deny,
@@ -61,11 +51,6 @@ NDialog locationDeniedDialog(
       title: Text(title),
       actions: <Widget>[
         TextButton(
-          style: theme.textButtonTheme.style?.copyWith(
-            shape: MaterialStateProperty.all<OutlinedBorder?>(
-              const RoundedRectangleBorder(),
-            ),
-          ),
           onPressed: onApprove,
           child: Text(
             approve,
@@ -76,11 +61,6 @@ NDialog locationDeniedDialog(
         ),
         if (deny.isNotEmpty)
           TextButton(
-            style: theme.textButtonTheme.style?.copyWith(
-              shape: MaterialStateProperty.all<OutlinedBorder?>(
-                const RoundedRectangleBorder(),
-              ),
-            ),
             onPressed: onDeny,
             child: Text(
               deny,

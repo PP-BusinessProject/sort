@@ -184,6 +184,12 @@ extension ApplyThemeData on ThemeData {
             boxShadow: <BoxShadow>[boxShadow(this)],
           ),
         ),
+        radioTheme: RadioThemeData(
+          splashRadius: 16,
+          fillColor: MaterialStateProperty.all<Color?>(colorScheme.primary),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
+        ),
         buttonTheme: ButtonThemeData(
           alignedDropdown: true,
           minWidth: double.infinity,
@@ -224,7 +230,9 @@ extension ApplyThemeData on ThemeData {
             visualDensity: VisualDensity.compact,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            shape: outlinedBorder(this, radius: 10),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
             onSurface: colorScheme.onPrimary,
             textStyle: textTheme.labelLarge?.copyWith(
               color: colorScheme.onPrimary,

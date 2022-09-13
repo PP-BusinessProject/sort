@@ -42,12 +42,18 @@ class SplashScreen extends HookWidget {
   /// If the splash should be shown.
   static StreamSink<bool>? get showSplash => _controller?.sink;
 
-  static Future<List<Override>> _getProviderOverrides() async {
+  static Future<List<Override>> _getProviderOverrides({
+    final bool reset = true,
+  }) async {
     final Iterable<Object?> $ = await Future.wait<Object?>(<Future<Object?>>[
       PackageInfo.fromPlatform(),
       Future<Box<String>>(() async {
         Hive.init((await getApplicationDocumentsDirectory()).path);
-        return Hive.openBox<String>('storage');
+        final Box<String> box = await Hive.openBox<String>('storage');
+        if (reset) {
+          await box.clear();
+        }
+        return box;
       }),
       sortApi.get<DateTime>(
         '/settings/time',

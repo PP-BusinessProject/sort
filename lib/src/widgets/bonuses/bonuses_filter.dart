@@ -9,27 +9,18 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-import '../../extensions.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
 import '../../providers/model_providers.dart';
 import '../shared/shared_widgets.dart';
 
 /// The filter used on [ContainerModel].
-class ContainersFilter extends HookConsumerWidget {
+class BonusesFilter extends HookConsumerWidget {
   /// The filter used on [ContainerModel].
-  const ContainersFilter({final super.key});
-
-  /// The filter of the [ContainerTankTypeModel.id].
-  ///
-  /// The ids contained here will be disabled.
-  static final StateProvider<Iterable<int>> typeFilterProvider =
-      StateProvider<Iterable<int>>(
-    (final StateProviderRef<Iterable<int>> ref) => <int>[],
-  );
+  const BonusesFilter({final super.key});
 
   /// The current set fullness filter.
-  static final StateProvider<double> fullnessFilterProvider =
+  static final StateProvider<double> priceFilterProvider =
       StateProvider<double>((final _) => 1);
 
   @override
@@ -58,14 +49,14 @@ class ContainersFilter extends HookConsumerWidget {
                 ),
               )
             : BoxDecoration(color: theme.scaffoldBackgroundColor),
-        child: tankTypesLoaded ? const _ContainerFilterBody() : null,
+        // child: tankTypesLoaded ? const _BonusesFilterBody() : null,
       ),
     );
   }
 }
 
-class _ContainerFilterBody extends ConsumerWidget {
-  const _ContainerFilterBody();
+class _BonusesFilterBody extends ConsumerWidget {
+  const _BonusesFilterBody();
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
@@ -90,40 +81,6 @@ class _ContainerFilterBody extends ConsumerWidget {
             ),
           ),
 
-          /// Type
-          if (ref.watch(
-            containerTankTypesProvider
-                .select((final _) => _.valueOrNull!.isNotEmpty),
-          )) ...<Widget>[
-            const SizedBox(height: 32),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: SizedBox(
-                  height: 80,
-                  child: Consumer(
-                    builder: (
-                      final _,
-                      final WidgetRef ref,
-                      final Widget? child,
-                    ) =>
-                        Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        for (final ContainerTankTypeModel type in ref.watch(
-                          containerTankTypesProvider
-                              .select((final _) => _.valueOrNull!),
-                        )) ...<Widget>[
-                          Expanded(child: _ContainersTypeFilterButton(type)),
-                          const SizedBox(width: 24)
-                        ],
-                      ]..removeLast(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
           const SizedBox(height: 32),
 
           /// Fullness Slider
@@ -142,9 +99,11 @@ class _ContainerFilterBody extends ConsumerWidget {
                 ),
 
                 /// Slider
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(24, 0, 18, 0),
-                  child: _ContainersFullnessFilter(),
+                const Flexible(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(24, 0, 18, 0),
+                    child: _BonusesPriceFilter(),
+                  ),
                 ),
               ],
             ),
@@ -155,67 +114,8 @@ class _ContainerFilterBody extends ConsumerWidget {
   }
 }
 
-class _ContainersTypeFilterButton extends HookConsumerWidget {
-  const _ContainersTypeFilterButton(final this.type);
-
-  final ContainerTankTypeModel type;
-
-  @override
-  Widget build(final BuildContext context, final WidgetRef ref) {
-    final ThemeData theme = Theme.of(context);
-    final I18NLocale currentLocale = I18NLocalizations.of(context)!.current;
-    final StateProvider<Iterable<int>> filter =
-        ContainersFilter.typeFilterProvider;
-    final bool filtered =
-        ref.watch(filter.select((final _) => _.isEmpty || _.contains(type.id)));
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        primary:
-            filtered ? theme.colorScheme.surface : theme.colorScheme.shadow,
-      ),
-      onPressed: () {
-        final StateController<Iterable<int>> filteredNotifier =
-            ref.read(filter.notifier);
-        final Iterable<ContainerTankTypeModel> allTypes =
-            ref.read(containerTankTypesProvider).valueOrNull!;
-        if (filteredNotifier.state.isEmpty) {
-          filteredNotifier.state = <int>[
-            for (final ContainerTankTypeModel $type in allTypes)
-              if ($type.id != type.id) $type.id!
-          ];
-        } else if (!filtered &&
-            filteredNotifier.state.length == allTypes.length - 1) {
-          filteredNotifier.state = const Iterable<int>.empty();
-        } else if (!(filtered && filteredNotifier.state.length == 1)) {
-          filteredNotifier.state = filtered
-              ? <int>[
-                  for (final int $typeId in filteredNotifier.state)
-                    if ($typeId != type.id) $typeId
-                ]
-              : <int>[...filteredNotifier.state, type.id!];
-        }
-      },
-      child: Text(
-        type.name(currentLocale.locale),
-        textAlign: TextAlign.center,
-        style: theme.textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-
-  @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(
-      properties
-        ..add(DiagnosticsProperty<ContainerTankTypeModel>('type', type)),
-    );
-  }
-}
-
-class _ContainersFullnessFilter extends StatelessWidget {
-  const _ContainersFullnessFilter();
+class _BonusesPriceFilter extends StatelessWidget {
+  const _BonusesPriceFilter();
 
   @override
   Widget build(final BuildContext context) {
@@ -234,22 +134,20 @@ class _ContainersFullnessFilter extends StatelessWidget {
             : theme.colorScheme.primary,
         tooltipTextStyle: theme.textTheme.titleSmall,
       ),
-      child: const _ContainersFullnessFilterState(),
+      child: const _BonusesPriceFilterState(),
     );
   }
 }
 
-class _ContainersFullnessFilterState extends HookConsumerWidget {
-  const _ContainersFullnessFilterState();
+class _BonusesPriceFilterState extends HookConsumerWidget {
+  const _BonusesPriceFilterState();
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final bool Function() isMounted = useIsMounted();
-    final StateProvider<double> fullnessFilter =
-        ContainersFilter.fullnessFilterProvider;
-    final ValueNotifier<double> state =
-        useState<double>(ref.read(fullnessFilter));
-    ref.listen(fullnessFilter, (final _, final double fullness) {
+    final StateProvider<double> priceFilter = BonusesFilter.priceFilterProvider;
+    final ValueNotifier<double> state = useState<double>(ref.read(priceFilter));
+    ref.listen(priceFilter, (final _, final double fullness) {
       if (state.value != fullness) {
         state.value = fullness;
       }
@@ -271,7 +169,7 @@ class _ContainersFullnessFilterState extends HookConsumerWidget {
       onChangeEnd: (final Object? value) {
         if (isMounted()) {
           final StateController<double> fullnessNotifier =
-              ref.read(fullnessFilter.notifier);
+              ref.read(priceFilter.notifier);
           if (format.format(fullnessNotifier.state) != format.format(value)) {
             fullnessNotifier.state = value! as double;
           }

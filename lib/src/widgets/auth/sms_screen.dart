@@ -64,6 +64,7 @@ class SMSScreen extends HookConsumerWidget {
           onPressed: navigator.maybePop,
         ),
         child: listView(
+          mediaQuery,
           padding: contentPadding,
           children: <Widget>[
             /// Input Code

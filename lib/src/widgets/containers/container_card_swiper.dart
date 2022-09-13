@@ -21,10 +21,8 @@ class ContainerCardSwiper extends HookConsumerWidget {
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
-    final WidgetsBinding widgetsBinding = WidgetsBinding.instance;
     final int itemCount = ref.watch(
-      containersProvider
-          .select((final _) => _.valueOrNull?.length.clamp(1, 3) ?? 1),
+      containersProvider.select((final _) => _.valueOrNull?.length ?? 1),
     );
     final ObjectRef<ContainerModel> prevContainer = useRef(container);
     useValueChanged(
@@ -33,22 +31,24 @@ class ContainerCardSwiper extends HookConsumerWidget {
     );
 
     ContainerModel containerFromIndex(final int index) {
-      final Iterable<ContainerModel> containers;
-      if (index == 0 ||
-          !(containers = ref.read(containersProvider).valueOrNull ??
-                  <ContainerModel>[])
-              .contains(prevContainer.value)) {
-        return container;
-      } else {
-        int newIndex = containers.toList().indexOf(prevContainer.value);
-        newIndex = newIndex + (index >= 1 ? index : -1);
-        if (newIndex >= containers.length) {
-          newIndex = 0;
-        } else if (newIndex < 0) {
-          newIndex = containers.length - 1;
-        }
-        return containers.elementAt(newIndex);
+      final Iterable<ContainerModel> containers =
+          (ref.read(containersProvider).valueOrNull)
+                  ?.where((final _) => _.id != null) ??
+              const Iterable<ContainerModel>.empty();
+      final List<int> containerIds =
+          containers.map((final _) => _.id!).toList(growable: false)..sort();
+      if (container.id == null ||
+          !containerIds.contains(prevContainer.value.id)) {
+        return prevContainer.value;
       }
+      int newIndex = containerIds.indexOf(container.id!) + index;
+      while (newIndex >= containerIds.length) {
+        newIndex -= containerIds.length;
+      }
+      while (newIndex < 0) {
+        newIndex += containerIds.length;
+      }
+      return containers.elementAt(newIndex);
     }
 
     return SizedBox(
@@ -61,7 +61,7 @@ class ContainerCardSwiper extends HookConsumerWidget {
           final ContainerModel container = containerFromIndex(index);
           B2CMap.navigation
               ?.add(LatLng(container.latitude, container.longtitude));
-          widgetsBinding.addPostFrameCallback((final _) {
+          WidgetsBinding.instance.addPostFrameCallback((final _) {
             prevContainer.value = container;
           });
         },
@@ -69,16 +69,22 @@ class ContainerCardSwiper extends HookConsumerWidget {
           final ContainerModel container = containerFromIndex(index);
           return Consumer(
             builder: (final _, final WidgetRef ref, final Widget? child) {
-              final String? address = ref.watch(
-                addressProvider(
-                  LatLng(container.latitude, container.longtitude),
-                ),
-              );
-              return address == null
+              final String? address = container.address == null
+                  ? ref.watch(
+                      addressProvider(
+                        LatLng(container.latitude, container.longtitude),
+                      ),
+                    )
+                  : null;
+              return container.address == null && address == null
                   ? child!
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: ContainerCard(container, address, onMap: true),
+                      child: ContainerCard(
+                        container,
+                        address: address,
+                        onMap: true,
+                      ),
                     );
             },
             child: const CircularProgressIndicator.adaptive(),

@@ -1,6 +1,13 @@
 misc:
   prev_page: Back
 
+error:
+  error: Server Exception Occured
+  description: Please try to update the app.
+  confirm: Update
+  copy_logs: Copy Logs
+  view_logs: View Logs  
+
 alert:
   exit:
     title: Are you sure you want to exit?
@@ -30,14 +37,6 @@ alert:
       Enable them in the settings.
     approve: Open Settings
     deny: Cancel
-
-pull_to_refresh:
-  idle: Тяни вниз чтобы обновить
-  release: Отпусти чтобы обновить
-  refreshing: Получаем свежие данные...
-  complete: Данные обновлены
-  complete_internet_error: Проверьте интернет соединение!
-  error: Произошла ошибка
 
 auth:
   support: Contact support
@@ -95,8 +94,8 @@ settings:
     language: Language
     system: System
     unsupported(final String locale): Unsuported ($locale)
-    en: English
-    uk: Ukrainian
+    en_US: English
+    uk_UA: Ukrainian
 
   theme:
     theme: Theme
@@ -117,17 +116,25 @@ settings:
 
 bonus:
   purchase: Swap
+  filter:
+    filter: Filter
 
 containers:
   containers: Containers
   name(final int? id): "ARB${id != null ? ' #$id' : ''}"
   open: Open
+  show_on_map: Show on Map
   filter:
     filter: Filter
-    organic: Organic
-    dry_mixed: Dry/Mixed
     fullness: Fullness
     confirm: Apply
+  report:
+    report: Report
+    send: Send
+    other: Other
+    information: Additional Information
+    information_optional: (optionally)
+    information_required: (required)
 
 delivery:
   delivery: Delivery

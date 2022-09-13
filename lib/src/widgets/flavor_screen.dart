@@ -4,9 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../config.dart';
 import '../flavors.dart';
 import '../generated/i18n.g.dart';
-import '../observers/provider_observer.dart';
 import '../providers/flutter_providers.dart';
 import '../providers/misc_providers.dart';
 import '../styles.dart';
@@ -20,6 +20,8 @@ class FlavorScreen extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final SortFlavor flavor = ref.watch(flavorProvider);
+    final bool Function() isMounted = useIsMounted();
+    final ObjectRef<bool> catcherInitialised = useRef(false);
     return MaterialApp(
       title: flavor.title,
       restorationScopeId: 'root',
@@ -53,6 +55,16 @@ class FlavorScreen extends HookConsumerWidget {
           textScaleFactor: mediaQuery.textScaleFactor.clamp(.5, 1.3),
         );
         WidgetsBinding.instance.addPostFrameCallback((final _) {
+          if (!isMounted()) {
+            return;
+          }
+          if (!catcherInitialised.value) {
+            Catcher.getInstance().updateConfig(
+              debugConfig: debugConfig(initialised: true),
+              releaseConfig: releaseConfig(initialised: true),
+            );
+            catcherInitialised.value = true;
+          }
           final StateController<ThemeData?> themeNotifier =
               ref.read(themeProvider.notifier);
           if (themeNotifier.state != theme) {

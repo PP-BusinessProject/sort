@@ -16,27 +16,40 @@ Widget divider({required final double width, final double height = 4}) =>
     );
 
 /// Return the custom [ListView] that scrolls only when needed.
-Widget listView({
+Widget listView(
+  final MediaQueryData mediaQuery, {
   required final List<Widget> children,
   final EdgeInsetsGeometry padding = const EdgeInsets.all(24),
   final Alignment alignment = Alignment.center,
+  final CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
 }) =>
     SafeArea(
       child: Align(
         alignment: alignment,
         child: SingleChildScrollView(
+          key: ValueKey<Orientation>(mediaQuery.orientation),
           physics: const ClampingScrollPhysics(),
           padding: padding,
-          child: Column(mainAxisSize: MainAxisSize.min, children: children),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: crossAxisAlignment,
+            children: children,
+          ),
         ),
       ),
     );
 
 /// Return the widget that uses [Marquee] to display a [text] overflow.
-Widget marqueeText(final String text, {final TextStyle? style}) => AutoSizeText(
+Widget marqueeText(
+  final String text, {
+  final TextStyle? style,
+  final int? maxLines,
+}) =>
+    AutoSizeText(
       text,
       minFontSize: style?.fontSize ?? 14,
       style: style,
+      maxLines: maxLines,
       overflowReplacement: Marquee(
         text: text,
         style: style,
@@ -81,9 +94,9 @@ Widget image(final String? imageUrl) => imageUrl == null
     : CachedNetworkImage(
         imageUrl: imageUrl,
         fit: BoxFit.cover,
-        progressIndicatorBuilder:
-            (final _, final __, final DownloadProgress progress) =>
-                const CircularProgressIndicator.adaptive(),
+        // progressIndicatorBuilder:
+        //     (final _, final __, final DownloadProgress progress) =>
+        //         const CircularProgressIndicator.adaptive(),
         placeholder: (final _, final __) => placeholderImage(),
         errorWidget: (final _, final __, final Object? error) =>
             placeholderImage(),
