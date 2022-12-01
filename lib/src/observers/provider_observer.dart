@@ -8,7 +8,7 @@ import '../providers/flutter_providers.dart';
 /// The observer on any [Provider].
 class WidgetsBindingObserverProvider extends WidgetsBindingObserver {
   /// The observer on any [Provider].
-  WidgetsBindingObserverProvider(final this._container);
+  WidgetsBindingObserverProvider(this._container);
 
   final ProviderContainer _container;
 

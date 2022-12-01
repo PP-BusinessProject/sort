@@ -1,89 +1,76 @@
 {
-  "ImageModel": {
-    "id": {
-      "type": "int",
+  "lib.models.auth.audit_log_entry_model.AuditLogEntryModel": {
+    "instance_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
-      "compare": true,
+      "compare": false,
       "equality": true
     },
-    "url": {
+    "id": {
       "type": "str",
       "default": null,
       "doc": null,
       "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "payload": {
+      "type": null,
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "compare": false,
       "equality": true
     },
     "created_at": {
       "type": "datetime",
       "default": null,
-      "doc": "Set the date and time when the instance was created.",
+      "doc": null,
       "nullable": true,
       "compare": false,
       "equality": false
     },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "bonuses": {
-      "type": "BonusImageModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "containers": {
-      "type": "ContainerImageModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "nomenclatures": {
-      "type": "NomenclatureImageModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    }
-  },
-  "UserModel": {
-    "id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "fallback_first_name": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "fallback_last_name": {
+    "ip_address": {
       "type": "str",
       "default": "",
       "doc": null,
       "nullable": false,
       "compare": false,
       "equality": true
-    },
-    "phone_number": {
-      "type": "int",
+    }
+  },
+  "lib.models.auth.user_model.UserModel": {
+    "instance_id": {
+      "type": "str",
       "default": null,
       "doc": null,
-      "nullable": false,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "aud": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "role": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "compare": false,
       "equality": true
     },
@@ -95,8 +82,112 @@
       "compare": false,
       "equality": true
     },
-    "birthday": {
-      "type": "date",
+    "encrypted_password": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "email_confirmed_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "invited_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "confirmation_token": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "confirmation_sent_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "recovery_token": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "recovery_sent_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "email_change_token_new": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "email_change": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "email_change_sent_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "last_sign_in_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "raw_app_meta_data": {
+      "type": null,
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "raw_user_meta_data": {
+      "type": null,
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "is_super_admin": {
+      "type": "bool",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -106,7 +197,7 @@
     "created_at": {
       "type": "datetime",
       "default": null,
-      "doc": "Set the date and time when the instance was created.",
+      "doc": null,
       "nullable": true,
       "compare": false,
       "equality": false
@@ -114,99 +205,240 @@
     "updated_at": {
       "type": "datetime",
       "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
+      "doc": null,
       "nullable": true,
       "compare": false,
       "equality": false
     },
-    "locales": {
-      "type": "UserLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "deals": {
-      "type": "DealModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "active_deal": {
-      "type": "DealModel",
+    "phone": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
+      "compare": false,
       "equality": true
+    },
+    "phone_confirmed_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "phone_change": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "phone_change_token": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "phone_change_sent_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "confirmed_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "email_change_token_current": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "email_change_confirm_status": {
+      "type": "int",
+      "default": 0,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "banned_until": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "reauthentication_token": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "reauthentication_sent_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "identities": {
+      "type": "lib.models.auth.identity_model.IdentityModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "sessions": {
+      "type": "lib.models.auth.session_model.SessionModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "analytics": {
+      "type": "lib.models.misc.analytics.analytic_action_model.AnalyticActionModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "crashlytics": {
+      "type": "lib.models.misc.analytics.crashlytic_model.CrashlyticModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
     },
     "company": {
-      "type": "CompanyModel",
+      "type": "lib.models.companies.company_model.CompanyModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "person": {
-      "type": "PersonModel",
+      "type": "lib.models.people.person_model.PersonModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
-    },
-    "refferals": {
-      "type": "PersonModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "group": {
-      "type": "GroupModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "bonuses": {
-      "type": "BonusModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "containers": {
-      "type": "ContainerModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "openings": {
-      "type": "ContainerTankOpeningModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "clearings": {
-      "type": "ContainerTankClearingModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "MeasurementModel": {
+  "lib.models.auth.identity_model.IdentityModel": {
     "id": {
-      "type": "int",
+      "type": "str",
       "default": null,
       "doc": null,
-      "nullable": true,
+      "nullable": false,
       "compare": true,
       "equality": true
     },
-    "fallback_name": {
+    "user_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "identity_data": {
+      "type": null,
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "provider": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "last_sign_in_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "user": {
+      "type": "lib.models.auth.user_model.UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.auth.instance_model.InstanceModel": {
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "uuid": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "raw_base_config": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "user_id": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -217,6 +449,206 @@
     "created_at": {
       "type": "datetime",
       "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    }
+  },
+  "lib.models.auth.session_model.SessionModel": {
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "user_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "user": {
+      "type": "lib.models.auth.user_model.UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "refresh_tokens": {
+      "type": "lib.models.auth.refresh_token_model.RefreshTokenModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.auth.refresh_token_model.RefreshTokenModel": {
+    "instance_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "token": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "user_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "revoked": {
+      "type": "bool",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "parent": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "session_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "session": {
+      "type": "lib.models.auth.session_model.SessionModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "parent_": {
+      "type": "lib.models.auth.refresh_token_model.RefreshTokenModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "children": {
+      "type": "lib.models.auth.refresh_token_model.RefreshTokenModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.auth.schema_migration_model.SchemaMigrationModel": {
+    "version": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "user_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    }
+  },
+  "lib.models.misc.locale_model.LocaleModel": {
+    "language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
       "doc": "Set the date and time when the instance was created.",
       "nullable": true,
       "compare": false,
@@ -230,36 +662,168 @@
       "compare": false,
       "equality": false
     },
-    "locales": {
-      "type": "MeasurementLocaleModel[]",
-      "default": [],
+    "settings": {
+      "type": "lib.models.misc.settings_model.SettingsModel",
+      "default": null,
       "doc": null,
-      "nullable": false,
-      "equality": true
+      "nullable": true,
+      "equality": true,
+      "serialize": false
     },
-    "bonuses": {
-      "type": "BonusModel[]",
+    "address_locales": {
+      "type": "lib.models.misc.addresses.address_locale_model.AddressLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "container_tank_types": {
-      "type": "ContainerTankTypeModel[]",
+    "analytic_locales": {
+      "type": "lib.models.misc.analytics.analytic_locale_model.AnalyticLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "nomenclatures": {
-      "type": "NomenclatureModel[]",
+    "bank_locales": {
+      "type": "lib.models.misc.banks.bank_locale_model.BankLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
+    },
+    "company_bonus_locales": {
+      "type": "lib.models.companies.bonuses.company_bonus_locale_model.CompanyBonusLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "company_bonus_category_locales": {
+      "type": "lib.models.companies.bonuses.categories.company_bonus_category_locale_model.CompanyBonusCategoryLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "company_locales": {
+      "type": "lib.models.companies.company_locale_model.CompanyLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "company_contact_locales": {
+      "type": "lib.models.companies.contacts.company_contact_locale_model.CompanyContactLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "company_contact_type_locales": {
+      "type": "lib.models.companies.contacts.types.company_contact_type_locale_model.CompanyContactTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "company_group_locales": {
+      "type": "lib.models.companies.groups.company_group_locale_model.CompanyGroupLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "company_group_right_locales": {
+      "type": "lib.models.companies.groups.rights.company_group_right_locale_model.CompanyGroupRightLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "container_report_type_locales": {
+      "type": "lib.models.containers.reports.container_report_type_locale_model.ContainerReportTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "container_tank_type_locales": {
+      "type": "lib.models.containers.tanks.container_tank_type_locale_model.ContainerTankTypeLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "faq_locales": {
+      "type": "lib.models.misc.faq.faq_locale_model.FAQLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "measurement_locales": {
+      "type": "lib.models.misc.measurements.measurement_locale_model.MeasurementLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "person_locales": {
+      "type": "lib.models.people.person_locale_model.PersonLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "price_locales": {
+      "type": "lib.models.misc.prices.price_locale_model.PriceLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "text_locales": {
+      "type": "lib.models.misc.texts.text_locale_model.TextLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "nomenclature_category_locales": {
+      "type": "lib.models.nomenclatures.categories.nomenclature_category_locale_model.NomenclatureCategoryLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "nomenclature_locales": {
+      "type": "lib.models.nomenclatures.nomenclature_locale_model.NomenclatureLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
     }
   },
-  "BonusCategoryModel": {
+  "lib.models.companies.bonuses.categories.company_bonus_category_model.CompanyBonusCategoryModel": {
     "id": {
       "type": "int",
       "default": null,
@@ -285,37 +849,467 @@
       "equality": true
     },
     "locales": {
-      "type": "BonusCategoryLocaleModel[]",
+      "type": "lib.models.companies.bonuses.categories.company_bonus_category_locale_model.CompanyBonusCategoryLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "parent": {
-      "type": "BonusCategoryModel",
+      "type": "lib.models.companies.bonuses.categories.company_bonus_category_model.CompanyBonusCategoryModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "children": {
-      "type": "BonusCategoryModel[]",
+      "type": "lib.models.companies.bonuses.categories.company_bonus_category_model.CompanyBonusCategoryModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "bonuses": {
-      "type": "BonusModel[]",
+      "type": "lib.models.companies.bonuses.company_bonus_model.CompanyBonusModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "BonusModel": {
-    "owner_id": {
+  "lib.models.companies.bonuses.categories.company_bonus_category_locale_model.CompanyBonusCategoryLocaleModel": {
+    "category_id": {
       "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "lib.models.misc.locale_model.LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "category": {
+      "type": "lib.models.companies.bonuses.categories.company_bonus_category_model.CompanyBonusCategoryModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.measurements.measurement_model.MeasurementModel": {
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locales": {
+      "type": "lib.models.misc.measurements.measurement_locale_model.MeasurementLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "company_bonuses": {
+      "type": "lib.models.companies.bonuses.company_bonus_model.CompanyBonusModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "container_tank_types": {
+      "type": "lib.models.containers.tanks.container_tank_type_model.ContainerTankTypeModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "nomenclatures": {
+      "type": "lib.models.nomenclatures.nomenclature_model.NomenclatureModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.addresses.address_model.AddressModel": {
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_country": {
+      "type": "str",
+      "default": "Ukraine",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_state": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_city": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_street": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "building": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "postal_code": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "locales": {
+      "type": "lib.models.misc.addresses.address_locale_model.AddressLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "banks": {
+      "type": "lib.models.misc.banks.bank_model.BankModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "companies": {
+      "type": "lib.models.companies.company_model.CompanyModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "containers": {
+      "type": "lib.models.containers.container_model.ContainerModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.banks.bank_model.BankModel": {
+    "code": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "address_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "locales": {
+      "type": "lib.models.misc.banks.bank_locale_model.BankLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "address": {
+      "type": "lib.models.misc.addresses.address_model.AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "companies": {
+      "type": "lib.models.companies.company_model.CompanyModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.companies.company_model.CompanyModel": {
+    "user_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "registry_number": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "tax_number": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "address_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "real_address_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "bank_code": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "bank_account_number": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "locales": {
+      "type": "lib.models.companies.company_locale_model.CompanyLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "images": {
+      "type": "lib.models.companies.company_image_model.CompanyImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "user": {
+      "type": "lib.models.auth.user_model.UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "address": {
+      "type": "lib.models.misc.addresses.address_model.AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "real_address": {
+      "type": "lib.models.misc.addresses.address_model.AddressModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "bank": {
+      "type": "lib.models.misc.banks.bank_model.BankModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "contacts": {
+      "type": "lib.models.companies.contacts.company_contact_model.CompanyContactModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "deals": {
+      "type": "lib.models.companies.deals.company_deal_model.CompanyDealModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "group": {
+      "type": "lib.models.companies.groups.company_group_model.CompanyGroupModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "bonuses": {
+      "type": "lib.models.companies.bonuses.company_bonus_model.CompanyBonusModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "containers": {
+      "type": "lib.models.containers.container_model.ContainerModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.companies.bonuses.company_bonus_model.CompanyBonusModel": {
+    "company_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -394,71 +1388,86 @@
       "compare": false,
       "equality": false
     },
-    "owner": {
-      "type": "UserModel",
+    "company": {
+      "type": "lib.models.companies.company_model.CompanyModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "locales": {
-      "type": "BonusLocaleModel[]",
+      "type": "lib.models.companies.bonuses.company_bonus_locale_model.CompanyBonusLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "images": {
-      "type": "BonusImageModel[]",
+      "type": "lib.models.companies.bonuses.company_bonus_image_model.CompanyBonusImageModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "category": {
-      "type": "BonusCategoryModel",
+      "type": "lib.models.companies.bonuses.categories.company_bonus_category_model.CompanyBonusCategoryModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "measurement": {
-      "type": "MeasurementModel",
+      "type": "lib.models.misc.measurements.measurement_model.MeasurementModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "coupons": {
-      "type": "BonusCouponModel[]",
+      "type": "lib.models.companies.bonuses.coupons.company_bonus_coupon_model.CompanyBonusCouponModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "prices": {
-      "type": "BonusPriceModel[]",
+      "type": "lib.models.companies.bonuses.company_bonus_price_model.CompanyBonusPriceModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "BonusImageModel": {
+  "lib.models.companies.bonuses.company_bonus_image_model.CompanyBonusImageModel": {
     "bonus_id": {
       "type": "int",
       "default": null,
       "doc": null,
       "nullable": true,
-      "compare": true,
+      "compare": false,
       "equality": true
     },
-    "image_id": {
-      "type": "int",
+    "id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
       "compare": true,
+      "equality": true
+    },
+    "url": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
       "equality": true
     },
     "created_at": {
@@ -478,160 +1487,15 @@
       "equality": false
     },
     "bonus": {
-      "type": "BonusModel",
+      "type": "lib.models.companies.bonuses.company_bonus_model.CompanyBonusModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
-    },
-    "image": {
-      "type": "ImageModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "LocaleModel": {
-    "language_code": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": true,
-      "equality": true
-    },
-    "country_code": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": true,
-      "equality": true
-    },
-    "created_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "settings": {
-      "type": "SettingsModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "address_locales": {
-      "type": "AddressLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "bank_locales": {
-      "type": "BankLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "bonus_locales": {
-      "type": "BonusLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "bonus_category_locales": {
-      "type": "BonusCategoryLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "company_contact_type_locales": {
-      "type": "CompanyContactTypeLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "container_report_type_locales": {
-      "type": "ContainerReportTypeLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "container_tank_type_locales": {
-      "type": "ContainerTankTypeLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "group_right_locales": {
-      "type": "GroupRightLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "measurement_locales": {
-      "type": "MeasurementLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "price_locales": {
-      "type": "PriceLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "text_locales": {
-      "type": "TextLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "nomenclature_category_locales": {
-      "type": "NomenclatureCategoryLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "nomenclature_locales": {
-      "type": "NomenclatureLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "user_locales": {
-      "type": "UserLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    }
-  },
-  "BonusLocaleModel": {
+  "lib.models.companies.bonuses.company_bonus_locale_model.CompanyBonusLocaleModel": {
     "bonus_id": {
       "type": "int",
       "default": null,
@@ -689,21 +1553,23 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "bonus": {
-      "type": "BonusModel",
+      "type": "lib.models.companies.bonuses.company_bonus_model.CompanyBonusModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "PriceModel": {
+  "lib.models.misc.prices.price_model.PriceModel": {
     "id": {
       "type": "int",
       "default": null,
@@ -737,42 +1603,63 @@
       "equality": false
     },
     "locales": {
-      "type": "PriceLocaleModel[]",
+      "type": "lib.models.misc.prices.price_locale_model.PriceLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "deals": {
-      "type": "DealModel[]",
+    "company_bonuses": {
+      "type": "lib.models.companies.bonuses.company_bonus_price_model.CompanyBonusPriceModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "deal_additions": {
-      "type": "DealAdditionModel[]",
+    "company_deals": {
+      "type": "lib.models.companies.deals.company_deal_model.CompanyDealModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "bonuses": {
-      "type": "BonusPriceModel[]",
+    "company_deal_additions": {
+      "type": "lib.models.companies.deals.additions.company_deal_addition_model.CompanyDealAdditionModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "nomenclatures": {
-      "type": "NomenclaturePriceModel[]",
+      "type": "lib.models.nomenclatures.nomenclature_price_model.NomenclaturePriceModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
+    },
+    "person_deals": {
+      "type": "lib.models.people.deals.person_deal_model.PersonDealModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "person_deal_additions": {
+      "type": "lib.models.people.deals.additions.person_deal_addition_model.PersonDealAdditionModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
     }
   },
-  "BonusPriceModel": {
+  "lib.models.companies.bonuses.company_bonus_price_model.CompanyBonusPriceModel": {
     "bonus_id": {
       "type": "int",
       "default": null,
@@ -814,30 +1701,24 @@
       "equality": false
     },
     "bonus": {
-      "type": "BonusModel",
+      "type": "lib.models.companies.bonuses.company_bonus_model.CompanyBonusModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "price": {
-      "type": "PriceModel",
+      "type": "lib.models.misc.prices.price_model.PriceModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "BonusCategoryLocaleModel": {
-    "category_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "locale_language_code": {
+  "lib.models.people.person_model.PersonModel": {
+    "user_id": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -845,19 +1726,59 @@
       "compare": true,
       "equality": true
     },
-    "locale_country_code": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "name": {
+    "fallback_first_name": {
       "type": "str",
       "default": null,
       "doc": null,
       "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_last_name": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_middle_name": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "birthday": {
+      "type": "date",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "gender": {
+      "type": "bool",
+      "default": false,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "family_count": {
+      "type": "int",
+      "default": 1,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "refferal_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
       "compare": false,
       "equality": true
     },
@@ -877,22 +1798,72 @@
       "compare": false,
       "equality": false
     },
-    "locale": {
-      "type": "LocaleModel",
-      "default": null,
+    "locales": {
+      "type": "lib.models.people.person_locale_model.PersonLocaleModel[]",
+      "default": [],
       "doc": null,
-      "nullable": true,
-      "equality": true
+      "nullable": false,
+      "equality": true,
+      "serialize": false
     },
-    "category": {
-      "type": "BonusCategoryModel",
+    "images": {
+      "type": "lib.models.people.person_image_model.PersonImageModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "user": {
+      "type": "lib.models.auth.user_model.UserModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
+    },
+    "refferal": {
+      "type": "lib.models.people.person_model.PersonModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "refferals": {
+      "type": "lib.models.people.person_model.PersonModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "coupons": {
+      "type": "lib.models.companies.bonuses.coupons.company_bonus_coupon_model.CompanyBonusCouponModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "deals": {
+      "type": "lib.models.people.deals.person_deal_model.PersonDealModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "openings": {
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_person_opening_model.ContainerTankPersonOpeningModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
     }
   },
-  "BonusCouponModel": {
+  "lib.models.companies.bonuses.coupons.company_bonus_coupon_model.CompanyBonusCouponModel": {
     "bonus_id": {
       "type": "int",
       "default": null,
@@ -902,7 +1873,7 @@
       "equality": true
     },
     "id": {
-      "type": "int",
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -926,7 +1897,7 @@
       "equality": true
     },
     "owner_id": {
-      "type": "int",
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -950,23 +1921,33 @@
       "equality": false
     },
     "bonus": {
-      "type": "BonusModel",
+      "type": "lib.models.companies.bonuses.company_bonus_model.CompanyBonusModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
+    },
+    "owner": {
+      "type": "lib.models.people.person_model.PersonModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
     },
     "uses": {
-      "type": "BonusCouponUseModel[]",
+      "type": "lib.models.companies.bonuses.coupons.company_bonus_coupon_use_model.CompanyBonusCouponUseModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "BonusCouponUseModel": {
+  "lib.models.companies.bonuses.coupons.company_bonus_coupon_use_model.CompanyBonusCouponUseModel": {
     "coupon_id": {
-      "type": "int",
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1006,14 +1987,131 @@
       "equality": false
     },
     "coupon": {
-      "type": "BonusCouponModel",
+      "type": "lib.models.companies.bonuses.coupons.company_bonus_coupon_model.CompanyBonusCouponModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "CompanyContactTypeModel": {
+  "lib.models.companies.company_image_model.CompanyImageModel": {
+    "company_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "url": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "company": {
+      "type": "lib.models.companies.company_model.CompanyModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.companies.company_locale_model.CompanyLocaleModel": {
+    "company_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "lib.models.misc.locale_model.LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "company": {
+      "type": "lib.models.companies.company_model.CompanyModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.companies.contacts.types.company_contact_type_model.CompanyContactTypeModel": {
     "id": {
       "type": "int",
       "default": null,
@@ -1047,248 +2145,25 @@
       "equality": false
     },
     "locales": {
-      "type": "CompanyContactTypeLocaleModel[]",
+      "type": "lib.models.companies.contacts.types.company_contact_type_locale_model.CompanyContactTypeLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "contacts": {
-      "type": "CompanyContactModel",
+      "type": "lib.models.companies.contacts.company_contact_model.CompanyContactModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "AddressModel": {
-    "id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "fallback_country": {
+  "lib.models.companies.contacts.company_contact_model.CompanyContactModel": {
+    "company_id": {
       "type": "str",
-      "default": "Ukraine",
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "fallback_state": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "fallback_city": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "fallback_street": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "building": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "postal_code": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "locales": {
-      "type": "AddressLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "banks": {
-      "type": "BankModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "companies": {
-      "type": "CompanyModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "containers": {
-      "type": "ContainerModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "deliveries": {
-      "type": "DeliveryModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    }
-  },
-  "BankModel": {
-    "code": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": true,
-      "equality": true
-    },
-    "fallback_name": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "address_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "locales": {
-      "type": "BankLocaleModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "address": {
-      "type": "AddressModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "companies": {
-      "type": "CompanyModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    }
-  },
-  "CompanyModel": {
-    "registry_number": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "tax_number": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "address_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "real_address_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "bank_code": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "bank_account_number": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "bank": {
-      "type": "BankModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "address": {
-      "type": "AddressModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "real_address": {
-      "type": "AddressModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "contacts": {
-      "type": "CompanyContactModel[]",
-      "default": [],
-      "doc": null,
-      "nullable": false,
-      "equality": true
-    },
-    "user": {
-      "type": "UserModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    }
-  },
-  "CompanyContactModel": {
-    "company_registry_number": {
-      "type": "int",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1327,46 +2202,138 @@
       "compare": false,
       "equality": true
     },
-    "phone_number": {
+    "fallback_middle_name": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locales": {
+      "type": "lib.models.companies.contacts.company_contact_locale_model.CompanyContactLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "company": {
+      "type": "lib.models.companies.company_model.CompanyModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "type": {
+      "type": "lib.models.companies.contacts.types.company_contact_type_model.CompanyContactTypeModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.companies.contacts.company_contact_locale_model.CompanyContactLocaleModel": {
+    "contact_id": {
       "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "first_name": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": false,
       "compare": false,
       "equality": true
     },
-    "email": {
+    "last_name": {
       "type": "str",
-      "default": null,
+      "default": "",
       "doc": null,
-      "nullable": true,
+      "nullable": false,
       "compare": false,
       "equality": true
     },
-    "birthday": {
-      "type": "date",
-      "default": null,
+    "middle_name": {
+      "type": "str",
+      "default": "",
       "doc": null,
-      "nullable": true,
+      "nullable": false,
       "compare": false,
       "equality": true
     },
-    "company": {
-      "type": "CompanyModel",
+    "created_at": {
+      "type": "datetime",
       "default": null,
-      "doc": null,
+      "doc": "Set the date and time when the instance was created.",
       "nullable": true,
-      "equality": true
+      "compare": false,
+      "equality": false
     },
-    "type": {
-      "type": "CompanyContactTypeModel",
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
+    },
+    "contact": {
+      "type": "lib.models.companies.contacts.company_contact_model.CompanyContactModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
     }
   },
-  "CompanyContactTypeLocaleModel": {
+  "lib.models.companies.contacts.types.company_contact_type_locale_model.CompanyContactTypeLocaleModel": {
     "type_id": {
       "type": "int",
       "default": null,
@@ -1416,23 +2383,25 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "type": {
-      "type": "CompanyContactTypeModel",
+      "type": "lib.models.companies.contacts.types.company_contact_type_model.CompanyContactTypeModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "DealModel": {
-    "user_id": {
-      "type": "int",
+  "lib.models.companies.deals.company_deal_model.CompanyDealModel": {
+    "company_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1487,29 +2456,32 @@
       "compare": false,
       "equality": false
     },
-    "user": {
-      "type": "UserModel",
+    "company": {
+      "type": "lib.models.companies.company_model.CompanyModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "fallback_price": {
-      "type": "PriceModel",
+      "type": "lib.models.misc.prices.price_model.PriceModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "additions": {
-      "type": "DealAdditionModel[]",
+      "type": "lib.models.companies.deals.additions.company_deal_addition_model.CompanyDealAdditionModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "DealAdditionModel": {
+  "lib.models.companies.deals.additions.company_deal_addition_model.CompanyDealAdditionModel": {
     "deal_id": {
       "type": "int",
       "default": null,
@@ -1559,28 +2531,31 @@
       "equality": false
     },
     "deal": {
-      "type": "DealModel",
+      "type": "lib.models.companies.deals.company_deal_model.CompanyDealModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "price": {
-      "type": "PriceModel",
+      "type": "lib.models.misc.prices.price_model.PriceModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "nomenclatures": {
-      "type": "DealAdditionNomenclatureModel[]",
+      "type": "lib.models.companies.deals.additions.company_deal_addition_nomenclature_model.CompanyDealAdditionNomenclatureModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "NomenclatureCategoryModel": {
+  "lib.models.nomenclatures.categories.nomenclature_category_model.NomenclatureCategoryModel": {
     "id": {
       "type": "int",
       "default": null,
@@ -1606,35 +2581,39 @@
       "equality": true
     },
     "locales": {
-      "type": "NomenclatureCategoryLocaleModel[]",
+      "type": "lib.models.nomenclatures.categories.nomenclature_category_locale_model.NomenclatureCategoryLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "parent": {
-      "type": "NomenclatureCategoryModel",
+      "type": "lib.models.nomenclatures.categories.nomenclature_category_model.NomenclatureCategoryModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "children": {
-      "type": "NomenclatureCategoryModel[]",
+      "type": "lib.models.nomenclatures.categories.nomenclature_category_model.NomenclatureCategoryModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "nomenclatures": {
-      "type": "NomenclatureModel[]",
+      "type": "lib.models.nomenclatures.nomenclature_model.NomenclatureModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "NomenclatureModel": {
+  "lib.models.nomenclatures.nomenclature_model.NomenclatureModel": {
     "id": {
       "type": "int",
       "default": null,
@@ -1676,56 +2655,63 @@
       "equality": true
     },
     "locales": {
-      "type": "NomenclatureLocaleModel[]",
+      "type": "lib.models.nomenclatures.nomenclature_locale_model.NomenclatureLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "images": {
-      "type": "NomenclatureImageModel[]",
+      "type": "lib.models.nomenclatures.nomenclature_image_model.NomenclatureImageModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "category": {
-      "type": "NomenclatureCategoryModel",
+      "type": "lib.models.nomenclatures.categories.nomenclature_category_model.NomenclatureCategoryModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "measurement": {
-      "type": "MeasurementModel",
+      "type": "lib.models.misc.measurements.measurement_model.MeasurementModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "prices": {
-      "type": "NomenclaturePriceModel[]",
+      "type": "lib.models.nomenclatures.nomenclature_price_model.NomenclaturePriceModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "deal_additions": {
-      "type": "DealAdditionNomenclatureModel[]",
+    "company_deal_additions": {
+      "type": "lib.models.companies.deals.additions.company_deal_addition_nomenclature_model.CompanyDealAdditionNomenclatureModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "deliveries": {
-      "type": "DeliveryNomenclatureModel[]",
+    "person_deal_additions": {
+      "type": "lib.models.people.deals.additions.person_deal_addition_nomenclature_model.PersonDealAdditionNomenclatureModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "DealAdditionNomenclatureModel": {
+  "lib.models.companies.deals.additions.company_deal_addition_nomenclature_model.CompanyDealAdditionNomenclatureModel": {
     "addition_id": {
       "type": "int",
       "default": null,
@@ -1767,37 +2753,40 @@
       "equality": false
     },
     "addition": {
-      "type": "DealAdditionModel",
+      "type": "lib.models.companies.deals.additions.company_deal_addition_model.CompanyDealAdditionModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "nomenclature": {
-      "type": "NomenclatureModel",
+      "type": "lib.models.nomenclatures.nomenclature_model.NomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "openings": {
-      "type": "ContainerTankOpeningModel[]",
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_company_opening_model.ContainerTankCompanyOpeningModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "GroupModel": {
-    "owner_id": {
-      "type": "int",
+  "lib.models.companies.groups.company_group_model.CompanyGroupModel": {
+    "company_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
       "compare": true,
       "equality": true
     },
-    "name": {
+    "fallback_name": {
       "type": "str",
       "default": "",
       "doc": null,
@@ -1821,32 +2810,108 @@
       "compare": false,
       "equality": false
     },
-    "owner": {
-      "type": "UserModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "members": {
-      "type": "GroupMemberModel[]",
+    "locales": {
+      "type": "lib.models.companies.groups.company_group_locale_model.CompanyGroupLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
+    },
+    "owner": {
+      "type": "lib.models.companies.company_model.CompanyModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "members": {
+      "type": "lib.models.companies.groups.members.company_group_member_model.CompanyGroupMemberModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
     }
   },
-  "GroupMemberModel": {
-    "group_owner_id": {
-      "type": "int",
+  "lib.models.companies.groups.company_group_locale_model.CompanyGroupLocaleModel": {
+    "company_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
       "compare": true,
       "equality": true
     },
-    "user_id": {
-      "type": "int",
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "lib.models.misc.locale_model.LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "group": {
+      "type": "lib.models.companies.groups.company_group_model.CompanyGroupModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.companies.groups.members.company_group_member_model.CompanyGroupMemberModel": {
+    "company_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "person_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1878,21 +2943,31 @@
       "equality": false
     },
     "group": {
-      "type": "GroupModel",
+      "type": "lib.models.companies.groups.company_group_model.CompanyGroupModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "rights": {
-      "type": "GroupMemberRightModel[]",
+      "type": "lib.models.companies.groups.members.company_group_member_right_model.CompanyGroupMemberRightModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
+    },
+    "openings": {
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_company_opening_model.ContainerTankCompanyOpeningModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
     }
   },
-  "GroupRightModel": {
+  "lib.models.companies.groups.rights.company_group_right_model.CompanyGroupRightModel": {
     "id": {
       "type": "int",
       "default": null,
@@ -1926,31 +3001,33 @@
       "equality": false
     },
     "locales": {
-      "type": "GroupRightLocaleModel[]",
+      "type": "lib.models.companies.groups.rights.company_group_right_locale_model.CompanyGroupRightLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "members": {
-      "type": "GroupMemberRightModel[]",
+      "type": "lib.models.companies.groups.members.company_group_member_right_model.CompanyGroupMemberRightModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "GroupMemberRightModel": {
-    "group_owner_id": {
-      "type": "int",
+  "lib.models.companies.groups.members.company_group_member_right_model.CompanyGroupMemberRightModel": {
+    "company_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
       "compare": true,
       "equality": true
     },
-    "user_id": {
-      "type": "int",
+    "person_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -1982,22 +3059,24 @@
       "equality": false
     },
     "member": {
-      "type": "GroupMemberModel",
+      "type": "lib.models.companies.groups.members.company_group_member_model.CompanyGroupMemberModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "right": {
-      "type": "GroupRightModel",
+      "type": "lib.models.companies.groups.rights.company_group_right_model.CompanyGroupRightModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "GroupRightLocaleModel": {
-    "type_id": {
+  "lib.models.companies.groups.rights.company_group_right_locale_model.CompanyGroupRightLocaleModel": {
+    "right_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -2046,159 +3125,25 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "right": {
-      "type": "GroupRightModel",
+      "type": "lib.models.companies.groups.rights.company_group_right_model.CompanyGroupRightModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "PersonModel": {
-    "refferal_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "user_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "gender": {
-      "type": "bool",
-      "default": false,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "family_count": {
-      "type": "int",
-      "default": 1,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "created_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "user": {
-      "type": "UserModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "refferal": {
-      "type": "UserModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    }
-  },
-  "UserLocaleModel": {
-    "user_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "locale_language_code": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "locale_country_code": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "first_name": {
-      "type": "str",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "last_name": {
-      "type": "str",
-      "default": "",
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "created_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "locale": {
-      "type": "LocaleModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "user": {
-      "type": "UserModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    }
-  },
-  "ContainerModel": {
+  "lib.models.containers.container_model.ContainerModel": {
     "owner_id": {
-      "type": "int",
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -2230,7 +3175,7 @@
       "equality": true
     },
     "address_id": {
-      "type": "int",
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -2254,56 +3199,69 @@
       "equality": false
     },
     "owner": {
-      "type": "UserModel",
+      "type": "lib.models.companies.company_model.CompanyModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "address": {
-      "type": "AddressModel",
+      "type": "lib.models.misc.addresses.address_model.AddressModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "images": {
-      "type": "ContainerImageModel[]",
+      "type": "lib.models.containers.container_image_model.ContainerImageModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "tanks": {
-      "type": "ContainerTankModel[]",
+      "type": "lib.models.containers.tanks.container_tank_model.ContainerTankModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "reports": {
-      "type": "ContainerReportModel[]",
+      "type": "lib.models.containers.reports.container_report_model.ContainerReportModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerImageModel": {
+  "lib.models.containers.container_image_model.ContainerImageModel": {
     "container_id": {
       "type": "int",
       "default": null,
       "doc": null,
       "nullable": true,
-      "compare": true,
+      "compare": false,
       "equality": true
     },
-    "image_id": {
-      "type": "int",
+    "id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
       "compare": true,
+      "equality": true
+    },
+    "url": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
       "equality": true
     },
     "created_at": {
@@ -2323,21 +3281,15 @@
       "equality": false
     },
     "container": {
-      "type": "ContainerModel",
+      "type": "lib.models.containers.container_model.ContainerModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
-    },
-    "image": {
-      "type": "ImageModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerReportTypeModel": {
+  "lib.models.containers.reports.container_report_type_model.ContainerReportTypeModel": {
     "id": {
       "type": "int",
       "default": null,
@@ -2371,23 +3323,25 @@
       "equality": false
     },
     "locales": {
-      "type": "ContainerReportTypeLocaleModel[]",
+      "type": "lib.models.containers.reports.container_report_type_locale_model.ContainerReportTypeLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "reports": {
-      "type": "ContainerReportModel[]",
+      "type": "lib.models.containers.reports.container_report_model.ContainerReportModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerReportModel": {
-    "user_id": {
-      "type": "int",
+  "lib.models.containers.reports.container_report_model.ContainerReportModel": {
+    "person_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -2403,7 +3357,7 @@
       "equality": true
     },
     "id": {
-      "type": "int",
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -2443,21 +3397,23 @@
       "equality": false
     },
     "type": {
-      "type": "ContainerReportTypeModel",
+      "type": "lib.models.containers.reports.container_report_type_model.ContainerReportTypeModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "container": {
-      "type": "ContainerModel",
+      "type": "lib.models.containers.container_model.ContainerModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerReportTypeLocaleModel": {
+  "lib.models.containers.reports.container_report_type_locale_model.ContainerReportTypeLocaleModel": {
     "type_id": {
       "type": "int",
       "default": null,
@@ -2507,21 +3463,23 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "type": {
-      "type": "ContainerReportTypeModel",
+      "type": "lib.models.containers.reports.container_report_type_model.ContainerReportTypeModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerTankTypeModel": {
+  "lib.models.containers.tanks.container_tank_type_model.ContainerTankTypeModel": {
     "id": {
       "type": "int",
       "default": null,
@@ -2579,28 +3537,31 @@
       "equality": false
     },
     "locales": {
-      "type": "ContainerTankTypeLocaleModel[]",
+      "type": "lib.models.containers.tanks.container_tank_type_locale_model.ContainerTankTypeLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "measurement": {
-      "type": "MeasurementModel",
+      "type": "lib.models.misc.measurements.measurement_model.MeasurementModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "tanks": {
-      "type": "ContainerTankModel[]",
+      "type": "lib.models.containers.tanks.container_tank_model.ContainerTankModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerTankModel": {
+  "lib.models.containers.tanks.container_tank_model.ContainerTankModel": {
     "container_id": {
       "type": "int",
       "default": null,
@@ -2642,35 +3603,39 @@
       "equality": false
     },
     "container": {
-      "type": "ContainerModel",
+      "type": "lib.models.containers.container_model.ContainerModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "type": {
-      "type": "ContainerTankTypeModel",
+      "type": "lib.models.containers.tanks.container_tank_type_model.ContainerTankTypeModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "openings": {
-      "type": "ContainerTankOpeningModel[]",
+    "company_openings": {
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_company_opening_model.ContainerTankCompanyOpeningModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "clearings": {
-      "type": "ContainerTankClearingModel[]",
+    "person_openings": {
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_person_opening_model.ContainerTankPersonOpeningModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerTankTypeLocaleModel": {
+  "lib.models.containers.tanks.container_tank_type_locale_model.ContainerTankTypeLocaleModel": {
     "type_id": {
       "type": "int",
       "default": null,
@@ -2720,95 +3685,33 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "type": {
-      "type": "ContainerTankTypeModel",
+      "type": "lib.models.containers.tanks.container_tank_type_model.ContainerTankTypeModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerTankClearingModel": {
-    "user_id": {
-      "type": "int",
+  "lib.models.containers.tanks.operations.openings.container_tank_company_opening_model.ContainerTankCompanyOpeningModel": {
+    "company_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
       "compare": false,
       "equality": true
     },
-    "container_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "tank_type_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": true,
-      "equality": true
-    },
-    "volume": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "created_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
-    },
-    "user": {
-      "type": "UserModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    },
-    "tank": {
-      "type": "ContainerTankModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
-    }
-  },
-  "ContainerTankOpeningModel": {
-    "user_id": {
-      "type": "int",
+    "person_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -2871,36 +3774,40 @@
       "compare": false,
       "equality": false
     },
-    "user": {
-      "type": "UserModel",
+    "group_member": {
+      "type": "lib.models.companies.groups.members.company_group_member_model.CompanyGroupMemberModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "tank": {
-      "type": "ContainerTankModel",
+      "type": "lib.models.containers.tanks.container_tank_model.ContainerTankModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "nomenclature": {
-      "type": "DealAdditionNomenclatureModel",
+      "type": "lib.models.companies.deals.additions.company_deal_addition_nomenclature_model.CompanyDealAdditionNomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "drops": {
-      "type": "ContainerTankOpeningDropModel[]",
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_company_opening_drop_model.ContainerTankCompanyOpeningDropModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "ContainerTankOpeningDropModel": {
+  "lib.models.containers.tanks.operations.openings.container_tank_company_opening_drop_model.ContainerTankCompanyOpeningDropModel": {
     "opening_id": {
       "type": "int",
       "default": null,
@@ -2942,16 +3849,17 @@
       "equality": false
     },
     "opening": {
-      "type": "ContainerTankOpeningModel",
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_company_opening_model.ContainerTankCompanyOpeningModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "DeliveryModel": {
-    "owner_id": {
-      "type": "int",
+  "lib.models.people.deals.person_deal_model.PersonDealModel": {
+    "person_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -2966,7 +3874,7 @@
       "compare": true,
       "equality": true
     },
-    "user_id": {
+    "fallback_price_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -2974,40 +3882,16 @@
       "compare": false,
       "equality": true
     },
-    "latitude": {
-      "type": "float",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "longtitude": {
-      "type": "float",
-      "default": null,
-      "doc": null,
-      "nullable": false,
-      "compare": false,
-      "equality": true
-    },
-    "address_id": {
-      "type": "int",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "timestamp": {
-      "type": "datetime",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "compare": false,
-      "equality": true
-    },
-    "success": {
+    "fallback_payment_type": {
       "type": "bool",
+      "default": false,
+      "doc": "Prepayment (False) or Payment (True).",
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "active_till": {
+      "type": "datetime",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -3030,23 +3914,107 @@
       "compare": false,
       "equality": false
     },
-    "address": {
-      "type": "AddressModel",
+    "person": {
+      "type": "lib.models.people.person_model.PersonModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "nomenclatures": {
-      "type": "DeliveryNomenclatureModel[]",
+    "fallback_price": {
+      "type": "lib.models.misc.prices.price_model.PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "additions": {
+      "type": "lib.models.people.deals.additions.person_deal_addition_model.PersonDealAdditionModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "DeliveryNomenclatureModel": {
-    "user_id": {
+  "lib.models.people.deals.additions.person_deal_addition_model.PersonDealAdditionModel": {
+    "deal_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "price_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "payment_type": {
+      "type": "bool",
+      "default": false,
+      "doc": "Prepayment (False) or Payment (True).",
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "deal": {
+      "type": "lib.models.people.deals.person_deal_model.PersonDealModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "price": {
+      "type": "lib.models.misc.prices.price_model.PriceModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "nomenclatures": {
+      "type": "lib.models.people.deals.additions.person_deal_addition_nomenclature_model.PersonDealAdditionNomenclatureModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.people.deals.additions.person_deal_addition_nomenclature_model.PersonDealAdditionNomenclatureModel": {
+    "addition_id": {
       "type": "int",
       "default": null,
       "doc": null,
@@ -3063,7 +4031,7 @@
       "equality": true
     },
     "amount": {
-      "type": "float",
+      "type": "int",
       "default": 1,
       "doc": null,
       "nullable": false,
@@ -3086,24 +4054,182 @@
       "compare": false,
       "equality": false
     },
-    "delivery": {
-      "type": "DeliveryModel",
+    "addition": {
+      "type": "lib.models.people.deals.additions.person_deal_addition_model.PersonDealAdditionModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "nomenclature": {
-      "type": "NomenclatureModel",
+      "type": "lib.models.nomenclatures.nomenclature_model.NomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
+    },
+    "openings": {
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_person_opening_model.ContainerTankPersonOpeningModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
     }
   },
-  "AddressLocaleModel": {
-    "address_id": {
+  "lib.models.containers.tanks.operations.openings.container_tank_person_opening_model.ContainerTankPersonOpeningModel": {
+    "person_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "container_id": {
       "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "tank_type_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "addition_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "nomenclature_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "person": {
+      "type": "lib.models.people.person_model.PersonModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "tank": {
+      "type": "lib.models.containers.tanks.container_tank_model.ContainerTankModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "nomenclature": {
+      "type": "lib.models.people.deals.additions.person_deal_addition_nomenclature_model.PersonDealAdditionNomenclatureModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "drops": {
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_person_opening_drop_model.ContainerTankPersonOpeningDropModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.containers.tanks.operations.openings.container_tank_person_opening_drop_model.ContainerTankPersonOpeningDropModel": {
+    "opening_id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "int",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "volume": {
+      "type": "float",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "opening": {
+      "type": "lib.models.containers.tanks.operations.openings.container_tank_person_opening_model.ContainerTankPersonOpeningModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.addresses.address_locale_model.AddressLocaleModel": {
+    "address_id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
@@ -3159,21 +4285,295 @@
       "equality": true
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "address": {
-      "type": "AddressModel",
+      "type": "lib.models.misc.addresses.address_model.AddressModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "BankLocaleModel": {
+  "lib.models.misc.analytics.analytic_model.AnalyticModel": {
+    "key": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "fallback_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fallback_description": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locales": {
+      "type": "lib.models.misc.analytics.analytic_locale_model.AnalyticLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "actions": {
+      "type": "lib.models.misc.analytics.analytic_action_model.AnalyticActionModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.analytics.analytic_action_model.AnalyticActionModel": {
+    "user_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "analytic_key": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "parameters": {
+      "type": null,
+      "default": {},
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "timestamp": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "user": {
+      "type": "lib.models.auth.user_model.UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "analytic": {
+      "type": "lib.models.misc.analytics.analytic_model.AnalyticModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.analytics.analytic_locale_model.AnalyticLocaleModel": {
+    "analytic_key": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "description": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "lib.models.misc.locale_model.LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "analytic": {
+      "type": "lib.models.misc.analytics.analytic_model.AnalyticModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.analytics.crashlytic_model.CrashlyticModel": {
+    "user_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "exception": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "stack_trace": {
+      "type": null,
+      "default": {},
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "fatal": {
+      "type": "bool",
+      "default": false,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "timestamp": {
+      "type": "datetime",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "version": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "user": {
+      "type": "lib.models.auth.user_model.UserModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.banks.bank_locale_model.BankLocaleModel": {
     "bank_code": {
       "type": "int",
       "default": null,
@@ -3223,30 +4623,32 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "bank": {
-      "type": "BankModel",
+      "type": "lib.models.misc.banks.bank_model.BankModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "TextModel": {
-    "key": {
+  "lib.models.misc.faq.faq_model.FAQModel": {
+    "id": {
       "type": "str",
       "default": null,
       "doc": null,
-      "nullable": false,
+      "nullable": true,
       "compare": true,
       "equality": true
     },
-    "fallback": {
+    "fallback_name": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -3254,32 +4656,25 @@
       "compare": false,
       "equality": true
     },
-    "created_at": {
-      "type": "datetime",
+    "fallback_content": {
+      "type": "str",
       "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
+      "doc": null,
+      "nullable": false,
       "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
+      "equality": true
     },
     "locales": {
-      "type": "TextLocaleModel[]",
+      "type": "lib.models.misc.faq.faq_locale_model.FAQLocaleModel[]",
       "default": [],
       "doc": null,
       "nullable": false,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "TextLocaleModel": {
-    "text_key": {
+  "lib.models.misc.faq.faq_locale_model.FAQLocaleModel": {
+    "faq_id": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -3303,7 +4698,7 @@
       "compare": true,
       "equality": true
     },
-    "value": {
+    "name": {
       "type": "str",
       "default": null,
       "doc": null,
@@ -3311,38 +4706,32 @@
       "compare": false,
       "equality": true
     },
-    "created_at": {
-      "type": "datetime",
+    "content": {
+      "type": "str",
       "default": null,
-      "doc": "Set the date and time when the instance was created.",
-      "nullable": true,
+      "doc": null,
+      "nullable": false,
       "compare": false,
-      "equality": false
-    },
-    "updated_at": {
-      "type": "datetime",
-      "default": null,
-      "doc": "Set the date and time of the last time the instance was updated.",
-      "nullable": true,
-      "compare": false,
-      "equality": false
+      "equality": true
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
-    "text": {
-      "type": "TextModel",
+    "faq": {
+      "type": "lib.models.misc.faq.faq_model.FAQModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "MeasurementLocaleModel": {
+  "lib.models.misc.measurements.measurement_locale_model.MeasurementLocaleModel": {
     "measurement_id": {
       "type": "int",
       "default": null,
@@ -3392,21 +4781,23 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "measurement": {
-      "type": "MeasurementModel",
+      "type": "lib.models.misc.measurements.measurement_model.MeasurementModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "PriceLocaleModel": {
+  "lib.models.misc.prices.price_locale_model.PriceLocaleModel": {
     "price_id": {
       "type": "int",
       "default": null,
@@ -3456,21 +4847,23 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "price": {
-      "type": "PriceModel",
+      "type": "lib.models.misc.prices.price_model.PriceModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "SettingsModel": {
+  "lib.models.misc.settings_model.SettingsModel": {
     "id": {
       "type": "bool",
       "default": true,
@@ -3512,14 +4905,197 @@
       "equality": false
     },
     "fallback_locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "NomenclatureCategoryLocaleModel": {
+  "lib.models.misc.texts.text_group_model.TextGroupModel": {
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "parent_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": false,
+      "equality": true
+    },
+    "name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "texts": {
+      "type": "lib.models.misc.texts.text_model.TextModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.texts.text_model.TextModel": {
+    "group_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "key": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": true,
+      "equality": true
+    },
+    "fallback": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locales": {
+      "type": "lib.models.misc.texts.text_locale_model.TextLocaleModel[]",
+      "default": [],
+      "doc": null,
+      "nullable": false,
+      "equality": true,
+      "serialize": false
+    },
+    "group": {
+      "type": "lib.models.misc.texts.text_group_model.TextGroupModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.misc.texts.text_locale_model.TextLocaleModel": {
+    "group_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "text_key": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "value": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "lib.models.misc.locale_model.LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "text": {
+      "type": "lib.models.misc.texts.text_model.TextModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.nomenclatures.categories.nomenclature_category_locale_model.NomenclatureCategoryLocaleModel": {
     "category_id": {
       "type": "int",
       "default": null,
@@ -3569,35 +5145,45 @@
       "equality": false
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "category": {
-      "type": "NomenclatureCategoryModel",
+      "type": "lib.models.nomenclatures.categories.nomenclature_category_model.NomenclatureCategoryModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "NomenclatureImageModel": {
+  "lib.models.nomenclatures.nomenclature_image_model.NomenclatureImageModel": {
     "nomenclature_id": {
       "type": "int",
       "default": null,
       "doc": null,
       "nullable": true,
-      "compare": true,
+      "compare": false,
       "equality": true
     },
-    "image_id": {
-      "type": "int",
+    "id": {
+      "type": "str",
       "default": null,
       "doc": null,
       "nullable": true,
       "compare": true,
+      "equality": true
+    },
+    "url": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
       "equality": true
     },
     "created_at": {
@@ -3617,21 +5203,15 @@
       "equality": false
     },
     "nomenclature": {
-      "type": "NomenclatureModel",
+      "type": "lib.models.nomenclatures.nomenclature_model.NomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
-    },
-    "image": {
-      "type": "ImageModel",
-      "default": null,
-      "doc": null,
-      "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "NomenclatureLocaleModel": {
+  "lib.models.nomenclatures.nomenclature_locale_model.NomenclatureLocaleModel": {
     "nomenclature_id": {
       "type": "int",
       "default": null,
@@ -3666,28 +5246,30 @@
     },
     "description": {
       "type": "str",
-      "default": null,
+      "default": "",
       "doc": null,
       "nullable": false,
       "compare": false,
       "equality": true
     },
     "locale": {
-      "type": "LocaleModel",
+      "type": "lib.models.misc.locale_model.LocaleModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "nomenclature": {
-      "type": "NomenclatureModel",
+      "type": "lib.models.nomenclatures.nomenclature_model.NomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     }
   },
-  "NomenclaturePriceModel": {
+  "lib.models.nomenclatures.nomenclature_price_model.NomenclaturePriceModel": {
     "nomenclature_id": {
       "type": "int",
       "default": null,
@@ -3729,18 +5311,152 @@
       "equality": false
     },
     "nomenclature": {
-      "type": "NomenclatureModel",
+      "type": "lib.models.nomenclatures.nomenclature_model.NomenclatureModel",
       "default": null,
       "doc": null,
       "nullable": true,
-      "equality": true
+      "equality": true,
+      "serialize": false
     },
     "price": {
-      "type": "PriceModel",
+      "type": "lib.models.misc.prices.price_model.PriceModel",
       "default": null,
       "doc": null,
       "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.people.person_image_model.PersonImageModel": {
+    "person_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
       "equality": true
+    },
+    "id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "url": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "person": {
+      "type": "lib.models.people.person_model.PersonModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    }
+  },
+  "lib.models.people.person_locale_model.PersonLocaleModel": {
+    "person_id": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_language_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "locale_country_code": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "compare": true,
+      "equality": true
+    },
+    "first_name": {
+      "type": "str",
+      "default": null,
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "last_name": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "middle_name": {
+      "type": "str",
+      "default": "",
+      "doc": null,
+      "nullable": false,
+      "compare": false,
+      "equality": true
+    },
+    "created_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time when the instance was created.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "updated_at": {
+      "type": "datetime",
+      "default": null,
+      "doc": "Set the date and time of the last time the instance was updated.",
+      "nullable": true,
+      "compare": false,
+      "equality": false
+    },
+    "locale": {
+      "type": "lib.models.misc.locale_model.LocaleModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
+    },
+    "person": {
+      "type": "lib.models.people.person_model.PersonModel",
+      "default": null,
+      "doc": null,
+      "nullable": true,
+      "equality": true,
+      "serialize": false
     }
   }
 }

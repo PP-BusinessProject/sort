@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:logging/logging.dart' as logging;
 
 /// The global logger.
-final Logger logger = Logger(
+final Logger _logger = Logger(
   output: _DevLogOutput('SORT'),
   level: Level.verbose,
   filter: DevelopmentFilter(),
@@ -33,7 +33,7 @@ class _DevLogOutput extends LogOutput {
 /// The [Logger] adapter for the [CatcherLogger].
 class CustomCatcherLogger implements CatcherLogger {
   /// The [Logger] adapter for the [CatcherLogger].
-  const CustomCatcherLogger(final this._logger);
+  const CustomCatcherLogger(this._logger);
   final Logger _logger;
 
   @override

@@ -2,8 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 
-import '../utils/logger.dart';
+import '../generated/models.g.dart';
 import 'flutter_providers.dart';
 
 /// The [Provider] of the current user's [LatLng].
@@ -12,7 +13,7 @@ final StreamProvider<LatLng> latLngProvider = StreamProvider<LatLng>(
       .getPositionStream(locationSettings: const LocationSettings())
       .handleError(
         // ignore: argument_type_not_assignable_to_error_handler
-        logger.e,
+        Supabase.instance.log,
         test: (final Object? error) =>
             error is! PermissionDeniedException &&
             error is! LocationServiceDisabledException,
@@ -27,12 +28,18 @@ final StreamProvider<LatLng> latLngProvider = StreamProvider<LatLng>(
 /// locale.
 final FutureProviderFamily<List<Placemark>, LatLng> placemarksProvider =
     FutureProvider.family<List<Placemark>, LatLng>(
-  (final FutureProviderRef<List<Placemark>> ref, final LatLng latLng) =>
-      placemarkFromCoordinates(
-    latLng.latitude,
-    latLng.longitude,
-    localeIdentifier: ref.watch(i18nProvider).name,
-  ),
+  (final FutureProviderRef<List<Placemark>> ref, final LatLng latLng) {
+    String? localeIdentifier;
+    final LocaleModel? locale = ref.watch(i18nProvider);
+    if (locale != null) {
+      localeIdentifier = '${locale.languageCode}_${locale.countryCode}';
+    }
+    return placemarkFromCoordinates(
+      latLng.latitude,
+      latLng.longitude,
+      localeIdentifier: localeIdentifier,
+    );
+  },
   dependencies: <ProviderOrFamily>[i18nProvider],
 );
 

@@ -22,11 +22,11 @@ void useWidgetState({
 
 class _WidgetStateHook extends Hook<void> {
   const _WidgetStateHook({
-    final this.initState,
-    final this.dispose,
-    final this.deactivate,
-    final this.reassemble,
-    final super.keys,
+    this.initState,
+    this.dispose,
+    this.deactivate,
+    this.reassemble,
+    super.keys,
   });
 
   final VoidCallback? initState;

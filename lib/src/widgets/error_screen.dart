@@ -19,9 +19,10 @@ class ErrorPageReportMode extends ReportMode {
     final BuildContext? context,
   ) async {
     if (context != null) {
-      final ProviderContainer container =
-          ProviderScope.containerOf(context, listen: false);
-      container.read(ErrorScreen.errorProvider.notifier).state = report;
+      final UncontrolledProviderScope? scope = context
+          .getElementForInheritedWidgetOfExactType<UncontrolledProviderScope>()
+          ?.widget as UncontrolledProviderScope?;
+      scope?.container.read(ErrorScreen.errorProvider.notifier).state = report;
     }
     super.onActionConfirmed(report);
   }
@@ -37,9 +38,9 @@ class ErrorPageReportMode extends ReportMode {
 class ErrorScreen extends HookConsumerWidget {
   /// The screen used to show an [error].
   const ErrorScreen(
-    final this.error,
-    final this.stackTrace, {
-    final super.key,
+    this.error,
+    this.stackTrace, {
+    super.key,
   });
 
   /// The error to show on this screen.
@@ -58,7 +59,7 @@ class ErrorScreen extends HookConsumerWidget {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     return CupertinoPageScaffold(
       child: Column(
         children: <Widget>[
@@ -140,9 +141,9 @@ class ErrorScreen extends HookConsumerWidget {
 class ErrorLogsScreen extends ErrorScreen {
   /// The screen used to show an [error].
   const ErrorLogsScreen(
-    final super.error,
-    final super.stackTrace, {
-    final super.key,
+    super.error,
+    super.stackTrace, {
+    super.key,
   });
 
   @override
@@ -150,7 +151,7 @@ class ErrorLogsScreen extends ErrorScreen {
     final ThemeData theme = Theme.of(context);
     final CupertinoThemeData cupertinoTheme = CupertinoTheme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     return CupertinoPageScaffold(
       navigationBar: navigationBar(
         theme,

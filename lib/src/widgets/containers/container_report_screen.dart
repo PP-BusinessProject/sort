@@ -5,12 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ndialog/ndialog.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../api.dart';
 import '../../extensions.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
-import '../../providers/model_providers.dart';
+import '../../providers/database/model_providers.dart';
 import '../../styles.dart';
 import '../shared/shared_widgets.dart';
 import 'container_card.dart';
@@ -19,9 +19,9 @@ import 'container_card.dart';
 class ContainerReportScreen extends HookConsumerWidget {
   /// The screen used to submit a [ContainerReportModel].
   const ContainerReportScreen(
-    final this.container, {
-    final this.address,
-    final super.key,
+    this.container, {
+    this.address,
+    super.key,
   });
 
   /// The container to display in this screen.
@@ -49,7 +49,7 @@ class ContainerReportScreen extends HookConsumerWidget {
     final CupertinoThemeData cupertinoTheme = CupertinoTheme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final bool isInformationRequired =
         ref.watch(_reportTypeProvider.select((final _) => _ == null));
     final bool Function() isMounted = useIsMounted();
@@ -57,17 +57,15 @@ class ContainerReportScreen extends HookConsumerWidget {
 
     Future<void> report() async {
       try {
-        await sortApi.post(
-          '/containerReports',
+        await (Supabase.instance.client.rest.from('container_reports')).insert(
           ContainerReportModel(
             containerId: container.id,
             typeId: ref.read(_reportTypeProvider),
             information: information.value,
-          ),
-          toJson: containerReportConverter.toJson,
+          ).toMap(),
         );
         if (isMounted()) {
-          await ref.refresh(userProvider.future);
+          await ref.refresh(personProvider.future);
           // ignore: use_build_context_synchronously
           await NDialog(
             title: Text($.alert.success.title),

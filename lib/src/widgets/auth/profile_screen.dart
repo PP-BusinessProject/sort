@@ -1,26 +1,24 @@
 import 'dart:async';
 
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:json_converters_lite/json_converters_lite.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-import '../../api.dart';
 import '../../const.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
-import '../../providers/flutter_providers.dart';
+import '../../providers/auth/phone_number_provider.dart';
+import '../../providers/database/model_providers.dart';
 import '../../providers/misc_providers.dart';
-import '../../providers/model_providers.dart';
 import '../../styles.dart';
 import '../shared/shared_dialogs.dart';
 import '../shared/shared_widgets.dart';
@@ -28,7 +26,7 @@ import '../shared/shared_widgets.dart';
 /// The screen for a user to fill in his personal data.
 class ProfileScreen extends HookConsumerWidget {
   /// The screen for a user to fill in his personal data.
-  const ProfileScreen({final super.key});
+  const ProfileScreen({super.key});
 
   /// The validator for the first name and last name fields.
   static final RegExp nameRegExp = RegExp(
@@ -97,7 +95,7 @@ class ProfileScreen extends HookConsumerWidget {
     (final ProviderRef<bool> ref) {
       final UserModel? user =
           ref.watch(userProvider.select((final _) => _.valueOrNull));
-      return ref.watch($phoneNumberProvider.select((final _) => _ != null)) &&
+      return ref.watch(phoneNumberProvider.select((final _) => _ != null)) &&
           ref.watch(
             _firstNameProvider.select((final _) => _?.isNotEmpty ?? false),
           ) &&
@@ -106,7 +104,7 @@ class ProfileScreen extends HookConsumerWidget {
               ref.watch(_privacyPolicy));
     },
     dependencies: <ProviderOrFamily>[
-      $phoneNumberProvider,
+      phoneNumberProvider,
       userProvider,
       _firstNameProvider,
       _birthdayProvider,
@@ -117,7 +115,7 @@ class ProfileScreen extends HookConsumerWidget {
 
   static final Provider<UserModel?> _newUser = Provider<UserModel?>(
     (final ProviderRef<UserModel?> ref) {
-      final int? phoneNumber = ref.watch($phoneNumberProvider);
+      final int? phoneNumber = ref.watch(phoneNumberProvider);
       if (phoneNumber == null) {
         return null;
       }
@@ -176,7 +174,7 @@ class ProfileScreen extends HookConsumerWidget {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
 
     final bool Function() isMounted = useIsMounted();
     final TextEditingController firstNameController = useTextEditingController(
@@ -238,16 +236,14 @@ class ProfileScreen extends HookConsumerWidget {
     FutureOr<void> process() async {
       final StateController<bool> isLoading =
           ref.read(_isRegistrationLoading.notifier)..state = true;
-      final UserModel? user = ref.read(userProvider).valueOrNull;
       try {
         final UserModel newUser = ref.read(_newUser)!;
-        await (user != null ? sortApi.put : sortApi.post)<Iterable<UserModel>>(
-          '/users',
-          <UserModel>[newUser],
-          toJson: (final Iterable<UserModel> users) =>
-              (const IterableConverter(userConverter).toJson(users))
-                  .toList(growable: false),
-        );
+        await Supabase.instance.client.rest
+            .from('users')
+            .upsert(newUser.toMap(), onConflict: 'id');
+        await Supabase.instance.client.rest
+            .from('people')
+            .upsert(newUser.person!.toMap(), onConflict: 'user_id');
         if (isMounted()) {
           await ref.refresh(userProvider.future);
           // ignore: use_build_context_synchronously
@@ -299,14 +295,14 @@ class ProfileScreen extends HookConsumerWidget {
       navigationBar: navigationBar(
         theme,
         previousPageTitle: $.misc.prevPage,
-        onPressed: () => ref.read(userProvider).valueOrNull == null
+        onPressed: () async => ref.read(userProvider).valueOrNull == null
             ? dialog(
                 theme,
                 title: $.alert.exitRegister.title,
                 approve: $.alert.exitRegister.approve,
                 onApprove: () async {
                   try {
-                    await FirebaseAuth.instance.signOut();
+                    await Supabase.instance.client.auth.signOut();
                   } finally {
                     await navigator.maybePop();
                   }
@@ -329,7 +325,7 @@ class ProfileScreen extends HookConsumerWidget {
               readOnly: true,
               padding: EdgeInsets.zero,
               placeholder: ref.watch(
-                phoneNumberProvider.select(
+                $phoneNumberProvider.select(
                   (final PhoneNumber? phoneNumber) =>
                       phoneNumber?.international ?? $.profile.phoneNumber,
                 ),
@@ -438,7 +434,7 @@ class ProfileScreen extends HookConsumerWidget {
                 bottom: BorderSide(color: theme.colorScheme.surfaceTint),
               ),
             ),
-            onTap: () => const DialogBackground(
+            onTap: () async => const DialogBackground(
               dialog: _ProfileBirthdayDialog(),
             ).show<void>(context),
           ),
@@ -499,7 +495,7 @@ class _ProfileBirthdayDialog extends HookConsumerWidget {
   NAlertDialog build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final bool Function() isMounted = useIsMounted();
     final ObjectRef<DateTime?> selection =
         useRef<DateTime?>(ref.read(ProfileScreen._birthdayProvider));
@@ -563,7 +559,7 @@ class _ProfileGender extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<bool?> gender =
         useState<bool?>(ref.read(ProfileScreen._genderProvider));
@@ -638,7 +634,7 @@ class _ProfileNumberOfFamilyMembers extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<int> $numberOfFamilyMembers = useState<int>(
       ref.read(ProfileScreen._numberOfFamilyMembersProvider),
@@ -687,7 +683,7 @@ class _RegistrationPrivacyPolicy extends HookConsumerWidget {
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final bool Function() isMounted = useIsMounted();
     final ValueNotifier<bool> privacyPolicy =
         useState<bool>(ref.read(ProfileScreen._privacyPolicy));

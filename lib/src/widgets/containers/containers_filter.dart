@@ -12,13 +12,13 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 import '../../extensions.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
-import '../../providers/model_providers.dart';
+import '../../providers/database/model_providers.dart';
 import '../shared/shared_widgets.dart';
 
 /// The filter used on [ContainerModel].
 class ContainersFilter extends HookConsumerWidget {
   /// The filter used on [ContainerModel].
-  const ContainersFilter({final super.key});
+  const ContainersFilter({super.key});
 
   /// The filter of the [ContainerTankTypeModel.id].
   ///
@@ -71,7 +71,7 @@ class _ContainerFilterBody extends ConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     return SafeArea(
       child: listView(
         mediaQuery,
@@ -156,7 +156,7 @@ class _ContainerFilterBody extends ConsumerWidget {
 }
 
 class _ContainersTypeFilterButton extends HookConsumerWidget {
-  const _ContainersTypeFilterButton(final this.type);
+  const _ContainersTypeFilterButton(this.type);
 
   final ContainerTankTypeModel type;
 
@@ -170,7 +170,7 @@ class _ContainersTypeFilterButton extends HookConsumerWidget {
         ref.watch(filter.select((final _) => _.isEmpty || _.contains(type.id)));
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary:
+        backgroundColor:
             filtered ? theme.colorScheme.surface : theme.colorScheme.shadow,
       ),
       onPressed: () {

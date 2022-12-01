@@ -15,9 +15,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
 import '../../hooks/widget_state_hook.dart';
+import '../../providers/database/model_providers.dart';
 import '../../providers/location_providers.dart';
 import '../../providers/misc_providers.dart';
-import '../../providers/model_providers.dart';
 import '../containers/container_card_swiper.dart';
 import '../containers/containers_filter.dart';
 import '../shared/shared_dialogs.dart';
@@ -28,7 +28,7 @@ import 'b2c_screen.dart';
 /// The map on the [B2CScreen].
 class B2CMap extends HookConsumerWidget {
   /// The map on the [B2CScreen].
-  const B2CMap({final super.key});
+  const B2CMap({super.key});
 
   /// The fallback default map location.
   static final LatLng defaultLatLng = LatLng(50.450001, 30.523333);
@@ -71,7 +71,7 @@ class B2CMap extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
 
     final bool Function() isMounted = useIsMounted();
     final MapController controller = useMemoized(MapController.new);
@@ -187,7 +187,7 @@ class B2CMap extends HookConsumerWidget {
       }
 
       if (_navigationController != null) {
-        navigationStream().drain<void>();
+        unawaited(navigationStream().drain<void>());
       }
       mapAnimationController.addListener(() {
         final Tween<double>? latitude = latitudeTween.value;

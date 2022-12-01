@@ -8,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../generated/i18n.g.dart';
-import '../../providers/model_providers.dart';
+import '../../providers/database/model_providers.dart';
 import '../../styles.dart';
 import '../../widgets/shared/shared_widgets.dart';
 import '../settings/settings_screen.dart';
@@ -19,14 +19,14 @@ import 'b2c_screen.dart';
 /// The menu of the [B2CScreen] that is accessed from the [B2CExpanded].
 class B2CMenu extends HookConsumerWidget {
   /// The menu of the [B2CScreen] that is accessed from the [B2CExpanded].
-  const B2CMenu({final super.key});
+  const B2CMenu({super.key});
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final GlobalKey<State<StatefulWidget>> mainKey = useMemoized(GlobalKey.new);
     return Listener(
       behavior: HitTestBehavior.translucent,
@@ -119,9 +119,9 @@ class B2CMenu extends HookConsumerWidget {
                               final WidgetRef ref,
                               final Widget? child,
                             ) =>
-                                UserCard(
+                                PersonCard(
                               ref.watch(
-                                userProvider
+                                personProvider
                                     .select((final _) => _.valueOrNull!),
                               ),
                               canEdit: true,
@@ -176,7 +176,7 @@ class B2CMenu extends HookConsumerWidget {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: Size.infinite,
-                                  primary: theme.colorScheme.surface,
+                                  backgroundColor: theme.colorScheme.surface,
                                 ),
                                 onPressed: () {},
                                 child: marqueeText(
@@ -193,7 +193,7 @@ class B2CMenu extends HookConsumerWidget {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: Size.infinite,
-                                  primary: theme.colorScheme.surface,
+                                  backgroundColor: theme.colorScheme.surface,
                                 ),
                                 onPressed: () {},
                                 child: marqueeText(
@@ -210,7 +210,7 @@ class B2CMenu extends HookConsumerWidget {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: Size.infinite,
-                                  primary: theme.colorScheme.surface,
+                                  backgroundColor: theme.colorScheme.surface,
                                 ),
                                 onPressed: () => navigator.push<void>(
                                   PageTransition<void>(
@@ -232,7 +232,7 @@ class B2CMenu extends HookConsumerWidget {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   minimumSize: Size.infinite,
-                                  primary: theme.colorScheme.surface,
+                                  backgroundColor: theme.colorScheme.surface,
                                 ),
                                 onPressed: () {},
                                 child: marqueeText(
@@ -250,9 +250,9 @@ class B2CMenu extends HookConsumerWidget {
                           children: <Widget>[
                             TextButton(
                               style: TextButton.styleFrom(
+                                foregroundColor: theme.colorScheme.surface,
                                 minimumSize: Size.zero,
                                 padding: EdgeInsets.zero,
-                                primary: theme.colorScheme.surface,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8),
@@ -275,9 +275,9 @@ class B2CMenu extends HookConsumerWidget {
                             ),
                             TextButton(
                               style: TextButton.styleFrom(
+                                foregroundColor: theme.colorScheme.surface,
                                 minimumSize: Size.zero,
                                 padding: EdgeInsets.zero,
-                                primary: theme.colorScheme.surface,
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(8),

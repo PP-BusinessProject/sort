@@ -1,6 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,13 +10,13 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
-import '../../providers/model_providers.dart';
+import '../../providers/database/model_providers.dart';
 import '../shared/shared_widgets.dart';
 
 /// The filter used on [ContainerModel].
 class BonusesFilter extends HookConsumerWidget {
   /// The filter used on [ContainerModel].
-  const BonusesFilter({final super.key});
+  const BonusesFilter({super.key});
 
   /// The current set fullness filter.
   static final StateProvider<double> priceFilterProvider =
@@ -62,7 +61,7 @@ class _BonusesFilterBody extends ConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     return SafeArea(
       child: listView(
         mediaQuery,

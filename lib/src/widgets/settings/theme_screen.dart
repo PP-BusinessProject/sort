@@ -9,7 +9,7 @@ import '../shared/shared_widgets.dart';
 /// The screen that provides access to the app's [ThemeMode] settings.
 class ThemeScreen extends HookConsumerWidget {
   /// The screen that provides access to the app's [ThemeMode] settings.
-  const ThemeScreen({final super.key});
+  const ThemeScreen({super.key});
 
   /// The height of the buttons on this screen.
   static const double buttonHeight = 56;
@@ -20,7 +20,7 @@ class ThemeScreen extends HookConsumerWidget {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
     final ThemeMode themeMode = ref.watch(themeModeProvider);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     return CupertinoPageScaffold(
       navigationBar: navigationBar(
         theme,

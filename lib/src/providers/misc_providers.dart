@@ -1,15 +1,6 @@
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riverpod/riverpod.dart';
-
-import '../flavors.dart';
-
-/// The [Provider] of the current application flavor.
-final Provider<SortFlavor> flavorProvider = Provider<SortFlavor>(
-  (final ProviderRef<SortFlavor> ref) =>
-      throw UnimplementedError('Application flavor has not been provided yet.'),
-);
 
 /// The [Provider] of the application [PackageInfo].
 final Provider<PackageInfo> packageInfoProvider = Provider<PackageInfo>(

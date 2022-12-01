@@ -8,8 +8,8 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
+import '../../providers/database/model_providers.dart';
 import '../../providers/location_providers.dart';
-import '../../providers/model_providers.dart';
 import '../shared/shared_widgets.dart';
 import 'container_card.dart';
 import 'containers_filter.dart';
@@ -17,14 +17,14 @@ import 'containers_filter.dart';
 /// The screen used to show off the list of [ContainerModel].
 class ContainersScreen extends HookConsumerWidget {
   /// The screen used to show off the list of [ContainerModel].
-  const ContainersScreen({final super.key});
+  const ContainersScreen({super.key});
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final ScrollController scrollController =
         PrimaryScrollController.of(context)!;
     final bool Function() isMounted = useIsMounted();

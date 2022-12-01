@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
+import '../../providers/database/model_providers.dart';
 import '../../providers/flutter_providers.dart';
-import '../../providers/model_providers.dart';
 import '../bonuses/bonus_card.dart';
 import 'b2c_expanded.dart';
 import 'b2c_map.dart';
@@ -17,7 +17,7 @@ import 'b2c_map.dart';
 /// The overlay for the [B2CExpanded] on [B2CMap].
 class B2CExpandedOverlay extends HookConsumerWidget {
   /// The overlay for the [B2CExpanded] on [B2CMap].
-  const B2CExpandedOverlay({final super.key});
+  const B2CExpandedOverlay({super.key});
 
   /// The height of the [B2CExpanded].
   static const double expandedHeight = 370;
@@ -204,7 +204,7 @@ class B2CExpandedOverlay extends HookConsumerWidget {
 
 class _B2CAnimatedChevon extends StatefulWidget {
   // ignore: unused_element
-  const _B2CAnimatedChevon({final this.count = 3, final super.key});
+  const _B2CAnimatedChevon({this.count = 3, super.key});
 
   /// The total count of chevrons.
   final int count;

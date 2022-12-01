@@ -5,7 +5,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../extensions.dart';
-import '../../flavors.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
 import '../../styles.dart';
@@ -17,11 +16,11 @@ import 'container_report_screen.dart';
 class ContainerCard extends StatelessWidget {
   /// The card used to display info about a [ContainerModel] on map.
   const ContainerCard(
-    final this.container, {
-    final this.address,
-    final this.onMap = false,
-    final this.disabled = false,
-    final super.key,
+    this.container, {
+    this.address,
+    this.onMap = false,
+    this.disabled = false,
+    super.key,
   });
 
   /// The container to display in this card.
@@ -76,7 +75,7 @@ class ContainerCard extends StatelessWidget {
                       Expanded(
                         child: image(
                           container.images.isNotEmpty
-                              ? container.images.first.image?.url
+                              ? container.images.first.url
                               : null,
                         ),
                       ),
@@ -144,11 +143,13 @@ class ContainerCard extends StatelessWidget {
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             padding: EdgeInsets.zero,
-                                            primary: const Color(0xff6490DC),
+                                            backgroundColor: const Color(
+                                              0xff6490DC,
+                                            ),
                                           ),
                                           onPressed: () {
                                             navigator.popUntil(
-                                              SortFlavor.b2c.withName,
+                                              ModalRoute.withName('/'),
                                             );
                                             B2CMap.navigation?.add(
                                               LatLng(
@@ -177,9 +178,11 @@ class ContainerCard extends StatelessWidget {
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             padding: EdgeInsets.zero,
-                                            primary: const Color(0xffDC6B64),
+                                            backgroundColor:
+                                                const Color(0xffDC6B64),
                                           ),
-                                          onPressed: () => navigator.push<void>(
+                                          onPressed: () async =>
+                                              navigator.push<void>(
                                             PageTransition<void>(
                                               type: PageTransitionType.fade,
                                               child: ContainerReportScreen(

@@ -9,7 +9,8 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import '../../generated/assets.g.dart';
 import '../../generated/i18n.g.dart';
 import '../../generated/models.g.dart';
-import '../../providers/model_providers.dart';
+import '../../providers/database/model_providers.dart';
+import '../../providers/supabase/texts_provider.dart';
 import '../../styles.dart';
 import '../bonuses/bonus_card.dart';
 import '../bonuses/bonuses_screen.dart';
@@ -20,7 +21,7 @@ import 'b2c_menu.dart';
 /// The expanded variant of the [B2CScreen].
 class B2CExpanded extends HookConsumerWidget {
   /// The expanded variant of the [B2CScreen].
-  const B2CExpanded({final super.key});
+  const B2CExpanded({super.key});
 
   /// The height of the appbar in the expanded widget.
   static const double appBarHeight = 50;
@@ -32,7 +33,7 @@ class B2CExpanded extends HookConsumerWidget {
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context)!;
     final bool? bonusesPresent = ref
         .watch(bonusesProvider.select((final _) => _.valueOrNull?.isNotEmpty));
     return Column(
@@ -88,7 +89,7 @@ class B2CExpanded extends HookConsumerWidget {
                                   ),
                                 ),
                               ),
-                              onPressed: () => navigator.push(
+                              onPressed: () async => navigator.push(
                                 PageTransition<void>(
                                   type: PageTransitionType.fade,
                                   child: const BonusesScreen(),
@@ -145,7 +146,7 @@ class B2CExpanded extends HookConsumerWidget {
                               CupertinoIcons.person_fill,
                               radius: 15,
                               iconSize: 18.75,
-                              onTap: () => navigator.push(
+                              onTap: () async => navigator.push(
                                 TransparentRoute<void>(
                                   backgroundColor: Colors.transparent,
                                   transitionDuration: Duration.zero,
@@ -183,7 +184,7 @@ class B2CExpanded extends HookConsumerWidget {
             height: BonusCard.recommendedHeight,
             child: Consumer(
               builder: (final _, final WidgetRef ref, final Widget? child) {
-                final List<BonusModel> bonuses = ref.watch(
+                final List<CompanyBonusModel> bonuses = ref.watch(
                   bonusesProvider.select(
                     (final _) => (_.valueOrNull!.toList())
                         .sublist(0, _.valueOrNull!.length.clamp(0, 5)),
@@ -243,10 +244,10 @@ class B2CExpanded extends HookConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: theme.colorScheme.surface,
+                      backgroundColor: theme.colorScheme.surface,
                       padding: EdgeInsets.zero,
                     ),
-                    onPressed: () => navigator.push(
+                    onPressed: () async => navigator.push(
                       PageTransition<void>(
                         type: PageTransitionType.fade,
                         child: const ContainersScreen(),
@@ -278,7 +279,7 @@ class B2CExpanded extends HookConsumerWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: theme.colorScheme.surface,
+                      backgroundColor: theme.colorScheme.surface,
                       padding: EdgeInsets.zero,
                     ),
                     onPressed: () {},

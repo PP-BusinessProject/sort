@@ -25,6 +25,10 @@ alert:
     title: Успіх
     body: Операція пройшла успішно.
     approve: Дякую
+  code_expired:
+    title: Код більше не дійсний
+    body: Будь ласка, спробуйте ще раз.
+    approve: Так, дякую
   location_denied:
     title: Дозвіл не наданий
     body: Ви відмовили у доступі до геолокації.

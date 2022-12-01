@@ -6,7 +6,7 @@ error:
   description: Please try to update the app.
   confirm: Update
   copy_logs: Copy Logs
-  view_logs: View Logs  
+  view_logs: View Logs
 
 alert:
   exit:
@@ -25,6 +25,10 @@ alert:
     title: Success
     body: Operation successfull.
     approve: Okay, thanks
+  code_expired:
+    title: Code Expired
+    body: The code has expired. Please try again.
+    approve: Okay, thanks
   location_denied:
     title: Permission denied
     body: You denied location permission multiple times.
@@ -37,6 +41,7 @@ alert:
       Enable them in the settings.
     approve: Open Settings
     deny: Cancel
+
 
 auth:
   support: Contact support

@@ -1,13 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../flavors.dart';
 import '../../generated/i18n.g.dart';
-import '../../providers/misc_providers.dart';
 import '../shared/shared_dialogs.dart';
 import '../shared/shared_widgets.dart';
 import 'about_screen.dart';
@@ -17,7 +15,7 @@ import 'theme_screen.dart';
 /// The screen that provides access to the app's settings.
 class SettingsScreen extends HookConsumerWidget {
   /// The screen that provides access to the app's settings.
-  const SettingsScreen({final super.key});
+  const SettingsScreen({super.key});
 
   /// The height of the buttons on this screen.
   static const double buttonHeight = 48;
@@ -27,7 +25,7 @@ class SettingsScreen extends HookConsumerWidget {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     return CupertinoPageScaffold(
       navigationBar: navigationBar(
         theme,
@@ -39,7 +37,7 @@ class SettingsScreen extends HookConsumerWidget {
         children: <Widget>[
           _button(
             title: $.settings.language.language,
-            onPressed: () => navigator.push<void>(
+            onPressed: () async => navigator.push<void>(
               PageTransition<void>(
                 type: PageTransitionType.fade,
                 child: const LanguageScreen(),
@@ -50,7 +48,7 @@ class SettingsScreen extends HookConsumerWidget {
           const SizedBox(height: buttonHeight * 3 / 4),
           _button(
             title: $.settings.theme.theme,
-            onPressed: () => navigator.push<void>(
+            onPressed: () async => navigator.push<void>(
               PageTransition<void>(
                 type: PageTransitionType.fade,
                 child: const ThemeScreen(),
@@ -67,7 +65,7 @@ class SettingsScreen extends HookConsumerWidget {
           const SizedBox(height: buttonHeight * 3 / 4),
           _button(
             title: $.settings.about.about,
-            onPressed: () => navigator.push<void>(
+            onPressed: () async => navigator.push<void>(
               PageTransition<void>(
                 type: PageTransitionType.fade,
                 child: const AboutScreen(),
@@ -79,16 +77,15 @@ class SettingsScreen extends HookConsumerWidget {
           _button(
             logOut: true,
             title: $.settings.logout,
-            onPressed: () => dialog(
+            onPressed: () async => dialog(
               theme,
               title: $.alert.exitRegister.title,
               approve: $.alert.exitRegister.approve,
               onApprove: () async {
-                final SortFlavor flavor = ref.read(flavorProvider);
                 try {
-                  await FirebaseAuth.instance.signOut();
+                  await Supabase.instance.client.auth.signOut();
                 } finally {
-                  navigator.popUntil(flavor.withName);
+                  navigator.popUntil(ModalRoute.withName('/'));
                 }
               },
               deny: $.alert.exitRegister.deny,
@@ -114,11 +111,12 @@ class SettingsScreen extends HookConsumerWidget {
         height: buttonHeight,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            minimumSize: Size.infinite,
-            textStyle: theme.textTheme.headlineMedium,
-            primary: logOut ? theme.colorScheme.error.withOpacity(4 / 5) : null,
-            onPrimary:
+            foregroundColor:
                 logOut ? theme.colorScheme.onSurface.withOpacity(2 / 3) : null,
+            minimumSize: Size.infinite,
+            backgroundColor:
+                logOut ? theme.colorScheme.error.withOpacity(4 / 5) : null,
+            textStyle: theme.textTheme.headlineMedium,
           ),
           onPressed: onPressed,
           child: Text(title),

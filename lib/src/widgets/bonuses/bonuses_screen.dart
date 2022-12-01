@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,14 +12,14 @@ import 'bonuses_filter.dart';
 /// The screen used to display multiple [BonusModel].
 class BonusesScreen extends HookConsumerWidget {
   /// The screen used to display multiple [BonusModel].
-  const BonusesScreen({final super.key});
+  const BonusesScreen({super.key});
 
   @override
   Widget build(final BuildContext context, final WidgetRef ref) {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final ScrollController scrollController =
         PrimaryScrollController.of(context)!;
 

@@ -1,16 +1,15 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart' hide Provider;
 import 'package:page_transition/page_transition.dart';
 import 'package:phone_form_field/phone_form_field.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../generated/i18n.g.dart';
-import '../../providers/model_providers.dart';
-import '../../utils/logger.dart';
+import '../../providers/supabase/texts_provider.dart';
 import '../shared/shared_widgets.dart';
 import '../utils/focus_wrapper.dart';
 import 'sms_screen.dart';
@@ -21,7 +20,7 @@ final StateProvider<bool> _isAuthorizationLoading =
 /// The screen used to authorize a user.
 class AuthorizationScreen extends HookConsumerWidget {
   /// The screen used to authorize a user.
-  const AuthorizationScreen({final super.key});
+  const AuthorizationScreen({super.key});
 
   /// The padding of the main content on this screen.
   static const EdgeInsets contentPadding = EdgeInsets.symmetric(horizontal: 24);
@@ -31,7 +30,7 @@ class AuthorizationScreen extends HookConsumerWidget {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
 
     final GlobalKey<State<StatefulWidget>> inputFieldKey =
         useMemoized(() => GlobalKey(debugLabel: 'phone_number_input'));
@@ -48,77 +47,40 @@ class AuthorizationScreen extends HookConsumerWidget {
         return false;
       }
       isLoading.state = true;
-      bool success = false;
       try {
-        await FirebaseAuth.instance.verifyPhoneNumber(
-          forceResendingToken: resendToken,
-          phoneNumber: $phoneNumber.international,
-          verificationCompleted: FirebaseAuth.instance.signInWithCredential,
-          verificationFailed: (final FirebaseAuthException exception) {
-            if (exception.code == 'invalid-phone-number') {
-              if (isMounted()) {
-                errorText.value = $.auth.phoneNumber.error.invalid;
-              }
-              logger.w('The provided phone number is not valid.');
-            } else {
-              if (isMounted()) {
-                errorText.value = $.auth.phoneNumber.error.unknown;
-              }
-              logger.e(
-                'Exception occured while verifying phone number.',
-                exception,
-                exception.stackTrace,
-              );
-            }
-          },
-          codeSent:
-              (final String verificationId, final int? resendToken) async {
-            logger.i(
-              'Code sent successfully to number: ${$phoneNumber.international}',
-            );
-
-            Future<String> verifyCode(final String smsCode) async {
-              final PhoneAuthCredential credential =
-                  PhoneAuthProvider.credential(
-                verificationId: verificationId,
-                smsCode: smsCode,
-              );
-              try {
-                await FirebaseAuth.instance.signInWithCredential(credential);
-              } on FirebaseAuthException catch (exception) {
-                logger.e(
-                  'Exception occured while verifying send code.',
-                  exception,
-                  exception.stackTrace,
-                );
-                return exception.code;
-              }
-              logger.i('SMS Code is verified: $smsCode.');
-              success = true;
-              await ref.refresh(userProvider.future);
-              return '';
-            }
-
-            await navigator.push<String>(
-              PageTransition<String>(
-                type: PageTransitionType.leftToRightWithFade,
-                child: SMSScreen(
-                  $phoneNumber,
-                  verify: verifyCode,
-                  resend: resendToken != null
-                      ? () => authorizePhoneNumber(resendToken)
-                      : null,
-                ),
-                childCurrent: this,
-              ),
-            );
-          },
-          codeAutoRetrievalTimeout: (final String verificationId) {},
+        /// https://supabase.com/docs/guides/auth/auth-twilio#using-otp-as-a-passwordless-sign-in-mechanism
+        final GotrueJsonResponse response =
+            await Supabase.instance.client.auth.api.sendMobileOTP(
+          $phoneNumber.international,
+          shouldCreateUser: true,
         );
+        if (response.statusCode != 200) {
+          Supabase.instance.log('The provided phone number is not valid.');
+          return false;
+        }
+        Supabase.instance.log(
+          'Code sent successfully to number: ${$phoneNumber.international}',
+        );
+
+        await navigator.push<String>(
+          PageTransition<String>(
+            type: PageTransitionType.leftToRightWithFade,
+            child: SMSScreen(
+              $phoneNumber,
+              resend: resendToken != null
+                  ? () => authorizePhoneNumber(resendToken)
+                  : null,
+            ),
+            childCurrent: this,
+          ),
+        );
+        return true;
+      } on GoTrueException catch (_) {
+        Supabase.instance.log('Error occured while sending sms.');
+        rethrow;
       } finally {
         isLoading.state = false;
       }
-      return success;
     }
 
     return FocusWrapper(
@@ -161,7 +123,7 @@ class AuthorizationScreen extends HookConsumerWidget {
                       countryCodeStyle: theme.textTheme.headlineSmall,
                       countrySelectorNavigator:
                           const CountrySelectorNavigator.bottomSheet(),
-                      onSaved: (final _) => authorizePhoneNumber(),
+                      onSaved: (final _) async => authorizePhoneNumber(),
                       onChanged: (final _) =>
                           isMounted() ? phoneNumber.value = _ : null,
                       toolbarOptions: const ToolbarOptions(
@@ -201,7 +163,8 @@ class AuthorizationScreen extends HookConsumerWidget {
 
             /// Contact Support Button
             TextButton(
-              onPressed: () => logger.i('ACTION: Contact support.'),
+              onPressed: () =>
+                  Supabase.instance.log('ACTION: Contact support.'),
               child: Text(
                 $.auth.support,
                 style: theme.textTheme.titleLarge?.copyWith(

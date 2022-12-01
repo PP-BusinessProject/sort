@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import 'generated/models.g.dart';
 
-/// The extension on [UserModel].
+/// The extension on [AddressModel].
 extension AddressModelExtension on AddressModel {
   AddressLocaleModel? _locale(final Locale locale) =>
       (locales.whereType<AddressLocaleModel?>()).firstWhere(
@@ -30,21 +30,27 @@ extension AddressModelExtension on AddressModel {
 }
 
 /// The extension on [UserModel].
-extension UserModelExtension on UserModel {
+extension PersonModelExtension on PersonModel {
+  PersonLocaleModel? _locale(final Locale locale) =>
+      (locales.whereType<PersonLocaleModel?>()).firstWhere(
+        (final PersonLocaleModel? $locale) =>
+            $locale!.localeLanguageCode == locale.languageCode &&
+            (($locale.localeCountryCode == null ||
+                    locale.countryCode == null) ||
+                $locale.localeCountryCode == locale.countryCode),
+        orElse: () => null,
+      );
+
   /// Return the fallback full name of this user.
-  String get fallbackFullName =>
-      <String>[fallbackFirstName, fallbackLastName].join(' ');
+  String get fallbackFullName => <String>[
+        fallbackFirstName,
+        if (fallbackLastName.isNotEmpty) fallbackLastName,
+        if (fallbackMiddleName.isNotEmpty) fallbackMiddleName
+      ].join(' ');
 
   /// Return the full name of this user depending on [locale].
   String fullName(final Locale locale) {
-    final UserLocaleModel? userLocale =
-        (locales.whereType<UserLocaleModel?>()).firstWhere(
-      (final UserLocaleModel? $locale) =>
-          $locale!.localeLanguageCode == locale.languageCode &&
-          (($locale.localeCountryCode == null || locale.countryCode == null) ||
-              $locale.localeCountryCode == locale.countryCode),
-      orElse: () => null,
-    );
+    final PersonLocaleModel? userLocale = _locale(locale);
     if (userLocale != null) {
       return <String>[userLocale.firstName, userLocale.lastName].join(' ');
     }
@@ -52,11 +58,27 @@ extension UserModelExtension on UserModel {
   }
 }
 
-/// The extension on [BonusModel].
-extension BonusModelExtension on BonusModel {
-  BonusLocaleModel? _locale(final Locale locale) =>
-      (locales.whereType<BonusLocaleModel?>()).firstWhere(
-        (final BonusLocaleModel? $locale) =>
+/// The extension on [CompanyModel].
+extension CompanyModelExtension on CompanyModel {
+  CompanyLocaleModel? _locale(final Locale locale) =>
+      (locales.whereType<CompanyLocaleModel?>()).firstWhere(
+        (final CompanyLocaleModel? $locale) =>
+            $locale!.localeLanguageCode == locale.languageCode &&
+            (($locale.localeCountryCode == null ||
+                    locale.countryCode == null) ||
+                $locale.localeCountryCode == locale.countryCode),
+        orElse: () => null,
+      );
+
+  /// Return the name of this company depending on [locale].
+  String name(final Locale locale) => _locale(locale)?.name ?? fallbackName;
+}
+
+/// The extension on [CompanyBonusModel].
+extension BonusModelExtension on CompanyBonusModel {
+  CompanyBonusLocaleModel? _locale(final Locale locale) =>
+      (locales.whereType<CompanyBonusLocaleModel?>()).firstWhere(
+        (final CompanyBonusLocaleModel? $locale) =>
             $locale!.localeLanguageCode == locale.languageCode &&
             (($locale.localeCountryCode == null ||
                     locale.countryCode == null) ||

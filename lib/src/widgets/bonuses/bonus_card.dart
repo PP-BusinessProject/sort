@@ -7,13 +7,13 @@ import '../../generated/models.g.dart';
 import '../../styles.dart';
 import '../shared/shared_widgets.dart';
 
-/// The card used to display a [BonusModel].
+/// The card used to display a [CompanyBonusModel].
 class BonusCard extends StatelessWidget {
-  /// The card used to display a [BonusModel].
-  const BonusCard(final this.bonus, {final super.key});
+  /// The card used to display a [CompanyBonusModel].
+  const BonusCard(this.bonus, {super.key});
 
   /// The bonus to display in this card.
-  final BonusModel bonus;
+  final CompanyBonusModel bonus;
 
   /// The recommended height of this widget.
   static const double recommendedHeight = 140;
@@ -34,9 +34,7 @@ class BonusCard extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: image(
-                    bonus.images.isNotEmpty
-                        ? bonus.images.first.image?.url
-                        : null,
+                    bonus.images.isNotEmpty ? bonus.images.first.url : null,
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -54,7 +52,7 @@ class BonusCard extends StatelessWidget {
                       ),
                       Flexible(
                         child: marqueeText(
-                          bonus.owner?.fullName(currentLocale.locale) ?? '',
+                          bonus.company?.name(currentLocale.locale) ?? '',
                           style: theme.textTheme.bodyMedium,
                         ),
                       ),
@@ -101,7 +99,7 @@ class BonusCard extends StatelessWidget {
   @override
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(
-      properties..add(DiagnosticsProperty<BonusModel>('bonus', bonus)),
+      properties..add(DiagnosticsProperty<CompanyBonusModel>('bonus', bonus)),
     );
   }
 }

@@ -12,13 +12,13 @@ typedef _AnimatedProperties = Tuple2<_Colors, _Alignments>;
 class AnimatedBackground extends HookWidget {
   /// The widget of animated background to show on load.
   const AnimatedBackground({
-    final this.colors = const <Color>[],
-    final this.animateColors = true,
-    final this.alignments = const <AlignmentGeometry>[],
-    final this.animateAlignments = true,
-    final this.duration = const Duration(milliseconds: 500),
-    final this.curve = Curves.linear,
-    final super.key,
+    this.colors = const <Color>[],
+    this.animateColors = true,
+    this.alignments = const <AlignmentGeometry>[],
+    this.animateAlignments = true,
+    this.duration = const Duration(milliseconds: 500),
+    this.curve = Curves.linear,
+    super.key,
   })  : assert(
           colors.length == 0 || colors.length >= 2,
           'The count of colors should be equal or greater than 2.',

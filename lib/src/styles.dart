@@ -204,23 +204,23 @@ extension ApplyThemeData on ThemeData {
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
+            foregroundColor: colorScheme.primary,
             visualDensity: VisualDensity.compact,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             shape: outlinedBorder(this, radius: 10),
-            primary: colorScheme.primary,
             textStyle: textTheme.headlineMedium,
             splashFactory: NoSplash.splashFactory,
           ).apply(this),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
+            foregroundColor: colorScheme.onSurface,
             visualDensity: VisualDensity.compact,
+            backgroundColor: colorScheme.primary,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             shape: outlinedBorder(this, radius: 10),
-            primary: colorScheme.primary,
-            onPrimary: colorScheme.onSurface,
             textStyle: textTheme.headlineSmall,
             splashFactory: NoSplash.splashFactory,
           ).apply(this, foregroundColor: colorScheme.onSurface),
@@ -229,11 +229,11 @@ extension ApplyThemeData on ThemeData {
           style: TextButton.styleFrom(
             visualDensity: VisualDensity.compact,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            disabledForegroundColor: colorScheme.onPrimary.withOpacity(0.38),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            onSurface: colorScheme.onPrimary,
             textStyle: textTheme.labelLarge?.copyWith(
               color: colorScheme.onPrimary,
             ),

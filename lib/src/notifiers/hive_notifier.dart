@@ -7,9 +7,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 abstract class HiveNotifierInterface<T extends Object?, S extends Object?> {
   /// The interface to [save] the data.
   HiveNotifierInterface({
-    required final this.key,
-    required final this.toJson,
-    required final this.fromJson,
+    required this.key,
+    required this.toJson,
+    required this.fromJson,
   });
 
   /// The key of this iterable to save in the database.
@@ -37,10 +37,10 @@ class HiveNotifier<T extends Object, S extends Object> extends StateNotifier<T>
   /// The notifier that returns a default value from the [_hive] database.
   HiveNotifier(
     this._hive, {
-    required final this.key,
-    required final this.toJson,
-    required final this.fromJson,
-    required final this.initialValue,
+    required this.key,
+    required this.toJson,
+    required this.fromJson,
+    required this.initialValue,
     final T? Function(T)? onValue,
   }) : super(
           () {
@@ -87,7 +87,7 @@ class HiveNotifier<T extends Object, S extends Object> extends StateNotifier<T>
     try {
       super.state = state;
     } finally {
-      save();
+      unawaited(save());
     }
   }
 
@@ -112,10 +112,10 @@ class HiveOptionalNotifier<T extends Object?, S extends Object?>
   /// The notifier that returns a default value from the [_hive] database.
   HiveOptionalNotifier(
     this._hive, {
-    required final this.key,
-    required final this.toJson,
-    required final this.fromJson,
-    required final this.initialValue,
+    required this.key,
+    required this.toJson,
+    required this.fromJson,
+    required this.initialValue,
     final T? Function(T?)? onValue,
   }) : super(
           () {
@@ -165,7 +165,7 @@ class HiveOptionalNotifier<T extends Object?, S extends Object?>
     try {
       super.state = state;
     } finally {
-      save();
+      unawaited(save());
     }
   }
 
@@ -190,11 +190,11 @@ class HiveIterableNotifier<T extends Object, S extends Object>
   /// If value does not exist, returns the default value.
   HiveIterableNotifier(
     super._, {
-    required final super.key,
-    required final super.toJson,
-    required final super.fromJson,
+    required super.key,
+    required super.toJson,
+    required super.fromJson,
     final Iterable<T>? initialValue,
-    final super.onValue,
+    super.onValue,
   }) : super(initialValue: initialValue ?? <T>[]);
 
   /// Add an [item] to this notifier.

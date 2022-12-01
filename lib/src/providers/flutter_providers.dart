@@ -1,13 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_converters_lite/json_converters_lite.dart';
-import 'package:phone_form_field/phone_form_field.dart';
 
 import '../generated/i18n.g.dart';
+import '../generated/models.g.dart';
 import '../notifiers/hive_notifier.dart';
 import '../utils/custom_json_converters.dart';
-import '../utils/logger.dart';
+import 'database/model_providers.dart';
 import 'misc_providers.dart';
 
 /// An alias to the [StateNotifierProvider] for a [HiveNotifier].
@@ -25,11 +24,6 @@ typedef HiveOptionalProvider<T extends Object?>
 /// An alias to the [StateNotifierProviderRef] for a [HiveOptionalNotifier].
 typedef HiveOptionalProviderRef<T extends Object?>
     = StateNotifierProviderRef<HiveOptionalNotifier<T?, String?>, T?>;
-
-/// The provider that contais current [I18NLocale].
-final Provider<Locale> localeProvider = Provider<Locale>(
-  (final ProviderRef<Locale> ref) => ref.watch(i18nProvider).toLocale(),
-);
 
 /// The provider of the current app's root [Theme].
 final StateProvider<ThemeData> themeProvider = StateProvider<ThemeData>(
@@ -74,25 +68,23 @@ final HiveProvider<bool> i18nChangedProvider = HiveProvider<bool>(
 );
 
 /// The provider of the current [I18NLocale].
-final HiveProvider<I18NLocale> i18nProvider = HiveProvider<I18NLocale>(
-  (final HiveProviderRef<I18NLocale> ref) => HiveNotifier<I18NLocale, String>(
+final HiveOptionalProvider<LocaleModel?> i18nProvider =
+    HiveOptionalProvider<LocaleModel?>(
+  (final HiveOptionalProviderRef<LocaleModel?> ref) =>
+      HiveOptionalNotifier<LocaleModel?, String>(
     ref.watch(hiveProvider),
     key: 'locale',
-    toJson: const EnumConverter<I18NLocale>(I18NLocale.values).toJson,
-    fromJson: const EnumConverter<I18NLocale>(I18NLocale.values).fromJson,
-    initialValue: ((final List<Locale> systemLocales) =>
-        I18NLocale.values.firstWhere(
-          (final I18NLocale locale) => systemLocales.contains(locale.locale),
-          orElse: () => I18NLocale.values.last,
-        ))(ref.read(systemLocalesProvider)),
+    toJson: const OptionalStringConverter(optionalLocaleConverter).toJson,
+    fromJson: const OptionalStringConverter(optionalLocaleConverter).fromJson,
+    initialValue: null,
   ),
   dependencies: <ProviderOrFamily>[hiveProvider, systemLocalesProvider],
 );
 
 /// Observe the changes on [i18nProvider].
-class I18NChangedObserver extends ProviderObserver {
+class I18NObserver extends ProviderObserver {
   /// Observe the changes on [i18nProvider].
-  const I18NChangedObserver();
+  const I18NObserver();
 
   @override
   Future<void> didUpdateProvider(
@@ -111,59 +103,24 @@ class I18NChangedObserver extends ProviderObserver {
       final HiveNotifier<bool, String> i18nChangedNotifier =
           container.read(i18nChangedProvider.notifier);
       if (!i18nChangedNotifier.state) {
-        final List<Locale> systemLocales = newValue! as List<Locale>;
-        await (container.read(i18nProvider.notifier)).setStateAsync(
-          I18NLocale.values.firstWhere(
-            (final I18NLocale locale) =>
-                locale.locale.languageCode ==
-                    systemLocales.first.languageCode &&
-                (locale.locale.countryCode == null ||
-                    systemLocales.first.countryCode == null ||
-                    locale.locale.countryCode ==
-                        systemLocales.first.countryCode),
-            orElse: () => I18NLocale.values.last,
-          ),
-        );
+        if (newValue is List<Locale> && newValue.isNotEmpty) {
+          LocaleModel? $locale;
+          for (final LocaleModel locale
+              in await container.read(localesProvider.future) ??
+                  const Iterable<LocaleModel>.empty()) {
+            if (newValue.first ==
+                Locale(locale.languageCode, locale.countryCode)) {
+              $locale = locale;
+              break;
+            }
+          }
+          await container.read(i18nProvider.notifier).setStateAsync($locale);
+        }
         await i18nChangedNotifier.setStateAsync(false);
       }
     }
   }
 }
-
-/// The provider of the current user signed in from [FirebaseAuth].
-final StreamProvider<User?> signedInProvider =
-    StreamProvider<User?>((final _) => FirebaseAuth.instance.userChanges());
-
-/// The provider of the [PhoneNumber] of the current user signed in from
-/// [FirebaseAuth].
-final Provider<PhoneNumber?> phoneNumberProvider = Provider<PhoneNumber?>(
-  (final ProviderRef<PhoneNumber?> ref) {
-    try {
-      final String phoneNumber = ref.watch(
-        signedInProvider.select(
-          (final AsyncValue<User?> user) => user.valueOrNull?.phoneNumber ?? '',
-        ),
-      );
-      return phoneNumber.isEmpty ? null : PhoneNumber.parse(phoneNumber);
-    } on Exception catch (exception) {
-      logger.e('Exception occured while parsing phoneNumber.', exception);
-      return null;
-    }
-  },
-  dependencies: <ProviderOrFamily>[signedInProvider],
-);
-
-/// The provider of the current user signed in from [FirebaseAuth] as [int].
-final Provider<int?> $phoneNumberProvider = Provider<int?>(
-  (final ProviderRef<int?> ref) => ref.watch(
-    phoneNumberProvider.select(
-      (final PhoneNumber? phoneNumber) => int.tryParse(
-        phoneNumber?.international.replaceAll(RegExp(r'\D'), '') ?? '',
-      ),
-    ),
-  ),
-  dependencies: <ProviderOrFamily>[phoneNumberProvider],
-);
 
 /// Convert [I18NLocale] to [Locale].
 extension I18NToLocale on I18NLocale {

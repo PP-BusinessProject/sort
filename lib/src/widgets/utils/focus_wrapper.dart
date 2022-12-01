@@ -7,11 +7,11 @@ import 'package:vector_math/vector_math_64.dart';
 class FocusWrapper extends StatelessWidget {
   /// Unfocus primary focus node on action.
   const FocusWrapper({
-    required final this.child,
-    final this.unfocus = true,
-    final this.unfocussableKeys =
+    required this.child,
+    this.unfocus = true,
+    this.unfocussableKeys =
         const Iterable<GlobalKey<State<StatefulWidget>>>.empty(),
-    final super.key,
+    super.key,
   });
 
   /// The child of this widget.

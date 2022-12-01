@@ -7,14 +7,14 @@ import 'package:latlong2/latlong.dart';
 
 import '../../generated/models.g.dart';
 import '../../providers/location_providers.dart';
-import '../../providers/model_providers.dart';
+import '../../providers/database/model_providers.dart';
 import '../b2c/b2c_map.dart';
 import '../containers/container_card.dart';
 
 /// The swiper of [ContainerModel] on [B2CMap].
 class ContainerCardSwiper extends HookConsumerWidget {
   /// The swiper of [ContainerModel] on [B2CMap].
-  const ContainerCardSwiper(final this.container, {final super.key});
+  const ContainerCardSwiper(this.container, {super.key});
 
   /// The first model of this [Swiper].
   final ContainerModel container;

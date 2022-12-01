@@ -10,7 +10,7 @@ import '../shared/shared_widgets.dart';
 /// The screen that provides shows app's info and privacy rules.
 class AboutScreen extends HookConsumerWidget {
   /// The screen that provides shows app's info and privacy rules.
-  const AboutScreen({final super.key});
+  const AboutScreen({super.key});
 
   /// The height of the buttons on this screen.
   static const double buttonHeight = 60;
@@ -20,7 +20,7 @@ class AboutScreen extends HookConsumerWidget {
     final ThemeData theme = Theme.of(context);
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final NavigatorState navigator = Navigator.of(context);
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final PackageInfo packageInfo = ref.watch(packageInfoProvider);
     final int year = ref.watch(
       serverTimeProvider.select((final DateTime serverTime) => serverTime.year),
@@ -76,7 +76,7 @@ class AboutScreen extends HookConsumerWidget {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: Size.infinite,
-              primary: theme.colorScheme.surface,
+              backgroundColor: theme.colorScheme.surface,
               padding: EdgeInsets.zero,
             ),
             onPressed: onPressed ?? () {},

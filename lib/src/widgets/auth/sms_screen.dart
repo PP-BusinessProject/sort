@@ -5,29 +5,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:ndialog/ndialog.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../generated/i18n.g.dart';
-import '../../utils/logger.dart';
 import '../shared/shared_widgets.dart';
 import '../utils/focus_wrapper.dart';
 
 /// The screen to input the sms code.
 class SMSScreen extends HookConsumerWidget {
   /// The screen to input the sms code.
-  const SMSScreen(
-    this.phoneNumber, {
-    required final this.verify,
-    final this.resend,
-    final super.key,
-  });
+  const SMSScreen(this.phoneNumber, {this.resend, super.key});
 
   /// The phone number that the sms code was sent to.
   final PhoneNumber phoneNumber;
-
-  /// The function to verify the code.
-  final FutureOr<String> Function(String code) verify;
 
   /// The function to resend the code.
   final FutureOr<bool> Function()? resend;
@@ -51,9 +44,40 @@ class SMSScreen extends HookConsumerWidget {
     final StreamController<ErrorAnimationType> errorController =
         useStreamController<ErrorAnimationType>();
     final ValueNotifier<String> errorText = useState('');
-    final I18N $ = I18NLocalizations.of(context)!.current();
+    final I18N $ = I18NLocalizations.of(context);
     final double fieldSize =
         (mediaQuery.size.width - contentPadding.horizontal) / (codeLength + 10);
+
+    Future<String> verify(final String code) async {
+      try {
+        await Supabase.instance.client.auth.api
+            .verifyMobileOTP(phoneNumber.international, code);
+        Supabase.instance.log('SMS Code is verified: $code.');
+      } on GoTrueException catch (exception) {
+        if (exception.statusCode == null || exception.statusCode == '401') {
+          Supabase.instance.log('Code expired.');
+          await NDialog(
+            title: Text($.alert.codeExpired.title),
+            content: Text($.alert.codeExpired.body),
+            actions: <Widget>[
+              TextButton(
+                style: theme.textButtonTheme.style?.copyWith(
+                  shape: MaterialStateProperty.all<OutlinedBorder?>(
+                    const RoundedRectangleBorder(),
+                  ),
+                ),
+                onPressed: navigator.maybePop,
+                child: Text($.alert.codeExpired.approve),
+              )
+            ],
+          ).show<void>(context);
+        } else {
+          rethrow;
+        }
+      }
+      return '';
+    }
+
     return FocusWrapper(
       unfocussableKeys: <GlobalKey<State<StatefulWidget>>>[codeFieldKey],
       child: CupertinoPageScaffold(
@@ -111,7 +135,7 @@ class SMSScreen extends HookConsumerWidget {
                     : null,
                 onChanged: (final _) {},
                 beforeTextPaste: (final String? value) {
-                  logger.i('Allowing to paste $value');
+                  Supabase.instance.log('Allowing to paste $value');
                   return true;
                 },
               ),
@@ -154,12 +178,6 @@ class SMSScreen extends HookConsumerWidget {
     super.debugFillProperties(
       properties
         ..add(DiagnosticsProperty<PhoneNumber>('phoneNumber', phoneNumber))
-        ..add(
-          ObjectFlagProperty<FutureOr<String> Function(String code)>.has(
-            'verify',
-            verify,
-          ),
-        )
         ..add(
           ObjectFlagProperty<FutureOr<bool> Function()?>.has('resend', resend),
         ),

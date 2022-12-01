@@ -11,7 +11,7 @@ import '../shared/shared_widgets.dart';
 /// The screen that provides access to the app's language settings.
 class LanguageScreen extends HookConsumerWidget {
   /// The screen that provides access to the app's language settings.
-  const LanguageScreen({final super.key});
+  const LanguageScreen({super.key});
 
   /// The height of the buttons on this screen.
   static const double buttonHeight = 56;

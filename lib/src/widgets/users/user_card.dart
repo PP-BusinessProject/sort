@@ -11,18 +11,14 @@ import '../../widgets/shared/shared_widgets.dart';
 import '../auth/profile_screen.dart';
 
 /// The current logged in user's profile card.
-class UserCard extends StatelessWidget {
+class PersonCard extends StatelessWidget {
   /// The current logged in user's profile card.
-  const UserCard(
-    final this.user, {
-    final this.canEdit = false,
-    final super.key,
-  });
+  const PersonCard(this.person, {this.canEdit = false, super.key});
 
   /// The user to show in this card.
-  final UserModel user;
+  final PersonModel person;
 
-  /// If the controls for editing this [user] should be shown.
+  /// If the controls for editing this [person] should be shown.
   final bool canEdit;
 
   @override
@@ -78,17 +74,17 @@ class UserCard extends StatelessWidget {
             children: <Widget>[
               Flexible(
                 child: marqueeText(
-                  user.fullName(currentLocale.locale),
+                  person.fullName(currentLocale.locale),
                   style: theme.textTheme.titleLarge
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              Flexible(
-                child: marqueeText(
-                  '+${user.phoneNumber}',
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ),
+              // Flexible(
+              //   child: marqueeText(
+              //     '+${user.phoneNumber}',
+              //     style: theme.textTheme.bodyLarge,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -123,9 +119,8 @@ class UserCard extends StatelessWidget {
   void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(
       properties
-        ..add(DiagnosticsProperty<UserModel>('user', user))
+        ..add(DiagnosticsProperty<PersonModel>('person', person))
         ..add(DiagnosticsProperty<bool>('canEdit', canEdit)),
     );
-    ;
   }
 }
